@@ -51,6 +51,6 @@ Movements :
             ! if a player touches an ennemy he will lose 1 life and all his khaliss!  
             ! if the player kill an ennemy, the ennemy dissapear !
             ! the player will kill an ennemy only with the "Paka" ! 
-            ! the game is over whenever the live number goes below 1 !  
+            ! the game is over whenever the lives number goes below 1 !  
             ! when time is 0 the player will lose 1 life !
 ```
