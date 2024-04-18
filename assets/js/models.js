@@ -43,6 +43,14 @@ export class Character {
         this.DOMElement = document.createElement(elements.character)
     }
 
+    get direction() {
+        return this._direction
+    }
+    set direction(val) {
+        this._direction = val
+        this.DOMElement.style.transform = `scaleX(${val})`
+    }
+
     createDOMElement() {
         let world = document.querySelector("#world")
         world.append(this.DOMElement)
@@ -52,11 +60,11 @@ export class Character {
         if (direction.x !== undefined) {
             if (direction.x === 1) {
                 requestAnimationFrame(() => {
-                    runRight(this.DOMElement)
+                    runRight(this)
                 })
             } else {
                 requestAnimationFrame(() => {
-                    runLeft(this.DOMElement)
+                    runLeft(this)
                 })
             }
         }
@@ -95,6 +103,7 @@ export class Player extends Character {
         this._jumping = false
         this._landed = true
         this._jumpHeight = 0
+        this._direction = 1
         this._maxJumpHeight = maxJumpHeight
         this.DOMElement.id = "player"
         this.DOMElement.style.left = this.x
