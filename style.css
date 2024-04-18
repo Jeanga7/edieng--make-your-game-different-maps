@@ -1,0 +1,23 @@
+body {
+    margin: 0px;
+    padding: 0px;
+}
+#world {
+    margin: 0px;
+    height: 100vh;
+    width: 100vw;
+    background-image: url("bg.jpg");
+    background-position: bottom center;
+    background-size: cover;
+}
+
+#player {
+    height: 90px;
+    width: 60px;
+    position: absolute;
+    top: 80vh;
+    left: 10vw;
+    background-image: url("static.png");
+    background-position: bottom center;
+    background-size: cover;
+}
