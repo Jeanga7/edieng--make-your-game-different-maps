@@ -14,7 +14,7 @@ import {
 let perso = new Player(["10vw", "80vh"])
 
 // -----------------------------------------------------
-// RUNNING
+// MOVES
 // -----------------------------------------------------
 document.addEventListener("keydown", (e)=>{
     switch (e.key) {
@@ -26,17 +26,13 @@ document.addEventListener("keydown", (e)=>{
             perso.move({x:-1})
             break;
 
+        case "ArrowUp":
+            perso.jumping = true
+            perso.move({y:1})
+            break;
+
         default:
             break;
-    }
-});
-
-// -----------------------------------------------------
-// JUMPING
-// -----------------------------------------------------
-document.addEventListener('keydown', (event)=>{
-    if (!motions.jumping && event.key === 'ArrowUp' && motions.positionY >= window.innerHeight - 220) {
-        perso.move({y:1})
     }
 });
 
@@ -53,7 +49,8 @@ document.addEventListener("keyup", (e)=>{
                 break;
         
         case "ArrowUp":
-            perso.stop("jump")
+            perso.jumping = false
+            perso.landed = true
             break;
 
         default:

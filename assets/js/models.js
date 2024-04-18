@@ -13,6 +13,8 @@ export const skins = {
     // A ajouter : coins, wall, paka
 }
 
+const maxJumpHeight = 500;
+
 export const elements = {
     character: "span",
     obstacle: "div"
@@ -49,11 +51,11 @@ export class Character {
     move(direction) {
         if (direction.x !== undefined) {
             if (direction.x === 1) {
-                requestAnimationFrame(()=>{
+                requestAnimationFrame(() => {
                     runRight(this.DOMElement)
                 })
             } else {
-                requestAnimationFrame(()=>{
+                requestAnimationFrame(() => {
                     runLeft(this.DOMElement)
                 })
             }
@@ -61,12 +63,12 @@ export class Character {
 
         if (direction.y !== undefined) {
             if (direction.y === 1) {
-                requestAnimationFrame(()=>{
-                    jump(this.DOMElement)
+                requestAnimationFrame(() => {
+                    jump(this)
                 })
             } else {
-                requestAnimationFrame(()=>{
-                    fall(this.DOMElement)
+                requestAnimationFrame(() => {
+                    fall(this)
                 })
             }
         }
@@ -90,13 +92,62 @@ export class Player extends Character {
     constructor(position) {
         super("player", position)
         this.weapon = false
+        this._jumping = false
+        this._landed = true
+        this._jumpHeight = 0
+        this._maxJumpHeight = maxJumpHeight
         this.DOMElement.id = "player"
         this.DOMElement.style.left = this.x
         this.DOMElement.style.top = this.y
         this.createDOMElement()
     }
 
+    get jumpHeight() {
+        return this._jumpHeight
+    }
+    get maxJumpHeight() {
+        return this._maxJumpHeight
+    }
+    get jumping() {
+        return this._jumping
+    }
+    get landed() {
+        return this._landed
+    }
+
+    set jumping(val) {
+        this._jumping = val
+    }
+    set landed(val) {
+        this._landed = val
+    }
+    set jumpHeight(val) {
+        this._jumpHeight = val > 0 ? -val : 0
+        this.DOMElement.animate({transform: `translateY(${this._jumpHeight}px)`},800)
+    }
+
     manualMove() {
 
+    }
+}
+
+export class Collision {
+    constructor(character, obstacles) {
+        this.character = character;
+        this.obstacles = obstacles;
+    }
+    checkCollisions() {
+        const character = this.character;
+        const obstacles = this.obstacles;
+
+        for (const obstacle of obstacles) {
+            if (
+                character.x <= obstacle.x + obstacle.width &&
+                character.y <= obstacle.y + obstacle.height &&
+                character.y + character.height >= obstacle.y
+            ) {
+                console.log('collision');
+            }
+        }
     }
 }

@@ -35,27 +35,33 @@ export function motionless() {
 }
 
 export function jump(player) {
-    motions.jumping = true
-    motions.vitesseY = -15;
+    if (player.landed) {
+        let [j, maxJ] = [player.jumpHeight, player.maxJumpHeight]
+        player.jumpHeight = maxJ
+        fall(player)
+        player.landed = false
+    }
 }
 
 export function fall(player) {
-    motions.jumping = false;
-    animate(player)
+    let maxJ = player.maxJumpHeight
+    player.jumpHeight = -maxJ
 }
 
-export function animate(player) {
-    motions.vitesseY += motions.gravity;
-    motions.positionY += motions.vitesseY;
-    if (motions.positionY <= 0) {
-        cancelAnimationFrame(animate)
-    } else if (motions.positionY >= window.innerHeight - 150) {
-        motions.positionY = window.innerHeight - 150;
-        motions.vitesseY = 0;
-    }
+// export function animate(player) {
+//     motions.vitesseY += motions.gravity;
+//     motions.positionY += motions.vitesseY;
+//     if (motions.positionY <= 0) {
+//         cancelAnimationFrame(animate)
+//     } else if (motions.positionY >= window.innerHeight - 150) {
+//         motions.positionY = window.innerHeight - 150;
+//         motions.vitesseY = 0;
+//     }
 
-    player.style.top = motions.positionY + 'px';
-    requestAnimationFrame(animate);
-}
+//     player.style.top = motions.positionY + 'px';
+//     requestAnimationFrame((player)=>{
+//         animate(player)
+//     });
+// }
 
 // animate()
