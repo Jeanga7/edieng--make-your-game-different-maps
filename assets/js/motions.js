@@ -3,6 +3,7 @@ export function runRight(player) {
     let playerCoords = el.getBoundingClientRect()
 
     el.style.height = "90px"
+
     el.style.left = (playerCoords.left + 5)+"px"
 }
 
@@ -11,8 +12,7 @@ export function runLeft(player) {
     let playerCoords = el.getBoundingClientRect()
 
     el.style.height = "90px"
-    player.DOMElement.animate({transform: `translateX(-5px)`}, 100)
-    // el.style.left = (playerCoords.left - 5)+"px"
+    el.style.left = (playerCoords.left - 5)+"px"
 }
 
 export function motionless() {
@@ -23,8 +23,8 @@ export function jump(player) {
     if (player.landed) {
         let [j, maxJ] = [player.jumpHeight, player.maxJumpHeight]
         player.jumpHeight = maxJ
-        fall(player)
         player.landed = false
+        fall(player)
     }
 }
 

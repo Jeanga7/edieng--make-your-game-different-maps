@@ -21,3 +21,14 @@ body {
     background-position: bottom center;
     background-size: cover;
 }
+
+.wall{
+    position: absolute;
+    background-image: url("assets/img/wall-removebg-preview.png");
+    height: 36.7px;
+    width: 67.9px;
+    background-size: cover;
+    transform: scale(3.5);
+    bottom: 10vh;
+    left: 40vw;
+  }
