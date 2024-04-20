@@ -8,7 +8,8 @@ body {
     width: 100vw;
     background-image: url("/assets/img/back5.jpg");
     background-position: bottom center;
-    background-size: cover;
+    background-repeat: repeat-x;
+    background-size: 'contain';
 }
 
 #player {
@@ -23,12 +24,12 @@ body {
 }
 
 .wall{
-    position: absolute;
-    background-image: url("assets/img/wall-removebg-preview.png");
-    height: 36.7px;
-    width: 67.9px;
+    /* position: absolute; */
+    /* background-image: url("assets/img/wall-removebg-preview.png"); */
+    /* height: 36.7px; */
+    /* width: 67.9px; */
     background-size: cover;
     transform: scale(3.5);
-    bottom: 10vh;
-    left: 40vw;
+    /* bottom: 10vh; */
+    /* left: 40vw; */
   }

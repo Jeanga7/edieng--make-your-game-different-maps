@@ -148,15 +148,16 @@ export class Collision {
     checkCollisions() {
         const character = this.character;
         const obstacles = this.obstacles;
-
-        for (const obstacle of obstacles) {
-            if (
-                character.x <= obstacle.x + obstacle.width &&
-                character.y <= obstacle.y + obstacle.height &&
-                character.y + character.height >= obstacle.y
-            ) {
-                console.log('collision');
-            }
-        }
+        
+        if (
+            this.character.x < this.obstacles.x + this.obstacles.width &&
+            this.character.x + this.character.width > this.obstacles.x &&
+            this.character.y < this.obstacles.y + this.obstacles.height &&
+            this.character.y + this.character.height > this.obstacles.y
+          ) {
+            // Collision detected, handle it here
+            console.log("Collision detected!");
+            // Example: Stop the player's movement or reduce their health
+          }
     }
 }

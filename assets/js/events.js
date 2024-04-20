@@ -2,14 +2,17 @@ import {
     Character,
     Player,
     Obstacle,
-    skins
+    skins,
+    Collision
 } from "./models.js";
 
 // -----------------------------------------------------
 // OBJECTS INITIALIZATION
 // -----------------------------------------------------
 let perso = new Player(["10vw", "80vh"])
-var obstacle = new Obstacle("wall",["10vw", "80vh"],["500px", "100px"])
+var obstacle = new Obstacle("wall",["40vw", "15vh"],["67.9", "36.7"])
+var obstacle2 = new Obstacle("wall",["80vw", "15vh"],["67.9", "36.7"])
+var collisio = new Collision(perso, obstacle)
 // -----------------------------------------------------
 // MOVES
 // -----------------------------------------------------
@@ -18,14 +21,28 @@ var pressed = {}
 const obstacleElement = document.createElement('div');
 obstacleElement.className = "wall"
 obstacleElement.style.position = 'absolute';
-obstacleElement.style.left = `${obstacle.x}px`;
-obstacleElement.style.top = `${obstacle.y}px`;
+obstacleElement.style.left = `${obstacle.x}`;
+obstacleElement.style.bottom = `${obstacle.y}`;
 obstacleElement.style.width = `${obstacle.width}px`;
 obstacleElement.style.height = `${obstacle.height}px`;
 obstacleElement.style.backgroundImage = `url('assets/img/wall-removebg-preview.png')`;
+obstacleElement.style.backgroundSize = "cover";
+
+// second wall
+
+const obstacleElement2 = document.createElement('div');
+obstacleElement2.className = "wall"
+obstacleElement2.style.position = 'absolute';
+obstacleElement2.style.left = `${obstacle2.x}`;
+obstacleElement2.style.bottom = `${obstacle2.y}`;
+obstacleElement2.style.width = `${obstacle2.width}px`;
+obstacleElement2.style.height = `${obstacle2.height}px`;
+obstacleElement2.style.backgroundImage = `url('assets/img/wall-removebg-preview.png')`;
+obstacleElement2.style.backgroundSize = "cover";
 
 // Add the obstacle to the #world element
 const world = document.querySelector('#world');
+world.appendChild(obstacleElement2);
 world.appendChild(obstacleElement);
 document.addEventListener("keydown", (e) => {
         // let world = document.querySelector("#world")
@@ -44,8 +61,11 @@ document.addEventListener("keydown", (e) => {
     if (pressed.x) {
         perso.direction = pressed.x
     }
+    // console.log("x ->",this.character.x);
+    //     console.log("y ->",this.character.y);
     console.log("Direction: " + perso.direction, "Pressed: " + JSON.stringify(pressed))
     perso.move(pressed)
+    collisio.checkCollisions()
 }, true);
 
 // -----------------------------------------------------
