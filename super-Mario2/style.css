@@ -1,0 +1,25 @@
+body {
+    margin: 0;
+    /* background-color: black; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+#world {
+    background-image: url('./img/back5.jpg');
+    /* height: 60%;
+    width: 50%; */
+    /* width: auto; */
+    background-color: white;
+    background-size: cover;
+
+}
+
+ #player {
+    position: absolute;
+    background-image: url("./img/static.png");
+    background-position: bottom center;
+    background-size: cover;
+} 

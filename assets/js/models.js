@@ -15,7 +15,7 @@ const playerSize = {
     h: 90
 }
 const maxJumpHeight = 500
-const gravity = 0.5
+const gravity = 1.5
 
 export const elements = {
     character: "span",
@@ -211,23 +211,3 @@ export class Player extends Character {
     }
 }
 
-export class Collision {
-    constructor(character, obstacles) {
-        this.character = character;
-        this.obstacles = obstacles;
-    }
-    checkCollisions() {
-        const character = this.character;
-        const obstacles = this.obstacles;
-
-        for (const obstacle of obstacles) {
-            if (
-                character.x <= obstacle.x + obstacle.width &&
-                character.y <= obstacle.y + obstacle.height &&
-                character.y + character.height >= obstacle.y
-            ) {
-                console.log('collision');
-            }
-        }
-    }
-}
