@@ -92,7 +92,7 @@ export class Character {
         this._direction = val
         this.DOMElement.style.transform = `scaleX(${val})`
     }
-
+    
     createDOMElement() {
         if (this.DOMElement) {
             this.DOMElement.remove()
@@ -103,6 +103,7 @@ export class Character {
         this.DOMElement.style.width = this.width + "px"
         this.DOMElement.style.height = this.height + "px"
         this.DOMElement.style.backgroundImage = `url('${this.skin}')`
+        this.DOMElement.style.transform = `scaleX(${this._direction})`
         this.DOMElement.id = "player"
         let world = document.querySelector("#world")
         world.append(this.DOMElement)
@@ -111,7 +112,7 @@ export class Character {
     move(direction) {
         if (direction.x !== undefined) {
             let animateX = () => {
-                window.requestAnimationFrame(animateX) // Déclencher la première frame d'animation
+                requestAnimationFrame(animateX) // Déclencher la première frame d'animation
                 this.x += this.velocity.x
                 let collision = false
                 for (const obs of obstacles) {
@@ -120,25 +121,26 @@ export class Character {
                     let touch = ((this.x + this.width) >= obs.position.x) || this.x === 0
                     if ((aheadFoot && aheadHead) && touch) {
                         collision = true
-                        console.log("this.x:", this.x , " touch:", obs.position.x)
+                        console.log("this.x:", this.x, " touch:", obs.position.x)
                         break; // Sortir de la boucle dès qu'une collision est détectée
                     }
                 }
 
                 if (collision) {
                     this.velocity.x = 0
-                    window.cancelAnimationFrame(animateX)
+                    cancelAnimationFrame(animateX)
                     return
                 }
                 this.createDOMElement()
             }
-            window.requestAnimationFrame(animateX) // Déclencher la première frame d'animation
+            requestAnimationFrame(animateX) // Déclencher la première frame d'animation
+            return
         }
 
         if (direction.y !== undefined) {
             let animateY = () => {
-                window.requestAnimationFrame(animateY)
-                this.y -= (direction.y * this.velocity.y)
+                requestAnimationFrame(animateY)
+                this.y += (direction.y * this.velocity.y)
                 let collision = false
                 for (const obs of obstacles) {
                     let over = obs.position.x < this.x && this.x <= (obs.position.x + obs.size.w)
@@ -152,7 +154,7 @@ export class Character {
 
                 if (collision) {
                     this.velocity.y = 0
-                    window.cancelAnimationFrame(animateY)
+                    cancelAnimationFrame(animateY)
                     return
                 } else {
                     this.velocity.y += gravity
@@ -160,7 +162,8 @@ export class Character {
 
                 this.createDOMElement()
             }
-            window.requestAnimationFrame(animateY)
+            requestAnimationFrame(animateY)
+            return
         }
     }
 }

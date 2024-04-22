@@ -28,6 +28,7 @@ let perso = new Player({
     x: 30,
     y: 250
 })
+perso.move({y:-1})
 // -----------------------------------------------------
 // MOVES
 // -----------------------------------------------------
@@ -65,9 +66,7 @@ document.addEventListener("keydown", (e) => {
 
     if (e.key === "ArrowUp") {
         if (!pressed.up) {
-            perso.move({
-                y: 1
-            })
+            perso.velocity.y = -15
             pressed.up = true
         }
     }
@@ -86,6 +85,8 @@ document.addEventListener("keyup", (e) => {
         perso.velocity.x = 0
         pressed.right = false
     } else if (e.key === "ArrowUp") {
+        perso.velocity.y = 1
+        pressed.up = false
         // if (perso.y === "80vh") {
         // perso.jumping = false
         // }
