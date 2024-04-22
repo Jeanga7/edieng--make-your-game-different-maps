@@ -10,7 +10,10 @@ export const skins = {
     // A ajouter : coins, wall, paka
 }
 
-const playerSize = {w:60, h:90}
+const playerSize = {
+    w: 60,
+    h: 90
+}
 const maxJumpHeight = 500
 const gravity = 0.5
 
@@ -34,10 +37,16 @@ export class Obstacle {
     }
 
     get size() {
-        return {w: this.width, h: this.height}
+        return {
+            w: this.width,
+            h: this.height
+        }
     }
     get position() {
-        return {x: this.x, y: this.y}
+        return {
+            x: this.x,
+            y: this.y
+        }
     }
 
     createDOMElement() {
@@ -101,38 +110,34 @@ export class Character {
 
     move(direction) {
         if (direction.x !== undefined) {
-            window.requestAnimationFrame(() => {
-                this.x += (direction.x * this.velocity.x)
+            let animateX = () => {
+                window.requestAnimationFrame(animateX) // Déclencher la première frame d'animation
+                this.x += this.velocity.x
+                let collision = false
+                for (const obs of obstacles) {
+                    let aheadFoot = obs.position.y <= this.y && this.y <= (obs.position.y + obs.size.h)
+                    let aheadHead = obs.position.y <= (this.y + this.height) && (this.y + this.height) <= (obs.position.y + obs.size.h)
+                    let touch = ((this.x + this.width) >= obs.position.x) || this.x === 0
+                    if ((aheadFoot && aheadHead) && touch) {
+                        collision = true
+                        console.log("this.x:", this.x , " touch:", obs.position.x)
+                        break; // Sortir de la boucle dès qu'une collision est détectée
+                    }
+                }
+
+                if (collision) {
+                    this.velocity.x = 0
+                    window.cancelAnimationFrame(animateX)
+                    return
+                }
                 this.createDOMElement()
-                this.move(direction)
-            })
-            // let animateX = () => {
-            //     requestAnimationFrame(animateX) // Appeler récursivement animateX
-            //     this.x += (direction.x * this.velocity.x)
-            //     let collision = false
-            //     for (const obs of obstacles) {
-            //         let aheadFoot = obs.position.y <= this.y && this.y <= (obs.position.y + obs.size.h)
-            //         let aheadHead = obs.position.y <= (this.y + this.height) && (this.y + this.height) <= (obs.position.y + obs.size.h)
-            //         let touch = (this.x + this.width) >= obs.position.x
-            //         if ((aheadFoot || aheadHead) && touch) {
-            //             collision = true
-            //             break; // Sortir de la boucle dès qu'une collision est détectée
-            //         }
-            //     }
-    
-            //     if (collision) {
-            //         this.velocity.x = 0
-            //         return
-            //     }
-    
-            //     this.createDOMElement()
-            // }
-            // requestAnimationFrame(animateX) // Déclencher la première frame d'animation
+            }
+            window.requestAnimationFrame(animateX) // Déclencher la première frame d'animation
         }
 
         if (direction.y !== undefined) {
             let animateY = () => {
-                requestAnimationFrame(animateY)
+                window.requestAnimationFrame(animateY)
                 this.y -= (direction.y * this.velocity.y)
                 let collision = false
                 for (const obs of obstacles) {
@@ -140,20 +145,22 @@ export class Character {
                     let touch = this.y <= (obs.position.y + obs.size.h + this.velocity.y)
                     if (over && touch) {
                         collision = true
+                        console.log("landed");
                         break;
                     }
                 }
 
                 if (collision) {
                     this.velocity.y = 0
+                    window.cancelAnimationFrame(animateY)
                     return
                 } else {
-                    this.velocity.y += gravity                    
+                    this.velocity.y += gravity
                 }
 
                 this.createDOMElement()
             }
-            requestAnimationFrame(animateY)
+            window.requestAnimationFrame(animateY)
         }
     }
 }
