@@ -8,44 +8,34 @@ import {
 // -----------------------------------------------------
 // OBJECTS INITIALIZATION
 // -----------------------------------------------------
-let perso = new Player(["10vw", "80vh"])
-var obstacle = new Obstacle("wall",["10vw", "80vh"],["500px", "100px"])
+export var obstacles = []
+obstacles.push(new Obstacle("ground", {x:0, y:0}, {w:1000, h:30}))
+obstacles.push(new Obstacle("wall", {x:500, y:20}, {w:270, h:150}))
+
+let perso = new Player({x:30, y:250})
 // -----------------------------------------------------
 // MOVES
 // -----------------------------------------------------
 var pressed = {}
-// var position = 0
-const obstacleElement = document.createElement('div');
-obstacleElement.className = "wall"
-obstacleElement.style.position = 'absolute';
-obstacleElement.style.left = `${obstacle.x}px`;
-obstacleElement.style.top = `${obstacle.y}px`;
-obstacleElement.style.width = `${obstacle.width}px`;
-obstacleElement.style.height = `${obstacle.height}px`;
-obstacleElement.style.backgroundImage = `url('assets/img/wall-removebg-preview.png')`;
 
-// Add the obstacle to the #world element
-const world = document.querySelector('#world');
-world.appendChild(obstacleElement);
 document.addEventListener("keydown", (e) => {
+    e.preventDefault()
         // let world = document.querySelector("#world")
     if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
-        perso.DOMElement.style.backgroundImage = "url('assets/img/running-player.gif')"
+        perso.DOMElement.style.backgroundImage = "url('/assets/img/running-player.gif')"
     }
     if (e.key === "ArrowRight") {
-        pressed.x = 1
+        perso.move({x:1})
+        perso.direction = 1
     } else if (e.key === "ArrowLeft") {
-        pressed.x = -1
-    }
-    if (e.key === "ArrowUp") {
-        pressed.y = 1
+        perso.move({x:-1})
+        perso.direction = -1
     }
 
-    if (pressed.x) {
-        perso.direction = pressed.x
+    if (e.key === "ArrowUp") {
+        perso.move({y:1})
     }
-    console.log("Direction: " + perso.direction, "Pressed: " + JSON.stringify(pressed))
-    perso.move(pressed)
+    
 }, true);
 
 // -----------------------------------------------------
@@ -54,15 +44,15 @@ document.addEventListener("keydown", (e) => {
 document.addEventListener("keyup", (e) => {
     const player = document.querySelector("#player");
     if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
-        perso.stop("run")
-        delete pressed.x
+        // perso.stop("run")
+        // delete pressed.x
     }
 
     if (e.key === "ArrowUp") {
         // if (perso.y === "80vh") {
-            perso.jumping = false
+            // perso.jumping = false
         // }
-        perso.landed = true
-        delete pressed.y
+        // perso.landed = true
+        // delete pressed.y
     }
 });

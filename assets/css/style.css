@@ -6,18 +6,17 @@ body {
     margin: 0px;
     height: 100vh;
     width: 100vw;
-    background-image: url("/assets/img/back5.jpg");
+    background-image: url("/assets/img/night.jpg");
     background-position: bottom center;
     background-size: cover;
 }
 
 #player {
-    height: 90px;
-    width: 60px;
     position: absolute;
+    /* height: 90px;
+    width: 60px;
     top: 80vh;
-    left: 10vw;
-    background-image: url("/assets/img/static.png");
+    left: 10vw; */
     background-position: bottom center;
     background-size: cover;
 }

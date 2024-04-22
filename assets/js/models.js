@@ -1,19 +1,18 @@
 import {
-    fall,
-    jump,
-    runLeft,
-    runRight,
-    motionless
-} from "./motions.js"
+    obstacles
+} from "./events.js"
 
 export const skins = {
     player: "/assets/img/static.png",
     runningPlayer: "/assets/img/running-player.gif",
     wall: "/assets/img/wall-removebg-preview.png",
+    ground: "/assets/img/ground.png",
     // A ajouter : coins, wall, paka
 }
 
-const maxJumpHeight = 500;
+const playerSize = {w:60, h:90}
+const maxJumpHeight = 500
+const gravity = 0.5
 
 export const elements = {
     character: "span",
@@ -23,24 +22,58 @@ export const elements = {
 export class Obstacle {
     // type is a string and the type of obstacle
     // position is a list containing [x, y] position of the obstacle
-    // dimensions is a list containing [width, height] of the obstacle
-    constructor(type, position, dimensions) {
+    // size is a list containing [width, height] of the obstacle
+    constructor(type, position, size) {
         this.type = type
         this.skin = skins[type]
-        this.x = position[0]
-        this.y = position[1]
-        this.width = dimensions[0]
-        this.height = dimensions[1]
+        this.x = position.x
+        this.y = position.y
+        this.width = size.w
+        this.height = size.h
+        this.createDOMElement()
+    }
+
+    get size() {
+        return {w: this.width, h: this.height}
+    }
+    get position() {
+        return {x: this.x, y: this.y}
+    }
+
+    createDOMElement() {
+        if (this.DOMElement) {
+            this.DOMElement.remove()
+        }
+        this.DOMElement = document.createElement(elements.character)
+        this.DOMElement.style.position = "absolute"
+        this.DOMElement.style.left = this.x + "px"
+        this.DOMElement.style.bottom = this.y + "px"
+        this.DOMElement.style.width = this.width + "px"
+        this.DOMElement.style.height = this.height + "px"
+        this.DOMElement.style.backgroundImage = `url('${this.skin}')`
+        this.DOMElement.style.backgroundSize = this.type === "ground" ? "auto 100%" : "cover"
+        this.DOMElement.style.backgroundRepeat = this.type === "ground" ? "repeat-x" : "no-repeat"
+        this.DOMElement.className = "ground"
+        let world = document.querySelector("#world")
+        world.append(this.DOMElement)
     }
 }
 
 export class Character {
-    constructor(type, position) {
+    constructor(type, position, size) {
         this.type = type
         this.skin = skins[type]
-        this.x = position[0]
-        this.y = position[1]
-        this.DOMElement = document.createElement(elements.character)
+        this.x = position.x
+        this.y = position.y
+        this.width = size.w
+        this.height = size.h
+        this.velocity = {
+            x: 1,
+            y: 1
+        }
+        this.frameX = 0
+        this.frameY = 0
+        this.createDOMElement()
     }
 
     get direction() {
@@ -52,53 +85,82 @@ export class Character {
     }
 
     createDOMElement() {
+        if (this.DOMElement) {
+            this.DOMElement.remove()
+        }
+        this.DOMElement = document.createElement(elements.character)
+        this.DOMElement.style.left = this.x + "px"
+        this.DOMElement.style.bottom = this.y + "px"
+        this.DOMElement.style.width = this.width + "px"
+        this.DOMElement.style.height = this.height + "px"
+        this.DOMElement.style.backgroundImage = `url('${this.skin}')`
+        this.DOMElement.id = "player"
         let world = document.querySelector("#world")
         world.append(this.DOMElement)
     }
 
     move(direction) {
         if (direction.x !== undefined) {
-            if (direction.x === 1) {
-                requestAnimationFrame(() => {
-                    runRight(this)
-                })
-            } else {
-                requestAnimationFrame(() => {
-                    runLeft(this)
-                })
-            }
+            window.requestAnimationFrame(() => {
+                this.x += (direction.x * this.velocity.x)
+                this.createDOMElement()
+                this.move(direction)
+            })
+            // let animateX = () => {
+            //     requestAnimationFrame(animateX) // Appeler récursivement animateX
+            //     this.x += (direction.x * this.velocity.x)
+            //     let collision = false
+            //     for (const obs of obstacles) {
+            //         let aheadFoot = obs.position.y <= this.y && this.y <= (obs.position.y + obs.size.h)
+            //         let aheadHead = obs.position.y <= (this.y + this.height) && (this.y + this.height) <= (obs.position.y + obs.size.h)
+            //         let touch = (this.x + this.width) >= obs.position.x
+            //         if ((aheadFoot || aheadHead) && touch) {
+            //             collision = true
+            //             break; // Sortir de la boucle dès qu'une collision est détectée
+            //         }
+            //     }
+    
+            //     if (collision) {
+            //         this.velocity.x = 0
+            //         return
+            //     }
+    
+            //     this.createDOMElement()
+            // }
+            // requestAnimationFrame(animateX) // Déclencher la première frame d'animation
         }
 
         if (direction.y !== undefined) {
-            if (direction.y === 1) {
-                requestAnimationFrame(() => {
-                    jump(this)
-                })
-            } else {
-                requestAnimationFrame(() => {
-                    fall(this)
-                })
-            }
-        }
-    }
+            let animateY = () => {
+                requestAnimationFrame(animateY)
+                this.y -= (direction.y * this.velocity.y)
+                let collision = false
+                for (const obs of obstacles) {
+                    let over = obs.position.x < this.x && this.x <= (obs.position.x + obs.size.w)
+                    let touch = this.y <= (obs.position.y + obs.size.h + this.velocity.y)
+                    if (over && touch) {
+                        collision = true
+                        break;
+                    }
+                }
 
-    stop(type) {
-        if (type === "run") {
-            requestAnimationFrame(motionless)
-            cancelAnimationFrame(runRight)
-            cancelAnimationFrame(runLeft)
-            cancelAnimationFrame(motionless)
-        } else if (type === "jump") {
-            requestAnimationFrame(fall)
-            cancelAnimationFrame(jump)
-            cancelAnimationFrame(fall)
+                if (collision) {
+                    this.velocity.y = 0
+                    return
+                } else {
+                    this.velocity.y += gravity                    
+                }
+
+                this.createDOMElement()
+            }
+            requestAnimationFrame(animateY)
         }
     }
 }
 
 export class Player extends Character {
     constructor(position) {
-        super("player", position)
+        super("player", position, playerSize)
         this.weapon = false
         this._jumping = false
         this._landed = true
@@ -106,9 +168,6 @@ export class Player extends Character {
         this._direction = 1
         this._maxJumpHeight = maxJumpHeight
         this.DOMElement.id = "player"
-        this.DOMElement.style.left = this.x
-        this.DOMElement.style.top = this.y
-        this.createDOMElement()
     }
 
     get jumpHeight() {
@@ -132,7 +191,9 @@ export class Player extends Character {
     }
     set jumpHeight(val) {
         this._jumpHeight = val > 0 ? -val : 0
-        this.DOMElement.animate({transform: `translateY(${this._jumpHeight}px)`},800)
+        this.DOMElement.animate({
+            transform: `translateY(${this._jumpHeight}px)`
+        }, 800)
     }
 
     manualMove() {

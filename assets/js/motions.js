@@ -15,9 +15,9 @@ export function runLeft(player) {
     el.style.left = (playerCoords.left - 5)+"px"
 }
 
-export function motionless() {
-    player.style.backgroundImage = "url('assets/img/static.png')"
-}
+// export function motionless() {
+//     player.style.backgroundImage = "url('assets/img/static.png')"
+// }
 
 export function jump(player) {
     if (player.landed) {
