@@ -1,106 +1,61 @@
-const world = document.querySelector('#world');
+import { Character, Player, Obstacle, Ennemy } from "./models.js";
+
+export let imgStorage = "./assets/img/"
+let gameDuration = 240
+
+export let img = {
+    sky: imgStorage + "sky.jpg",
+    ground: imgStorage + "ground.png",
+    player: imgStorage + "static.png",
+    runningPlayer: imgStorage + "running-player.gif",
+    platform1: "",
+    platform2: imgStorage + "platforme2.png",
+}
+
+export const world = document.querySelector('#world');
 world.style.width = `100%`;
 world.style.height = `100%`;
 world.style.backgroundSize = 'contain';
 world.style.position = 'relative';
+world.style.overflow = 'hidden';
+world.scrollLeft = 0
+
+// Background Sky
+let sky = document.createElement("div")
+sky.style.backgroundImage = `url('${img.sky}')`
+sky.style.backgroundSize = "cover"
+sky.style.position = "fixed"
+sky.style.top = "0px"
+sky.style.left = "0px"
+sky.style.width = "100vw"
+sky.style.height = "100vh"
+sky.style.zIndex = "0"
+world.appendChild(sky)
 
 const timer = document.createElement("div")
 timer.id = "timer"
 timer.style.display = "flex"
-timer.textContent = "Timer: 60"
+timer.textContent = `Timer: ${gameDuration}`
 timer.style.justifyContent = "center"
 timer.style.backgroundColor = "white"
+timer.style.position = "fixed"
+timer.style.right = "0"
 
 world.appendChild(timer)
 
 
-class Player {
-    constructor() {
-        this.position = { x: 50, y: 0 };
-        this.velocity = { x: 0, y: 0 };
-        this.onground = true
-        this.width = 50;
-        this.height = 65;
-        this.element = document.createElement('div');
-        this.element.id = 'player';
-        world.appendChild(this.element);
-    }
+export const gravity = -1.5;
 
-    draw() {
-        this.element.style.left = `${this.position.x}px`;
-        this.element.style.top = `${this.position.y}px`;
-        this.element.style.width = `${this.width}px`
-        this.element.style.height = `${this.height}px`
-    }
-
-    update() {
-        this.draw();
-        this.position.y += this.velocity.y;
-        this.position.x += this.velocity.x;
-
-        if (this.position.y + this.velocity.y <= world.clientHeight) {
-            this.velocity.y += gravity;
-        }
-        else { this.velocity.y = 0; }
-    }
-}
-
-class Obstacle {
-    constructor({ x, y }, type) {
-        this.position = { x, y };
-        this.width = 200;
-        this.height = 30;
-        this.element = document.createElement('div');
-        this.element.classList.add('obstacle');
-        this.element.style.position = "absolute"
-        this.element.style.left = `${x}px`;
-        this.element.style.top = `${y}px`;
-        if ( type === "ground"){
-            this.element.style.backgroundImage = 'url(./img/ground.png)'
-            // this.element.style.backgroundRepeat =  "repeat-x" 
-        }else if (type === "platform"){
-            this.element.style.backgroundImage = "url(./img/platforme2.png)"
-            this.height = 50
-            this.element.style.backgroundSize = "cover"
-        }
-        // this.element.style.backgroundColor = "green"
-        world.appendChild(this.element);
-    }
-
-    draw() {
-        this.element.style.left = `${this.position.x}px`;
-        this.element.style.top = `${this.position.y}px`;
-        this.element.style.width = `${this.width}px`
-        this.element.style.height = `${this.height}px`
-    }
-    update() {
-        this.draw();
-        this.position.y += this.velocity.y;
-        this.position.x += this.velocity.x;
-
-        if (this.position.y + this.height + this.velocity.y <= world.clientHeight)
-            this.velocity.y += gravity;
-        else this.velocity.y = 0;
-    }
-}
-
-const gravity = 1.5;
 const player = new Player();
 const platforms = [
-    new Obstacle({ x: 1, y: 650 }, "ground"),
-    new Obstacle({ x: 200, y: 650 }, "ground"),
-    new Obstacle({ x: 400, y: 650 }, "ground"),
-    new Obstacle({ x: 750,y: 650 }, "ground"),
-    new Obstacle({ x: 950,y: 650 }, "ground"),
-    new Obstacle({ x: 50,y: 650 }, "ground"),
-    new Obstacle({ x: 250,y: 520 }, "platform"),
-    new Obstacle({ x: 650,y: 520 }, "platform")
-
-
+    new Obstacle({ x: 1, y: 0 }, "ground", { w: 600, h: 30 }),
+    new Obstacle({ x: 1000, y: 0 }, "ground", { w: 5000, h: 30 }),
+    new Obstacle({ x: 250, y: 70 }, "platform", { w: 200, h: 30 }),
+    new Obstacle({ x: 650, y: 20 }, "platform", { w: 200, h: 30 })
 ];
-const keys = { right: { pressed: false }, left: { pressed: false } };
+export const keys = { right: { pressed: false }, left: { pressed: false } };
 
-function checkCollision(player, obstacle) {
+export function checkCollision(player, obstacle) {
     // Calculer les coordonnées des bords du joueur et de l'obstacle
     const playerLeft = player.position.x;
     const playerRight = player.position.x + player.width;
@@ -125,7 +80,7 @@ function checkCollision(player, obstacle) {
     return false;
 }
 
-function animate() {
+export function animate() {
     requestAnimationFrame(animate);
     platforms.forEach(platform => platform.draw());
     // obstacles.forEach(obstacle => obstacle.draw());
@@ -135,8 +90,8 @@ function animate() {
     platforms.forEach(obstacle => {
         if (checkCollision(player, obstacle)) {
             // Gérer la collision ici
-            console.log("Collision avec un obstacle!");
-    
+            // console.log("Collision avec un obstacle!");
+
             // Empêcher le joueur de passer à travers l'obstacle par le haut, le bas, la gauche ou la droite
             const playerLeft = player.position.x;
             const playerRight = player.position.x + player.width;
@@ -145,11 +100,12 @@ function animate() {
             const obstacleBottom = obstacle.position.y + obstacle.height;
             const obstacleRight = obstacle.position.x + obstacle.width;
             const obstacleLeft = obstacle.position.x;
-            if (playerBottom > obstacleTop && playerBottom < obstacleBottom) {
+            if (obstacleTop < playerBottom && playerBottom < obstacleBottom) {
                 // Le joueur touche le haut de l'obstacle
                 player.position.y = obstacleTop - player.height;
+                player.onground = true;
                 player.velocity.y = 0; // Arrêter le mouvement vertical
-            } else if (player.position.y < obstacleBottom && playerBottom > obstacleBottom) {
+            } else if (player.position.y < obstacleBottom && obstacleBottom < playerBottom) {
                 // Le joueur touche le bas de l'obstacle
                 player.position.y = obstacleBottom;
                 player.velocity.y = 0;
@@ -167,86 +123,111 @@ function animate() {
             }
         }
     });
-    
 
-    if (keys.right.pressed && player.position.x < window.innerWidth / 2) {
+    if (keys.right.pressed) {
         player.velocity.x = 5;
-    } else if (keys.left.pressed && player.position.x > 50) {
+        player.element.style.transform = `scaleX(1)`;
+    } else if (keys.left.pressed && player.element.getBoundingClientRect().left > 10) {
         player.velocity.x = -5;
+        player.element.style.transform = `scaleX(-1)`;
     } else {
         player.velocity.x = 0;
-        if (keys.right.pressed) {
-            player.position.x += 5
-        }
     }
+
+    if (player.velocity.x === 0) {
+        player.element.style.backgroundImage = `url('${img.player}')`;
+    } else {
+        player.element.style.backgroundImage = `url('${img.runningPlayer}')`;
+    }
+
 }
 
+function camera() {
+    window.requestAnimationFrame(camera)
+    let playerSize = player.element.getBoundingClientRect()
 
+    let vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+    let vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
 
-let isJumping = false;
+    if (playerSize.left >= (vw / 2)) {
+        world.scrollLeft += 5
+    } 
 
-addEventListener('keydown', (event) => {
-    if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
-        const sens = event.key === "ArrowRight" ? 1 : -1;
-        player.element.style.backgroundImage = "url('./img/running-player.gif')";
-        player.element.style.transform = `scaleX(${sens})`;
+    if (playerSize.top >= vh) {
+        alert("Game over")
+        window.location.reload()
     }
+}
+camera()
+
+export let isJumping = false;
+
+document.addEventListener('keydown', (event) => {
+    event.preventDefault()
+    // if (player.velocity.x === 0) {
+    //     player.element.style.backgroundImage = `url('${img.player}')`;
+    // } else {
+    //     player.element.style.backgroundImage = `url('${img.runningPlayer}')`;
+    // }
+    console.log(player.velocity.x);
+
     switch (event.key) {
         case "ArrowLeft":
             keys.left.pressed = true;
-         
             break;
+
         case "ArrowRight":
-            console.log(player.position.x);
-            if (player.position.x > 600 && player.position.x < 700){
-                alert("game over")
-            }
+            
             keys.right.pressed = true;
             break;
+
         case "ArrowUp":
             if (!isJumping && player.onground) {
                 isJumping = true;
-                player.velocity.y -= 20;
+                player.velocity.y += 20;
                 player.onground = false
             }
             break;
+
         case " ":
             if (!isJumping) {
                 isJumping = true;
-                player.velocity.y -= 20;
+                player.velocity.y += 20;
+                player.onground = false
             }
             break;
     }
 });
 
 
-addEventListener('keyup', (event) => {
+
+document.addEventListener('keyup', (event) => {
     if (event.key === "ArrowLeft") {
         keys.left.pressed = false;
         player.velocity.x = 0; // Arrêter le mouvement horizontal
-        player.element.style.backgroundImage = "url('./img/static.png')";
+        player.element.style.backgroundImage = `url('${img.player}')`;
     }
     if (event.key === "ArrowRight") {
         keys.right.pressed = false;
         player.velocity.x = 0; // Arrêter le mouvement horizontal
-        player.element.style.backgroundImage = "url('./img/static.png')";
+        player.element.style.backgroundImage = `url('${img.player}')`;
     }
 
     if (event.key === "ArrowUp" || event.key === " ") {
         isJumping = false;
-        player.onground = true
+        // player.onground = true
     }
 });
 
 
 // Start animation
-function Timer(){
+function Timer() {
     var countdownElement = document.getElementById('timer');
-    var countdownTime = 60;
+    var countdownTime = gameDuration;
 
-    var countdownInterval = setInterval(function() {
+    var countdownInterval = setInterval(function () {
         countdownTime--;
-        countdownElement.textContent = "Timer: "+countdownTime;
+        countdownElement.textContent = "Timer: " + countdownTime;
 
         if (countdownTime <= 0) {
             clearInterval(countdownInterval);
@@ -254,5 +235,6 @@ function Timer(){
         }
     }, 1000);
 }
+
 animate();
 Timer()
