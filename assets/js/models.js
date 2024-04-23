@@ -1,4 +1,4 @@
-import { img, world, gravity, scene } from "./script.js";
+import { img, world, gravity } from "./script.js";
 
 export class Character {
     constructor(type, pos) {
@@ -88,19 +88,19 @@ export class Obstacle {
 }
 
 export class SceneElement {
-    constructor({ x, y }, dims, ele) {
+    constructor({ x, y }, dims, ele, p) {
         this.position = { x, y };
-        this.width = dims.w;
-        this.height = dims.h;
         this.element = document.createElement('div');
         this.element.style.backgroundImage = `url(${img[ele]})`
-        this.element.classList.add('obstacle');
-        this.element.style.position = "absolute"
+        this.element.className = ele;
+        this.element.style.width = dims.w + "px";
+        this.element.style.height = dims.h + "px";
+        this.element.style.position = p
         this.element.style.left = `${x}px`;
         this.element.style.bottom = `${y}px`;
         this.element.style.backgroundSize = "cover"
         this.element.style.backgroundPosition =  "center center"
         this.element.style.backgroundRepeat =  "no-repeat"
-        scene.appendChild(this.element);
+        world.appendChild(this.element);
     }
 }

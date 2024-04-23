@@ -12,7 +12,9 @@ export let img = Object.fromEntries(Object.entries({
     platform1: "",
     platform2: "platforme2.png",
     colonne: "bloc4-obstacle.png",
-    scene1: "pyramid-sphinx.png"
+    scene1: "pyramid-sphinx.png",
+    sun: "sun.png",
+    scene2: "desert1.png",
 }).map(el=>[el[0], imgStorage+el[1]]))
 
 export const world = document.querySelector('#world');
@@ -25,7 +27,7 @@ world.scrollLeft = 0
 
 // Background Sky
 export let scene = document.createElement("div")
-scene.style.backgroundImage = `url('${img.sky}')`
+scene.style.backgroundColor = "skyblue"
 scene.style.backgroundSize = "cover"
 scene.style.position = "fixed"
 scene.style.top = "0px"
@@ -48,7 +50,9 @@ timer.style.right = "0"
 world.appendChild(timer)
 
 // Scene
-let el1 = new SceneElement({x: 500, y:0}, {w: 341, h: 151}, "scene1")
+let sun = new SceneElement({x: 800, y:20}, {w: 400, h: 400}, "sun", "fixed")
+let pyramid = new SceneElement({x: 2800, y:-20}, {w: 341*2, h: 151*2}, "scene1", "absolute")
+let desert1 = new SceneElement({x: 1800, y:20}, {w: 2351/5, h: 981/5}, "scene2", "absolute")
 
 
 export const gravity = -1.5;
