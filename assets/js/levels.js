@@ -1,11 +1,11 @@
-import { game } from "./script.js";
+import { game, currentLevel } from "./script.js";
 
 // Level 1
 
-let levels = [
+export let levels = [
     {
         scene: [
-            { pos: { x: 800, y: 20 }, size: { w: 400, h: 400 }, type: "sun", cssPosition: "fixed" },
+            { pos: { x: 800, y: 20 }, size: { w: 300, h: 300 }, type: "sun", cssPosition: "fixed" },
             { pos: { x: 2800, y: -20 }, size: { w: 341 * 2, h: 151 * 2 }, type: "scene1", cssPosition: "absolute" },
             { pos: { x: 1800, y: 20 }, size: { w: 2351 / 5, h: 981 / 5 }, type: "scene2", cssPosition: "absolute" },
         ],
@@ -21,11 +21,11 @@ let levels = [
         ],
         background: "skyblue",
         duration: 240,
-        end: 3000
+        end: 1000
     },
     {
         scene: [
-            { pos: { x: 800, y: 20 }, size: { w: 400, h: 400 }, type: "sun", cssPosition: "fixed" },
+            { pos: { x: 800, y: 80 }, size: { w: 300, h: 300 }, type: "sun", cssPosition: "fixed" },
             { pos: { x: 2800, y: -20 }, size: { w: 341 * 2, h: 151 * 2 }, type: "scene1", cssPosition: "absolute" },
             { pos: { x: 1800, y: 20 }, size: { w: 2351 / 5, h: 981 / 5 }, type: "scene2", cssPosition: "absolute" },
         ],
@@ -49,8 +49,12 @@ let levels = [
 
 // }
 
-for (const level of levels) {
-    if (game(level.scene, level.obstacles, level.ennemies, level.background, level.duration, level.end) === true) {
-        continue;
-    }
-}
+// for (const level of levels) {
+//     if (game(level.scene, level.obstacles, level.ennemies, level.background, level.duration, level.end) === true) {
+//         continue;
+//     }
+// }
+
+
+
+game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end);
