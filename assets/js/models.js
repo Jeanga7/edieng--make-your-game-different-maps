@@ -1,4 +1,4 @@
-import { img, world, gravity } from "./script.js";
+import { img, world, gravity, scene } from "./script.js";
 
 export class Character {
     constructor(type, pos) {
@@ -10,6 +10,7 @@ export class Character {
         this.height = 65;
         this.element = document.createElement('div');
         this.element.style.backgroundImage = `url('${img[type]}')`
+        this.element.style.zIndex = "999"
         this.element.id = 'player';
         world.appendChild(this.element);
     }
@@ -41,7 +42,7 @@ export class Player extends Character {
 
 export class Ennemy extends Character {
     constructor(pos) {
-        super(pos)
+        super("ennemy",pos)
     }
 }
 
@@ -50,19 +51,20 @@ export class Obstacle {
         this.position = { x, y };
         this.width = dims.w;
         this.height = dims.h;
+        this.type = type
         this.element = document.createElement('div');
+        this.element.style.backgroundImage = `url(${img[type]})`
         this.element.classList.add('obstacle');
         this.element.style.position = "absolute"
         this.element.style.left = `${x}px`;
         this.element.style.bottom = `${y}px`;
         if (type === "ground") {
-            this.element.style.backgroundImage = `url(${img.ground})`
             this.element.style.backgroundSize =  "auto 100%"
             this.element.style.backgroundRepeat =  "repeat-x"
-        } else if (type === "platform") {
-            this.element.style.backgroundImage = `url(${img.platform2})`
-            this.height = 50
+        } else if (type === "platform2") {
             this.element.style.backgroundSize = "cover"
+            this.element.style.backgroundPosition =  "center center"
+            this.element.style.backgroundRepeat =  "no-repeat"
         }
         // this.element.style.backgroundColor = "green"
         world.appendChild(this.element);
@@ -82,5 +84,23 @@ export class Obstacle {
         if (this.position.y + this.height + this.velocity.y <= world.clientHeight)
             this.velocity.y += gravity;
         else this.velocity.y = 0;
+    }
+}
+
+export class SceneElement {
+    constructor({ x, y }, dims, ele) {
+        this.position = { x, y };
+        this.width = dims.w;
+        this.height = dims.h;
+        this.element = document.createElement('div');
+        this.element.style.backgroundImage = `url(${img[ele]})`
+        this.element.classList.add('obstacle');
+        this.element.style.position = "absolute"
+        this.element.style.left = `${x}px`;
+        this.element.style.bottom = `${y}px`;
+        this.element.style.backgroundSize = "cover"
+        this.element.style.backgroundPosition =  "center center"
+        this.element.style.backgroundRepeat =  "no-repeat"
+        scene.appendChild(this.element);
     }
 }
