@@ -88,20 +88,27 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end) {
         return false;
     }
 
+    var val = 1
     function animate() {
         requestAnimationFrame(animate);
         platforms.forEach(platform => platform.draw());
         // obstacles.forEach(obstacle => obstacle.draw());
-
         characters.forEach(char => {
             char.update();
-
+            var found = false
             // Vérifier les collisions avec les obstacles
             platforms.forEach(obstacle => {
                 if (checkCollision(char, obstacle)) {
                     // Gérer la collision ici
                     // console.log("Collision avec un obstacle!");
-
+                    if (char.type === "ennemy") {
+                        char.velocity.x = val;
+                        if (found) {
+                            // alert("obst")
+                            val = -val
+                            char.element.style.transform = `scaleX(${val})`;
+                        }
+                    }
                     // Empêcher le joueur de passer à travers l'obstacle par le haut, le bas, la gauche ou la droite
                     const playerLeft = char.position.x;
                     const playerRight = playerLeft + char.width;
@@ -111,7 +118,6 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end) {
                     const obstacleTop = obstacleBottom + obstacle.height;
                     const obstacleLeft = obstacle.position.x;
                     const obstacleRight = obstacleLeft + obstacle.width;
-                    var found = false
 
                     // Le joueur et l'obstacle sont sur le même alignement Vertical
                     const obstacleAndPlayerSameVAxis = (
@@ -181,12 +187,7 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end) {
                 }
             }
 
-            if (char.type === "ennemy") {
-                char.velocity.x = 1;
-                // if (found) {
-                //     char.velocity.x = 1 * -1
-                // }
-            }
+          
         });
         checkEnd()
     }
