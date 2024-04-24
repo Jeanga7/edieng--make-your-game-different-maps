@@ -4,8 +4,8 @@ import { Timer, gameOver } from "./utils.js";
 import { img } from "./constants.js";
 
 export let currentLevel = 0;
-
-export function game(sceneElements, obstacles, ennemies, bg, duration, end) {
+var lives = 3
+export function game(sceneElements, obstacles, ennemies, bg, duration, end, live) {
     world.innerHTML = ""
     world.style.width = `100%`;
     world.style.height = `100%`;
@@ -34,9 +34,26 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end) {
     timer.style.justifyContent = "center"
     timer.style.backgroundColor = "white"
     timer.style.position = "fixed"
-    timer.style.right = "0"
+    timer.style.right = "600px"
+    timer.style.fontSize = "30px"
+
+    //
+
+    const Life = document.createElement("div")
+    Life.id = "live"
+    Life.style.display = "flex"
+    Life.textContent = `live: ${live}`
+    Life.style.justifyContent = "center"
+    // Life.style.alignContent = "center"
+    Life.style.backgroundColor = "white"
+    Life.style.position = "fixed"
+    Life.style.right = "800px"
+    Life.style.fontSize = "30px"
+
+
 
     world.appendChild(timer)
+    world.appendChild(Life)
 
     let decor = []
 
@@ -186,8 +203,6 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end) {
                     return true
                 }
             }
-
-          
         });
         checkEnd()
     }
@@ -199,13 +214,14 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end) {
             const level = levels[currentLevel];
             // Notifications de fin de niveau
             alert("Level cleared !")
-            game(level.scene, level.obstacles, level.ennemies, level.background, level.duration, level.end);
+            game(level.scene, level.obstacles, level.ennemies, level.background, level.duration, level.end,live);
         } else {
             alert("You finished the GAME !")
         }
     }
 
     function checkEnd() {
+        console.log(player.position.x);
         if (player.position.x >= levels[currentLevel].end) {
             switchLevel();
         }
@@ -223,7 +239,15 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end) {
         }
 
         if (playerSize.top >= vh) {
-            gameOver()
+            if (live === 1) {
+                gameOver()
+            }
+            live -= 1
+            player.position.x = 10
+            game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end, live)
+
+            // gameOver()
+
         }
     }
     camera()
@@ -285,9 +309,31 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end) {
     Timer()
 }
 
+// let paused = false
+
+// function TogglePause(){
+//     if (!paused){
+//         paused = true
+//     }else{
+//         paused = false
+//     }
+// }
+
+// window.addEventListener('keydown', (e)=>{
+//     if (e.key === "R"){
+//         TogglePause()
+//     }
+// })
+
+// function GameLoop(){
+//     if (!paused){
+//         requestAnimationFrame(GameLoop);
+//         game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end, lives);
+//     } else {
+//         setTimeout(GameLoop, 100); 
+//     }
+// }
 
 
+game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end, lives);
 
-
-
-game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end);

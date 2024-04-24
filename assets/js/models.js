@@ -13,6 +13,7 @@ export class Character {
         this.element.style.backgroundImage = `url('${img[type]}')`
         this.element.style.zIndex = "999"
         this.element.id = 'player';
+        this.live = 3
         world.appendChild(this.element);
     }
 
@@ -27,7 +28,6 @@ export class Character {
         this.draw();
         this.position.y += this.velocity.y;
         this.position.x += this.velocity.x;
-
         if (this.position.y + this.velocity.y <= world.clientHeight) {
             this.velocity.y += gravity;
         }
