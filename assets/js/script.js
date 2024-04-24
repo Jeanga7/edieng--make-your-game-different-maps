@@ -1,25 +1,7 @@
-// import { levels } from "./levels.js";
+import { levels } from "./levels.js";
 import { Player, Obstacle, Ennemy, SceneElement } from "./models.js";
-
-export let imgStorage = "./assets/img/"
-let gameDuration = 240
-export const gravity = -1.5;
-
-export let img = Object.fromEntries(Object.entries({
-    sky: "sky.jpg",
-    ground: "desert-ground.png",
-    player: "static.png",
-    ennemy: "static.png",
-    runningPlayer: "running-player.gif",
-    platform1: "",
-    platform2: "platforme2.png",
-    colonne: "bloc4-obstacle.png",
-    scene1: "pyramid-sphinx.png",
-    sun: "sun.png",
-    scene2: "desert1.png",
-}).map(el => [el[0], imgStorage + el[1]]))
-
-export const world = document.querySelector('#world');
+import { Timer, gameOver } from "./utils.js";
+import { img } from "./constants.js";
 
 export let currentLevel = 0;
 
@@ -122,36 +104,59 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end) {
 
                     // Empêcher le joueur de passer à travers l'obstacle par le haut, le bas, la gauche ou la droite
                     const playerLeft = char.position.x;
-                    const playerRight = char.position.x + char.width;
-                    const playerBottom = char.position.y + char.height;
-                    const obstacleTop = obstacle.position.y;
-                    const obstacleBottom = obstacle.position.y + obstacle.height;
-                    const obstacleRight = obstacle.position.x + obstacle.width;
+                    const playerRight = playerLeft + char.width;
+                    const playerBottom = char.position.y;
+                    const playerTop = playerBottom + char.height;
+                    const obstacleBottom = obstacle.position.y;
+                    const obstacleTop = obstacleBottom + obstacle.height;
                     const obstacleLeft = obstacle.position.x;
+                    const obstacleRight = obstacleLeft + obstacle.width;
                     var found = false
-                    if (obstacleTop < playerBottom && playerBottom < obstacleBottom) {
-                        // Le joueur touche le haut de l'obstacle
-                        char.position.y = obstacleTop - char.height;
-                        char.onground = true;
-                        char.velocity.y = 0; // Arrêter le mouvement vertical
-                        found = true
-                    } else if (char.position.y < obstacleBottom && obstacleBottom < playerBottom) {
-                        // Le joueur touche le bas de l'obstacle
-                        char.position.y = obstacleBottom - (obstacle.type === "ground" ? 20 : 8);
-                        char.velocity.y = 0; // Arrêter le mouvement vertical
-                        char.onground = true;
-                        found = true
-                    } else if (playerRight < obstacleLeft && playerRight < obstacleRight) {
-                        // Le joueur touche la gauche de l'obstacle
+
+                    // Le joueur et l'obstacle sont sur le même alignement Vertical
+                    const obstacleAndPlayerSameVAxis = (
+                        (obstacleLeft <= playerLeft && playerLeft <= obstacleRight) // Le joueur dépasse l'obstacle sur la droite
+                        || (obstacleLeft <= playerRight && playerRight <= obstacleRight) // Le joueur dépasse l'obstacle sur la gauche
+                        || (playerLeft <= obstacleLeft && obstacleRight <= playerRight) // L'obstacle est entre la gauche et la droite du joueur
+                    )
+
+                    const obstacleAndPlayerSameHAxis = (
+                        (obstacleBottom <= playerBottom && playerBottom <= obstacleTop) // La tête du joueur dépasse l'obstacle
+                        || (obstacleBottom <= playerTop && playerTop <= obstacleTop) // L'obstacle dépasse la tête du joueur
+                        || (playerBottom <= obstacleBottom && obstacleTop <= playerTop) // L'obstacle est entre la tête et les pieds du joueur
+                    )
+
+                    // Est en dessous de l'obstacle
+                    const playerUnderObstacle = obstacleAndPlayerSameVAxis
+                        && (playerBottom < obstacleBottom && obstacleBottom < playerTop)
+
+                    // Est au dessus de l'obstacle
+                    const playerOverObstacle = obstacleAndPlayerSameVAxis
+                        && (playerBottom < obstacleTop && obstacleTop < playerTop)
+
+                    // Est avant l'obstacle
+                    const playerBeforeObstacle = obstacleAndPlayerSameHAxis
+                        && (playerLeft < obstacleLeft && obstacleLeft < playerRight)
+
+                    // Est après l'obstacle
+                    const playerAfterObstacle = obstacleAndPlayerSameHAxis
+                        && (playerLeft < obstacleRight && obstacleRight < playerRight)
+
+                    if (playerUnderObstacle) {
+                        char.position.y = obstacleBottom - char.height
+                        char.velocity.y = 0
+                    } else if (playerOverObstacle) {
+                        char.position.y = obstacleTop - (obstacle.type === "ground" ? 20 : 8)
+                        char.velocity.y = 0
+                        char.onground = true
+                    } else if (playerBeforeObstacle) {
                         char.position.x = obstacleLeft - char.width
-                        alert(char.position.x)
-                        char.velocity.x = 0; // Arrêter le mouvement horizontal
-                    } else if (playerLeft < obstacleRight && playerLeft > obstacleLeft) {
-                        // Le joueur touche la droite de l'obstacle
-                        char.position.x = obstacleRight;
-                        alert(char.position.x)
-                        char.velocity.x = 0; // Arrêter le mouvement horizontal
+                        char.velocity.x = 0
+                    } else if (playerAfterObstacle) {
+                        char.position.x = obstacleRight
+                        char.velocity.x = 0
                     }
+                    found = true
                 }
             });
 
@@ -191,9 +196,11 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end) {
         currentLevel++;
         if (currentLevel < levels.length) {
             const level = levels[currentLevel];
+            // Notifications de fin de niveau
+            alert("Level cleared !")
             game(level.scene, level.obstacles, level.ennemies, level.background, level.duration, level.end);
         } else {
-            console.log("OVER THE GAME");
+            alert("You finished the GAME !")
         }
     }
 
@@ -273,27 +280,6 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end) {
         }
     });
 
-    function gameOver() {
-        alert("Game over")
-        window.location.reload()
-    }
-
-    // Start animation
-    function Timer() {
-        var countdownElement = document.getElementById('timer');
-        var countdownTime = gameDuration;
-
-        var countdownInterval = setInterval(function () {
-            countdownTime--;
-            countdownElement.textContent = "Timer: " + countdownTime;
-
-            if (countdownTime <= 0) {
-                clearInterval(countdownInterval);
-                gameOver()
-            }
-        }, 1000);
-    }
-
     animate();
     Timer()
 }
@@ -301,48 +287,6 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end) {
 
 
 
-export let levels = [
-    {
-        scene: [
-            { pos: { x: 800, y: 20 }, size: { w: 300, h: 300 }, type: "sun", cssPosition: "fixed" },
-            { pos: { x: 2800, y: -20 }, size: { w: 341 * 2, h: 151 * 2 }, type: "scene1", cssPosition: "absolute" },
-            { pos: { x: 1800, y: 20 }, size: { w: 2351 / 5, h: 981 / 5 }, type: "scene2", cssPosition: "absolute" },
-        ],
-        obstacles: [
-            { pos: { x: 1, y: 0 }, type: "ground", size: { w: 600, h: 30 } },
-            { pos: { x: 1000, y: 0 }, type: "ground", size: { w: 5000, h: 30 } },
-            { pos: { x: 250, y: 70 }, type: "platform2", size: { w: 231, h: 72 } },
-            { pos: { x: 650, y: 20 }, type: "platform2", size: { w: 231, h: 72 } },
-            { pos: { x: 1250, y: 20 }, type: "colonne", size: { w: 176, h: 143 } },
-        ],
-        ennemies: [
-            { pos: { x: 1000, y: 500 } },
-        ],
-        background: "skyblue",
-        duration: 240,
-        end: 1000
-    },
-    {
-        scene: [
-            { pos: { x: 800, y: 80 }, size: { w: 300, h: 300 }, type: "sun", cssPosition: "fixed" },
-            { pos: { x: 2800, y: -20 }, size: { w: 341 * 2, h: 151 * 2 }, type: "scene1", cssPosition: "absolute" },
-            { pos: { x: 1800, y: 20 }, size: { w: 2351 / 5, h: 981 / 5 }, type: "scene2", cssPosition: "absolute" },
-        ],
-        obstacles: [
-            { pos: { x: 1, y: 0 }, type: "ground", size: { w: 600, h: 30 } },
-            { pos: { x: 1000, y: 0 }, type: "ground", size: { w: 5000, h: 30 } },
-            { pos: { x: 250, y: 70 }, type: "platform2", size: { w: 231, h: 72 } },
-            { pos: { x: 650, y: 20 }, type: "platform2", size: { w: 231, h: 72 } },
-            { pos: { x: 1250, y: 20 }, type: "colonne", size: { w: 176, h: 143 } },
-        ],
-        ennemies: [
-            { pos: { x: 1000, y: 500 } },
-        ],
-        background: "darkblue",
-        duration: 240,
-        end: 3000
-    },
-]
 
 
-// game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end);
+game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end);

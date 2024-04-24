@@ -1,4 +1,5 @@
-import { img, world, gravity } from "./script.js";
+import { img, gravity, world  } from "./constants.js";
+
 
 export class Character {
     constructor(type, pos) {
