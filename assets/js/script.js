@@ -118,7 +118,7 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
                 if (checkCollision(char, obstacle)) {
                     // Gérer la collision ici
                     // console.log("Collision avec un obstacle!");
-                    if (char.type === "ennemy") {
+                    if (char.type === "momie") {
                         char.velocity.x = val;
                         if (found) {
                             // alert("obst")
@@ -214,15 +214,15 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
             const level = levels[currentLevel];
             // Notifications de fin de niveau
             alert("Level cleared !")
-            game(level.scene, level.obstacles, level.ennemies, level.background, level.duration, level.end,live);
+            game(level.scene, level.obstacles, level.ennemies, level.background, level.duration, level.end, live);
         } else {
             alert("You finished the GAME !")
         }
     }
 
     function checkEnd() {
-        console.log(player.position.x);
-        if (player.position.x >= levels[currentLevel].end) {
+
+        if (world.scrollLeft >= levels[currentLevel].end) {
             switchLevel();
         }
     }
@@ -243,19 +243,33 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
                 gameOver()
             }
             live -= 1
-            player.position.x = 10
             game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end, live)
-
             // gameOver()
-
         }
     }
     camera()
 
     let isJumping = false;
+    let paused = false;
 
     document.addEventListener('keydown', (event) => {
         event.preventDefault()
+        // if (event.key === "p" || event.key === "P") {
+        //     paused = !paused;
+        //     alert(paused);
+        //     if (paused === true) {
+        //         cancelAnimationFrame(animate);
+        //     } else {
+        //         animate();
+        //     }
+        // }
+
+        // gestion de la fonctionnalité restart.
+         if (event.key === "r" || event.key === "R") {
+            currentLevel = 0;
+            lives = 3; 
+            game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end, lives);
+        } 
 
         switch (event.key) {
             case "ArrowLeft":
@@ -308,31 +322,6 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
     animate();
     Timer()
 }
-
-// let paused = false
-
-// function TogglePause(){
-//     if (!paused){
-//         paused = true
-//     }else{
-//         paused = false
-//     }
-// }
-
-// window.addEventListener('keydown', (e)=>{
-//     if (e.key === "R"){
-//         TogglePause()
-//     }
-// })
-
-// function GameLoop(){
-//     if (!paused){
-//         requestAnimationFrame(GameLoop);
-//         game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end, lives);
-//     } else {
-//         setTimeout(GameLoop, 100); 
-//     }
-// }
 
 
 game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end, lives);

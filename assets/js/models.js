@@ -2,13 +2,13 @@ import { img, gravity, world  } from "./constants.js";
 
 
 export class Character {
-    constructor(type, pos) {
+    constructor(type, pos, dims) {
         this.position = { x: pos.x, y: pos.y };
         this.type = type
         this.velocity = { x: 0, y: 0 };
         this.onground = true
-        this.width = 50;
-        this.height = 65;
+        this.width = dims.w;
+        this.height = dims.h;
         this.element = document.createElement('div');
         this.element.style.backgroundImage = `url('${img[type]}')`
         this.element.style.zIndex = "999"
@@ -37,13 +37,13 @@ export class Character {
 
 export class Player extends Character {
     constructor() {
-        super("player", { x: 50, y: 80 })
+        super("player", { x: 50, y: 80 }, { w: 50, h: 70 })
     }
 }
 
 export class Ennemy extends Character {
     constructor(pos) {
-        super("ennemy",pos)
+        super("momie",pos, { w: 50, h: 80 })
     }
 }
 

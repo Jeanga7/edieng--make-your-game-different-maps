@@ -148,6 +148,14 @@ export let levels =
                 }
             }
         ],
+        "coins": [
+            {
+                "pos": {
+                    "x": 300,
+                    "y": 500
+                }
+            }
+        ],
         "background": "skyblue",
         "duration": 240,
         "end": 3000
