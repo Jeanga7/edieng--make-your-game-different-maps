@@ -5,6 +5,30 @@ import { img } from "./constants.js";
 
 export let currentLevel = 0;
 var lives = 3
+let paused = false;
+
+// handle the pause option
+document.addEventListener("keydown",(e)=>{
+    if (e.key === "p" || e.key === "P") {
+        if (!paused) {
+            paused = true
+        } else {
+            paused = false
+        }
+    }
+})
+
+// handle the restart option
+document.addEventListener("keydown",(e)=>{
+    if (e.key === "r" || e.key === "R") {
+        currentLevel = 0;
+        live = 3;
+        paused = false
+        // window.location.reload()
+        game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end, live);
+    }
+})
+
 const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
 const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
 export function game(sceneElements, obstacles, ennemies, bg, duration, end, live) {
@@ -52,8 +76,22 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
     Life.style.right = "800px"
     Life.style.fontSize = "30px"
 
+    const PauseMenu = document.createElement("div");
+    PauseMenu.id = "Menupause";
+    PauseMenu.style.display = "flex";
+    PauseMenu.style.position = "fixed";
+    PauseMenu.style.height = "100px";
+    PauseMenu.style.top = '300px';
+    PauseMenu.style.left = "600px";
+    // PauseMenu.style.backgroundColor = "white";
+    PauseMenu.style.alignItems = "center"; // Center items vertically
+    PauseMenu.style.justifyContent = "center"; // Center items horizontally
+    PauseMenu.style.fontSize = "60px"; // Adjust the size of the content
+    PauseMenu.textContent = "PAUSED";
+    
+    
 
-
+    world.appendChild(PauseMenu)
     world.appendChild(timer)
     world.appendChild(Life)
 
@@ -112,6 +150,8 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
         requestAnimationFrame(animate);
         platforms.forEach(platform => platform.draw());
         // obstacles.forEach(obstacle => obstacle.draw());
+        if (!paused){
+        PauseMenu.style.display = "none"
         characters.forEach(char => {
             char.update();
             var found = false
@@ -213,7 +253,9 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
                     return true
                 }
             }
-        });
+        })}else{
+            PauseMenu.style.display = "block"
+        };
         checkEnd()
     }
 
@@ -258,26 +300,11 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
     camera()
 
     let isJumping = false;
-    let paused = false;
 
     document.addEventListener('keydown', (event) => {
-        event.preventDefault()
-        // if (event.key === "p" || event.key === "P") {
-        //     paused = !paused;
-        //     alert(paused);
-        //     if (paused === true) {
-        //         cancelAnimationFrame(animate);
-        //     } else {
-        //         animate();
-        //     }
-        // }
+        event.preventDefault()       
 
-        // gestion de la fonctionnalité restart.
-        if (event.key === "r" || event.key === "R") {
-            currentLevel = 0;
-            lives = 3;
-            game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end, lives);
-        }
+        // gestion de la fonctionnalité restart
 
         switch (event.key) {
             case "ArrowLeft":
@@ -306,8 +333,6 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
                 break;
         }
     });
-
-
 
     document.addEventListener('keyup', (event) => {
         if (event.key === "ArrowLeft") {
