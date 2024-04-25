@@ -1,34 +1,25 @@
 body {
-    margin: 0px;
-    padding: 0px;
-}
-#world {
-    margin: 0px;
+    margin: 0;
+    /* background-color: black; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height: 100vh;
-    width: 100vw;
-    background-image: url("/assets/img/back5.jpg");
-    background-position: bottom center;
-    background-size: cover;
 }
 
-#player {
-    height: 90px;
-    width: 60px;
-    position: absolute;
-    top: 80vh;
-    left: 10vw;
-    background-image: url("/assets/img/static.png");
-    background-position: bottom center;
+#world {
+    /* background-image: url(./img/egypte-back.jpg); */
+    /* height: 60%;
+    width: 50%; */
+    /* width: auto; */
+    background-color: white;
     background-size: cover;
+    z-index: 2;
+
 }
 
-.wall{
+ #player {
     position: absolute;
-    background-image: url("assets/img/wall-removebg-preview.png");
-    height: 36.7px;
-    width: 67.9px;
+    background-position: bottom center;
     background-size: cover;
-    transform: scale(3.5);
-    bottom: 10vh;
-    left: 40vw;
-  }
+} 
