@@ -12,7 +12,7 @@ export class Character {
         this.element = document.createElement('div');
         this.element.style.backgroundImage = `url('${img[type]}')`
         this.element.style.zIndex = "999"
-        this.element.id = 'player';
+        this.element.id = type;
         this.live = 3
         world.appendChild(this.element);
     }
@@ -36,7 +36,7 @@ export class Character {
 }
 
 export class Player extends Character {
-    constructor() {
+    constructor(position) {
         super("player", { x: 50, y: 80 }, { w: 50, h: 70 })
     }
 }
@@ -59,10 +59,10 @@ export class Obstacle {
         this.element.style.position = "absolute"
         this.element.style.left = `${x}px`;
         this.element.style.bottom = `${y}px`;
-        if (type === "ground") {
+        if (type === "ground"|| type === "groundNL") {
             this.element.style.backgroundSize =  "auto 100%"
             this.element.style.backgroundRepeat =  "repeat-x"
-        } else if (type === "platform2") {
+        } else{
             this.element.style.backgroundSize = "cover"
             this.element.style.backgroundPosition =  "center center"
             this.element.style.backgroundRepeat =  "no-repeat"

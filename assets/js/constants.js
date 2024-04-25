@@ -8,6 +8,8 @@ const img = Object.fromEntries(Object.entries({
     sky: "sky.jpg",
     ground: "desert-ground.png",
     player: "static.png",
+    playerJumping: "jumping.png",
+    playerFalling: "falling.png",
     ennemy: "static.png",
     runningPlayer: "running-player.gif",
     platform1: "",
@@ -15,7 +17,11 @@ const img = Object.fromEntries(Object.entries({
     colonne: "bloc4-obstacle.png",
     scene1: "pyramid-sphinx.png",
     sun: "sun.png",
+    moon: "moon.png",
     scene2: "desert1.png",
     momie: "momie.gif",
-    coin: "coin.gif",
+    status: "status.png",
+    sphinx: "sphinx.png",
+    groundNL: "groundNextLevel.jpeg",
+    coin: "coin.gif"
 }).map(el => [el[0], imgStorage + el[1]]))

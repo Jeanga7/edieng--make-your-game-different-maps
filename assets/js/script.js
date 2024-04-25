@@ -5,6 +5,8 @@ import { img } from "./constants.js";
 
 export let currentLevel = 0;
 var lives = 3
+const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
 export function game(sceneElements, obstacles, ennemies, bg, duration, end, live) {
     world.innerHTML = ""
     world.style.width = `100%`;
@@ -199,6 +201,14 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
                 } else {
                     char.element.style.backgroundImage = `url('${img.runningPlayer}')`;
                 }
+
+                if (isJumping === true && player.onground === false) {
+                    char.element.style.backgroundImage = `url('${img.playerJumping}')`;
+                }
+                if (isJumping === false && player.onground === false) {
+                    char.element.style.backgroundImage = `url('${img.playerFalling}')`;
+                }
+
                 if (char.x === end) {
                     return true
                 }
@@ -221,8 +231,8 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
     }
 
     function checkEnd() {
-
-        if (world.scrollLeft >= levels[currentLevel].end) {
+        const playerPos = parseInt(document.querySelector("#player").style.left)
+        if ((playerPos) >= levels[currentLevel].end) {
             switchLevel();
         }
     }
@@ -231,8 +241,7 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
         window.requestAnimationFrame(camera)
         let playerSize = player.element.getBoundingClientRect()
 
-        let vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
-        let vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+
 
         if (playerSize.left >= (vw / 2)) {
             world.scrollLeft += 5
@@ -244,7 +253,6 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
             }
             live -= 1
             game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end, live)
-            // gameOver()
         }
     }
     camera()
@@ -265,11 +273,11 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
         // }
 
         // gestion de la fonctionnalité restart.
-         if (event.key === "r" || event.key === "R") {
+        if (event.key === "r" || event.key === "R") {
             currentLevel = 0;
-            lives = 3; 
+            lives = 3;
             game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end, lives);
-        } 
+        }
 
         switch (event.key) {
             case "ArrowLeft":
@@ -290,7 +298,7 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
                 break;
 
             case " ":
-                if (!isJumping) {
+                if (!isJumping && player.onground) {
                     isJumping = true;
                     player.velocity.y += 20;
                     player.onground = false
