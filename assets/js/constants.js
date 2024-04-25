@@ -20,7 +20,7 @@ const img = Object.fromEntries(Object.entries({
     moon: "moon.png",
     scene2: "desert1.png",
     momie: "momie.gif",
-    status: "status.png",
+    status: "status_colonne.png",
     sphinx: "sphinx.png",
     groundNL: "groundNextLevel.jpeg",
     coin: "coin.gif"

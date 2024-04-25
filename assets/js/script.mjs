@@ -5,7 +5,7 @@ import { img } from "./constants.js";
 
 export let currentLevel = 0;
 var lives = 3
-let paused = false;
+export let paused = false;
 
 // handle the pause option
 document.addEventListener("keydown",(e)=>{

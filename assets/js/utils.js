@@ -1,4 +1,7 @@
+import { paused } from "./script.mjs";
+
 export { Timer, gameOver };
+
 let gameDuration = 240
 
 // Start animation
@@ -7,7 +10,9 @@ function Timer() {
     var countdownTime = gameDuration;
 
     var countdownInterval = setInterval(function () {
-        countdownTime--;
+        if (!paused) {
+            countdownTime--;
+        }
         countdownElement.textContent = "Timer: " + countdownTime;
 
         if (countdownTime <= 0) {

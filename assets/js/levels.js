@@ -125,8 +125,8 @@ export let levels =
                 },
                 "type": "status",
                 "size": {
-                    "w": 107,
-                    "h": 416
+                    "w": 276/1.8,
+                    "h": 902/1.8
                 }
             },
             {
@@ -138,7 +138,7 @@ export let levels =
                 "size": {
                     "w": 367*2,
                     "h": 137
-                }
+                } 
             },
             {
                 "pos": {
@@ -289,6 +289,6 @@ export let levels =
         ],
         "background": "url('/assets/img/nightsky.jpg')",
         "duration": 240,
-         "end": 3000
+         "end": 5000
      }
 ]
