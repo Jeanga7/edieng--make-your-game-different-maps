@@ -7,6 +7,7 @@ export let currentLevel = 0;
 var lives = 3
 var score = 0
 var number = 0
+
 export let paused = false;
 
 // handle the pause option
@@ -24,16 +25,16 @@ document.addEventListener("keydown", (e) => {
 document.addEventListener("keydown", (e) => {
     if (e.key === "r" || e.key === "R") {
         currentLevel = 0;
-        live = 3;
+        lives = 3;
         paused = false
         // window.location.reload()
-        game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end, lives,score,levels[currentLevel].coins);
+        game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end, lives, score, levels[currentLevel].coins);
     }
 })
 
 const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
 const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
-export function game(sceneElements, obstacles, ennemies, bg, duration, end, live,scores) {
+export function game(sceneElements, obstacles, ennemies, bg, duration, end, live,scores){
     world.innerHTML = ""
     world.style.width = `100%`;
     world.style.height = `100%`;
@@ -65,8 +66,6 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
     timer.style.right = "600px"
     timer.style.fontSize = "30px"
 
-    //
-
     const Life = document.createElement("div")
     Life.id = "live"
     Life.style.display = "flex"
@@ -78,8 +77,6 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
     Life.style.right = "800px"
     Life.style.fontSize = "30px"
 
-
-    ////
     const score = document.createElement("div")
     score.id = "score"
     score.style.display = "flex"
@@ -90,7 +87,7 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
     score.style.position = "fixed"
     score.style.left = "400px"
     score.style.fontSize = "30px"
-    ///
+
     const PauseMenu = document.createElement("div");
     PauseMenu.id = "Menupause";
     PauseMenu.style.display = "flex";
@@ -128,6 +125,7 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
         number++
         characters.push(new bonus(coin.pos,{w:50, h:50}))
     })
+
     ennemies.forEach(en => {
         characters.push(new Enemy(en.pos, en.mobile, en.speedUp))
     })
@@ -141,7 +139,7 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
 
     const keys = { right: { pressed: false }, left: { pressed: false } };
 
-    function checkCollision(player, obstacle, contact=0) {
+    function checkCollision(player, obstacle, contact = 0) {
         // Calculer les coordonnées des bords du joueur et de l'obstacle
         const playerLeft = player.position.x;
         const playerRight = playerLeft + player.width;
@@ -166,7 +164,7 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
         return false;
     }
 
-    var val = 1
+    // var val = 1
     function animate() {
         requestAnimationFrame(animate);
         platforms.forEach(platform => platform.draw());
@@ -176,17 +174,15 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
             characters.forEach(char => {
                 char.update();
                 var found = false
+
                 // Vérifier les collisions avec les obstacles
                 platforms.forEach(obstacle => {
+                    // console.log(obstacle.position);
                     if (checkCollision(char, obstacle)) {
-                        // Gérer la collision ici
-                        // console.log("Collision avec un obstacle!");
                         if (char.type === "enemy") {
-                            char.velocity.x = val;
+                            char.velocity.x = char.direction;
                             if (found) {
-                                // alert("obst")
-                                val = -val
-                                char.element.style.transform = `scaleX(${val})`;
+                                char.turn()
                             }
                         }
                         // Empêcher le joueur de passer à travers l'obstacle par le haut, le bas, la gauche ou la droite
@@ -280,7 +276,7 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
         };
 
         characters.forEach(char => {
-            if (checkCollision(player,char, enemyContact) && char.type === "enemy"){
+            if (checkCollision(player, char, enemyContact) && char.type === "enemy") {
                 gameOver()
             }
         });
@@ -292,7 +288,7 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
                 score.textContent = `score: ${scores}`
             }
         });
-        
+
         checkEnd()
     }
 
@@ -303,7 +299,7 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
             const level = levels[currentLevel];
             // Notifications de fin de niveau
             alert("Level cleared !")
-            game(level.scene, level.obstacles, level.ennemies, level.background, level.duration, level.end, live,scores);
+            game(level.scene, level.obstacles, level.ennemies, level.background, level.duration, level.end, live, scores);
         } else {
             alert("You finished the GAME !")
         }
@@ -331,7 +327,7 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
                 gameOver()
             }
             live -= 1
-            game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end, live,scores)
+            game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end, live, scores)
         }
     }
     camera()
@@ -394,5 +390,5 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
 }
 
 
-game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end, lives,score);
+game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end, lives, score);
 

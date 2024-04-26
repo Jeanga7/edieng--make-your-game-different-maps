@@ -61,8 +61,15 @@ class Enemy extends Character {
         super("enemy", pos, { w: 50, h: 60 }, mobile, speedUp)
         let imgName = img[this.type + "_" + randomInterval(1, numberOfEnnemies)]
         this.element.style.backgroundImage = `url('${imgName}')`
+        this.direction = 1
+    }
+
+    turn() {
+        this.direction = -this.direction
+        this.element.style.transform = `scaleX(${this.direction})`;
     }
 }
+
 
 class Obstacle {
     constructor({ x, y }, type, dims) {
