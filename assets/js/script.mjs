@@ -62,6 +62,7 @@ export function game(sceneElements, obstacles, ennemies, coins, bg, duration, en
     scene.id = "scene"
     world.appendChild(scene)
 
+    // timer initialization
     const timer = document.createElement("div")
     timer.id = "timer"
     timer.style.display = "flex"
@@ -72,6 +73,7 @@ export function game(sceneElements, obstacles, ennemies, coins, bg, duration, en
     timer.style.right = "600px"
     timer.style.fontSize = "30px"
 
+    // life initialization
     const Life = document.createElement("div")
     Life.id = "live"
     Life.style.display = "flex"
@@ -83,6 +85,7 @@ export function game(sceneElements, obstacles, ennemies, coins, bg, duration, en
     Life.style.right = "800px"
     Life.style.fontSize = "30px"
 
+    // score initialization
     const score = document.createElement("div")
     score.id = "score"
     score.style.display = "flex"
@@ -94,6 +97,7 @@ export function game(sceneElements, obstacles, ennemies, coins, bg, duration, en
     score.style.left = "300px"
     score.style.fontSize = "30px"
 
+    // pause initialization
     const PauseMenu = document.createElement("div");
     PauseMenu.id = "Menupause";
     PauseMenu.style.display = "flex";
@@ -101,15 +105,35 @@ export function game(sceneElements, obstacles, ennemies, coins, bg, duration, en
     PauseMenu.style.height = "100px";
     PauseMenu.style.top = '300px';
     PauseMenu.style.left = "600px";
-    // PauseMenu.style.backgroundColor = "white";
-    PauseMenu.style.alignItems = "center"; // Center items vertically
-    PauseMenu.style.justifyContent = "center"; // Center items horizontally
-    PauseMenu.style.fontSize = "60px"; // Adjust the size of the content
+    PauseMenu.style.alignItems = "center"; 
+    PauseMenu.style.justifyContent = "center";
+    PauseMenu.style.fontSize = "60px"; 
     PauseMenu.textContent = "PAUSED";
     PauseMenu.style.display = "none"
 
+    // pause initialization
+    const gameOverModal = document.createElement("div");
+    gameOverModal.id = "gameOver";
+   gameOverModal.style.display = "flex";
+    gameOverModal.style.position = "fixed";
+    gameOverModal.style.height = "80%";
+    gameOverModal.style.width = "40%";
+    gameOverModal.style.top = "10%";
+    gameOverModal.style.left = "30%";
+    gameOverModal.style.backgroundSize = "cover"
+    // gameOverModal.style.backgroundColor = "white";
+    gameOverModal.style.backgroundImage = `url('${img.gameOver}')`
+    gameOverModal.style.alignItems = "center"; 
+    gameOverModal.style.justifyContent = "center"; 
+    gameOverModal.style.fontSize = "70px";
+    gameOverModal.textContent = "GAME OVER";
+    gameOverModal.style.color = "white"
+    gameOverModal.style.fontWeight = "bold"
+    gameOverModal.style.zIndex = "100"
+    gameOverModal.style.display= "none"
 
 
+    world.appendChild(gameOverModal)
     world.appendChild(score)
     world.appendChild(PauseMenu)
     world.appendChild(timer)

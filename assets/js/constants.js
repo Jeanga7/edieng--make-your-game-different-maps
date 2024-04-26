@@ -42,6 +42,7 @@ const img = Object.fromEntries(Object.entries({
     enemy_9: "enemy9.gif",
     status: "status_colonne.png",
     sphinx: "sphinx.png",
+    gameOver: "anibus_gameOver.jpeg",
     groundNL: "groundNextLevel.jpeg",
     coin: "coin.gif"
 }).map(el => [el[0], imgStorage + el[1]]))

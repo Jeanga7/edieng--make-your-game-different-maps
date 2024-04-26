@@ -23,8 +23,10 @@ function Timer() {
 }
 
 function gameOver() {
-    alert("Game over")
-    window.location.reload()
+    // alert("Game over")
+    console.log(document.querySelector("#gameOver"));
+    document.querySelector("#gameOver").style.display = "block"
+    // window.location.reload()
 }
 
 let randomInterval = (min, max) => Math.floor(Math.random() * (max - min) + min)

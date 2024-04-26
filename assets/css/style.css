@@ -23,3 +23,10 @@ body {
     background-position: bottom center;
     background-size: cover;
 } 
+
+/* #gameOver{
+    width: 20%;
+    height: 30%;
+    z-index: 1000;
+    background-color: white;
+} */
