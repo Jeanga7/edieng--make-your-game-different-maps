@@ -104,7 +104,11 @@ class Obstacle {
     }
 }
 
-
+export class bonus extends Obstacle{
+    constructor(pos,dimension){
+      super(pos, "coin",dimension)
+    }
+}
 
 export class SceneElement {
     constructor({ x, y }, dims, ele, p) {

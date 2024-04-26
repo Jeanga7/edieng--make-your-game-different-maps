@@ -40,8 +40,6 @@ const img = Object.fromEntries(Object.entries({
     enemy_7: "enemy7.gif",
     enemy_8: "enemy8.gif",
     enemy_9: "enemy9.gif",
-    enemy_10: "enemy10.gif",
-    enemy_11: "enemy11.gif",
     status: "status_colonne.png",
     sphinx: "sphinx.png",
     groundNL: "groundNextLevel.jpeg",
