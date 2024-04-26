@@ -1,6 +1,6 @@
 import { paused } from "./script.mjs";
 
-export { Timer, gameOver };
+export { Timer, gameOver, randomInterval };
 
 let gameDuration = 240
 
@@ -26,3 +26,5 @@ function gameOver() {
     alert("Game over")
     window.location.reload()
 }
+
+let randomInterval = (min, max) => Math.floor(Math.random() * (max - min) + min)

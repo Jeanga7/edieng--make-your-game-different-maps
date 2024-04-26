@@ -1,8 +1,20 @@
-export { img, imgStorage, gravity, world };
+export {
+    img,
+    imgStorage,
+    gravity,
+    world,
+    enemyContact,
+    playerInitialPosition,
+    playerDims,
+    numberOfEnnemies
+}
 
 const imgStorage = "./assets/img/"
 const gravity = -1.5;
 const world = document.querySelector('#world');
+const enemyContact = 25
+const playerInitialPosition = { x: 50, y: 80 }
+const playerDims = { w: 66, h: 65 }
 
 const img = Object.fromEntries(Object.entries({
     sky: "sky.jpg",
@@ -10,7 +22,7 @@ const img = Object.fromEntries(Object.entries({
     player: "static.png",
     playerJumping: "jumping.png",
     playerFalling: "falling.png",
-    ennemy: "static.png",
+    enemy: "static.png",
     runningPlayer: "running-player.gif",
     platform1: "",
     platform2: "platforme2.png",
@@ -19,9 +31,23 @@ const img = Object.fromEntries(Object.entries({
     sun: "sun.png",
     moon: "moon.png",
     scene2: "desert1.png",
-    momie: "momie.gif",
+    enemy_1: "enemy1.gif",
+    enemy_2: "enemy2.gif",
+    enemy_3: "enemy3.gif",
+    enemy_4: "enemy4.gif",
+    enemy_5: "enemy5.gif",
+    enemy_6: "enemy6.gif",
+    enemy_7: "enemy7.gif",
+    enemy_8: "enemy8.gif",
+    enemy_9: "enemy9.gif",
+    enemy_10: "enemy10.gif",
+    enemy_11: "enemy11.gif",
     status: "status_colonne.png",
     sphinx: "sphinx.png",
     groundNL: "groundNextLevel.jpeg",
     coin: "coin.gif"
 }).map(el => [el[0], imgStorage + el[1]]))
+
+const numberOfEnnemies = Object.entries(img)
+                                .filter(el=>el[0].includes("enemy_"))
+                                .length

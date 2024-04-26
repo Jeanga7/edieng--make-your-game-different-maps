@@ -18,7 +18,7 @@ body {
 
 }
 
- #player, #momie {
+ #player, .enemy {
     position: absolute;
     background-position: bottom center;
     background-size: cover;

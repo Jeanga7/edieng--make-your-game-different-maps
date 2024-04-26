@@ -166,10 +166,28 @@ export let levels =
         "ennemies": [
             {
                 "pos": {
-                    "x": 1800,
+                    "x": 1400,
                     "y": 500
-                }
-            }
+                },
+                "mobile": true,
+                "speedUp": 2
+            },
+            {
+                "pos": {
+                    "x": 2100,
+                    "y": 500
+                },
+                "mobile": true,
+                "speedUp": 1.5
+            },
+            {
+                "pos": {
+                    "x": 2800,
+                    "y": 500
+                },
+                "mobile": true,
+                "speedUp": 3
+            },
         ],
         "coins": [
             {
@@ -282,9 +300,18 @@ export let levels =
         "ennemies": [
             {
                 "pos": {
-                    "x": 1000,
+                    "x": 1200,
                     "y": 500
-                }
+                },
+                "mobile": false
+            },
+            {
+                "pos": {
+                    "x": 1500,
+                    "y": 500
+                },
+                "mobile": true,
+                "speedUp": 3
             }
         ],
         "background": "url('/assets/img/nightsky.jpg')",
