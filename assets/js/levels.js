@@ -320,6 +320,20 @@ export let levels =
                     "speedUp": 3
                 }
             ],
+            "coins": [
+                {
+                    "pos": {
+                        "x": 340,
+                        "y": 180
+                    }
+                },
+                {
+                    "pos": {
+                        "x": 1800,
+                        "y": 30
+                    }
+                }
+            ],
             "background": "url('/assets/img/nightsky.jpg')",
             "duration": 240,
             "end": 5000

@@ -40,7 +40,7 @@ document.addEventListener("keydown", (e) => {
 
 const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
 const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
-export function game(sceneElements, obstacles, ennemies, coins, bg, duration, end){
+export function game(sceneElements, obstacles, ennemies, coins, bg, duration, end) {
     world.innerHTML = ""
     world.style.width = `100%`;
     world.style.height = `100%`;
@@ -106,6 +106,8 @@ export function game(sceneElements, obstacles, ennemies, coins, bg, duration, en
     PauseMenu.style.justifyContent = "center"; // Center items horizontally
     PauseMenu.style.fontSize = "60px"; // Adjust the size of the content
     PauseMenu.textContent = "PAUSED";
+    PauseMenu.style.display = "none"
+
 
 
     world.appendChild(score)
@@ -114,7 +116,7 @@ export function game(sceneElements, obstacles, ennemies, coins, bg, duration, en
     world.appendChild(Life)
 
     gameData.levelScore = 0
-    
+
     let updateScore = () => score.textContent = `score: ${gameData.totalScore}`
 
     let decor = []
@@ -129,8 +131,8 @@ export function game(sceneElements, obstacles, ennemies, coins, bg, duration, en
     const player = new Player();
     characters.push(player);
 
-    coins.forEach(coin =>{
-        characters.push(new bonus(coin.pos,{w:50, h:50}))
+    coins.forEach(coin => {
+        characters.push(new bonus(coin.pos, { w: 50, h: 50 }))
     })
 
     ennemies.forEach(en => {
@@ -176,7 +178,6 @@ export function game(sceneElements, obstacles, ennemies, coins, bg, duration, en
         requestAnimationFrame(animate);
 
         let damage = false
-        let pDims = player.element.getBoundingClientRect()
         if (player.position.x % 1000 === 0) {
             gameData.totalScore += 10
             gameData.levelScore += 10
@@ -291,7 +292,7 @@ export function game(sceneElements, obstacles, ennemies, coins, bg, duration, en
             PauseMenu.style.display = "block"
         };
 
-        
+
         characters.forEach(char => {
             if (checkCollision(player, char, enemyContact) && char.type === "enemy") {
                 damage = true
@@ -323,7 +324,8 @@ export function game(sceneElements, obstacles, ennemies, coins, bg, duration, en
             const level = levels[currentLevel];
             // Notifications de fin de niveau
             alert("Level cleared !")
-            game(level.scene, level.obstacles, level.ennemies, level.coins, level.background, level.duration, level.end, scores);
+            console.log(paused);
+            game(level.scene, level.obstacles, level.ennemies, level.coins, level.background, level.duration, level.end, score);
         } else {
             alert("You finished the GAME !")
         }
