@@ -4,9 +4,13 @@ import { Timer, gameOver } from "./utils.js";
 import { img, enemyContact, world } from "./constants.js";
 
 export let currentLevel = 0;
-var lives = 3
-var score = 0
-var number = 0
+
+export var gameData = {
+    totalScore: 0,
+    lives: 3,
+    coins: 0,
+    levelScore: 0
+}
 
 export let paused = false;
 
@@ -25,16 +29,18 @@ document.addEventListener("keydown", (e) => {
 document.addEventListener("keydown", (e) => {
     if (e.key === "r" || e.key === "R") {
         currentLevel = 0;
-        lives = 3;
+        gameData.lives = 3;
+        gameData.totalScore = 0;
+        gameData.levelScore = 0;
         paused = false
         // window.location.reload()
-        game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end, lives, score, levels[currentLevel].coins);
+        game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].coins, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end, levels[currentLevel].coins);
     }
 })
 
 const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
 const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
-export function game(sceneElements, obstacles, ennemies, bg, duration, end, live,scores){
+export function game(sceneElements, obstacles, ennemies, coins, bg, duration, end){
     world.innerHTML = ""
     world.style.width = `100%`;
     world.style.height = `100%`;
@@ -69,7 +75,7 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
     const Life = document.createElement("div")
     Life.id = "live"
     Life.style.display = "flex"
-    Life.textContent = `live: ${live}`
+    Life.textContent = `live: ${gameData.lives}`
     Life.style.justifyContent = "center"
     // Life.style.alignContent = "center"
     Life.style.backgroundColor = "white"
@@ -80,12 +86,12 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
     const score = document.createElement("div")
     score.id = "score"
     score.style.display = "flex"
-    score.textContent = `score: ${scores}`
+    score.textContent = `score: ${gameData.totalScore}`
     score.style.justifyContent = "center"
     // score.style.alignContent = "center"
     score.style.backgroundColor = "white"
     score.style.position = "fixed"
-    score.style.left = "400px"
+    score.style.left = "300px"
     score.style.fontSize = "30px"
 
     const PauseMenu = document.createElement("div");
@@ -107,6 +113,10 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
     world.appendChild(timer)
     world.appendChild(Life)
 
+    gameData.levelScore = 0
+    
+    let updateScore = () => score.textContent = `score: ${gameData.totalScore}`
+
     let decor = []
 
     // Scene
@@ -119,10 +129,7 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
     const player = new Player();
     characters.push(player);
 
-    var coins = levels[currentLevel].coins
-
     coins.forEach(coin =>{
-        number++
         characters.push(new bonus(coin.pos,{w:50, h:50}))
     })
 
@@ -167,6 +174,15 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
     // var val = 1
     function animate() {
         requestAnimationFrame(animate);
+
+        let damage = false
+        let pDims = player.element.getBoundingClientRect()
+        if (player.position.x % 1000 === 0) {
+            gameData.totalScore += 10
+            gameData.levelScore += 10
+            updateScore()
+        }
+
         platforms.forEach(platform => platform.draw());
         // obstacles.forEach(obstacle => obstacle.draw());
         if (!paused) {
@@ -275,17 +291,25 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
             PauseMenu.style.display = "block"
         };
 
+        
         characters.forEach(char => {
             if (checkCollision(player, char, enemyContact) && char.type === "enemy") {
-                gameOver()
+                damage = true
             }
         });
+
+        if (damage) {
+            player.velocity.y -= 20
+            // decreaseLife()
+        };
 
         characters.forEach(char => {
             if (checkCollision(player, char, enemyContact) && char.type === "coin") {
                 world.removeChild(char.element);
-                scores += 20
-                score.textContent = `score: ${scores}`
+                gameData.totalScore += 20
+                gameData.levelScore += 20
+                gameData.coins++
+                updateScore()
             }
         });
 
@@ -299,7 +323,7 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
             const level = levels[currentLevel];
             // Notifications de fin de niveau
             alert("Level cleared !")
-            game(level.scene, level.obstacles, level.ennemies, level.background, level.duration, level.end, live, scores);
+            game(level.scene, level.obstacles, level.ennemies, level.coins, level.background, level.duration, level.end, scores);
         } else {
             alert("You finished the GAME !")
         }
@@ -309,6 +333,16 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
         const playerPos = parseInt(document.querySelector("#player").style.left)
         if ((playerPos) >= levels[currentLevel].end) {
             switchLevel();
+        }
+    }
+
+    function decreaseLife() {
+        if (gameData.lives > 1) {
+            gameData.lives--
+            gameData.totalScore -= gameData.levelScore
+            game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].coins, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end)
+        } else {
+            gameOver()
         }
     }
 
@@ -323,11 +357,8 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
         }
 
         if (playerSize.top >= vh) {
-            if (live === 1) {
-                gameOver()
-            }
-            live -= 1
-            game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end, live, scores)
+            decreaseLife()
+            // game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end)
         }
     }
     camera()
@@ -390,5 +421,5 @@ export function game(sceneElements, obstacles, ennemies, bg, duration, end, live
 }
 
 
-game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end, lives, score);
+game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].coins, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end);
 
