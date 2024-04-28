@@ -1,4 +1,5 @@
-import { img,
+import {
+    img,
     gravity,
     world,
     playerInitialPosition,
@@ -6,10 +7,10 @@ import { img,
     numberOfEnnemies
 } from "./constants.js"
 import { randomInterval } from "./utils.js"
-export { Character, Player, Enemy, Obstacle }
+export { Character, Player, Enemy, Obstacle, Bonus, SceneElement }
 
 class Character {
-    constructor(type, pos, dims, mobile=true, speedUp=1) {
+    constructor(type, pos, dims, mobile = true, speedUp = 1) {
         this.position = { x: pos.x, y: pos.y };
         this.type = type
         this.velocity = { x: 0, y: 0 };
@@ -53,6 +54,7 @@ class Player extends Character {
     constructor(position) {
         super("player", playerInitialPosition, playerDims)
         this.element.style.backgroundImage = `url('${img[this.type]}')`
+        this.power = false
     }
 }
 
@@ -69,7 +71,6 @@ class Enemy extends Character {
         this.element.style.transform = `scaleX(${this.direction})`;
     }
 }
-
 
 class Obstacle {
     constructor({ x, y }, type, dims) {
@@ -111,13 +112,13 @@ class Obstacle {
     }
 }
 
-export class bonus extends Obstacle{
-    constructor(pos,dimension){
-      super(pos, "coin",dimension)
+class Bonus extends Obstacle {
+    constructor(pos, type, dimension) {
+        super(pos, type, dimension)
     }
 }
 
-export class SceneElement {
+class SceneElement {
     constructor({ x, y }, dims, ele, p) {
         this.position = { x, y };
         this.element = document.createElement('div');

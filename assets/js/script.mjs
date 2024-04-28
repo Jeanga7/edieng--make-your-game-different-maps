@@ -1,5 +1,5 @@
 import { levels } from "./levels.js";
-import { Player, Obstacle, Enemy, SceneElement, bonus } from "./models.js";
+import { Player, Obstacle, Enemy, SceneElement, Bonus } from "./models.js";
 import { Timer, gameOver } from "./utils.js";
 import { img, enemyContact, world } from "./constants.js";
 
@@ -34,13 +34,13 @@ document.addEventListener("keydown", (e) => {
         gameData.levelScore = 0;
         paused = false
         // window.location.reload()
-        game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].coins, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end, levels[currentLevel].coins);
+        game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].bonus, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end, levels[currentLevel].bonus);
     }
 })
 
 const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
 const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
-export function game(sceneElements, obstacles, ennemies, coins, bg, duration, end) {
+export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, end) {
     world.innerHTML = ""
     world.style.width = `100%`;
     world.style.height = `100%`;
@@ -105,16 +105,16 @@ export function game(sceneElements, obstacles, ennemies, coins, bg, duration, en
     PauseMenu.style.height = "100px";
     PauseMenu.style.top = '300px';
     PauseMenu.style.left = "600px";
-    PauseMenu.style.alignItems = "center"; 
+    PauseMenu.style.alignItems = "center";
     PauseMenu.style.justifyContent = "center";
-    PauseMenu.style.fontSize = "60px"; 
+    PauseMenu.style.fontSize = "60px";
     PauseMenu.textContent = "PAUSED";
     PauseMenu.style.display = "none"
 
     // pause initialization
     const gameOverModal = document.createElement("div");
     gameOverModal.id = "gameOver";
-   gameOverModal.style.display = "flex";
+    gameOverModal.style.display = "flex";
     gameOverModal.style.position = "fixed";
     gameOverModal.style.height = "80%";
     gameOverModal.style.width = "40%";
@@ -123,14 +123,14 @@ export function game(sceneElements, obstacles, ennemies, coins, bg, duration, en
     gameOverModal.style.backgroundSize = "cover"
     // gameOverModal.style.backgroundColor = "white";
     gameOverModal.style.backgroundImage = `url('${img.gameOver}')`
-    gameOverModal.style.alignItems = "center"; 
-    gameOverModal.style.justifyContent = "center"; 
+    gameOverModal.style.alignItems = "center";
+    gameOverModal.style.justifyContent = "center";
     gameOverModal.style.fontSize = "70px";
     gameOverModal.textContent = "GAME OVER";
     gameOverModal.style.color = "white"
     gameOverModal.style.fontWeight = "bold"
     gameOverModal.style.zIndex = "100"
-    gameOverModal.style.display= "none"
+    gameOverModal.style.display = "none"
 
 
     world.appendChild(gameOverModal)
@@ -142,6 +142,7 @@ export function game(sceneElements, obstacles, ennemies, coins, bg, duration, en
     gameData.levelScore = 0
 
     let updateScore = () => score.textContent = `score: ${gameData.totalScore}`
+    let updateLives = () => Life.textContent = `live: ${gameData.lives}`
 
     let decor = []
 
@@ -155,8 +156,8 @@ export function game(sceneElements, obstacles, ennemies, coins, bg, duration, en
     const player = new Player();
     characters.push(player);
 
-    coins.forEach(coin => {
-        characters.push(new bonus(coin.pos, { w: 50, h: 50 }))
+    bonus.forEach(bon => {
+        characters.push(new Bonus(bon.pos, bon.type, { w: 50, h: 50 }))
     })
 
     ennemies.forEach(en => {
@@ -200,8 +201,6 @@ export function game(sceneElements, obstacles, ennemies, coins, bg, duration, en
     // var val = 1
     function animate() {
         requestAnimationFrame(animate);
-
-        let damage = false
         if (player.position.x % 1000 === 0) {
             gameData.totalScore += 10
             gameData.levelScore += 10
@@ -316,28 +315,44 @@ export function game(sceneElements, obstacles, ennemies, coins, bg, duration, en
             PauseMenu.style.display = "block"
         };
 
-
         characters.forEach(char => {
-            if (checkCollision(player, char, enemyContact) && char.type === "enemy") {
-                damage = true
+            if (checkCollision(player, char, enemyContact)) {
+                if (char.type === "coin") {
+                    if (char.element.parentNode) {
+                        char.element.parentNode.removeChild(char.element);
+                    }
+                    gameData.totalScore += 20
+                    gameData.levelScore += 20
+                    gameData.coins++
+                    updateScore()
+                } else if (char.type === "life") {
+                    if (char.element.parentNode) {
+                        char.element.parentNode.removeChild(char.element);
+                    }
+                    gameData.lives += 1
+                    updateLives()
+                } else if (char.type === "power" && !player.power) {
+                    if (char.element.parentNode) {
+                        char.element.parentNode.removeChild(char.element);
+                    }
+                    player.power = true;
+                    console.log(player.power);
+                } else if (char.type === "enemy") {
+                    if (!player.power) {
+                        console.log(player.power);
+                        player.velocity.y -= 20
+                    }
+
+                    if (player.power) {
+                        console.log(player.power);
+                        if (char.element.parentNode) {
+                            char.element.parentNode.removeChild(char.element);
+                        }
+                        player.power = false
+                    }
+                }
             }
         });
-
-        if (damage) {
-            player.velocity.y -= 20
-            // decreaseLife()
-        };
-
-        characters.forEach(char => {
-            if (checkCollision(player, char, enemyContact) && char.type === "coin") {
-                world.removeChild(char.element);
-                gameData.totalScore += 20
-                gameData.levelScore += 20
-                gameData.coins++
-                updateScore()
-            }
-        });
-
         checkEnd()
     }
 
@@ -349,7 +364,7 @@ export function game(sceneElements, obstacles, ennemies, coins, bg, duration, en
             // Notifications de fin de niveau
             alert("Level cleared !")
             console.log(paused);
-            game(level.scene, level.obstacles, level.ennemies, level.coins, level.background, level.duration, level.end, score);
+            game(level.scene, level.obstacles, level.ennemies, level.bonus, level.background, level.duration, level.end, score);
         } else {
             alert("You finished the GAME !")
         }
@@ -366,7 +381,7 @@ export function game(sceneElements, obstacles, ennemies, coins, bg, duration, en
         if (gameData.lives > 1) {
             gameData.lives--
             gameData.totalScore -= gameData.levelScore
-            game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].coins, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end)
+            game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].bonus, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end)
         } else {
             gameOver()
         }
@@ -447,5 +462,5 @@ export function game(sceneElements, obstacles, ennemies, coins, bg, duration, en
 }
 
 
-game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].coins, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end);
+game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].bonus, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end);
 

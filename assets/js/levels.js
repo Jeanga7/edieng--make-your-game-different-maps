@@ -189,18 +189,27 @@ export let levels =
                     "speedUp": 3
                 },
             ],
-            "coins": [
+            "bonus": [
                 {
                     "pos": {
                         "x": 340,
                         "y": 180
-                    }
+                    },
+                    "type": "power"
+                },
+                {
+                    "pos": {
+                        "x": 740,
+                        "y": 95
+                    },
+                    "type": "life"
                 },
                 {
                     "pos": {
                         "x": 1800,
                         "y": 30
-                    }
+                    },
+                    "type": "coin"
                 }
             ],
             "background": "skyblue",
@@ -320,18 +329,20 @@ export let levels =
                     "speedUp": 3
                 }
             ],
-            "coins": [
+            "bonus": [
                 {
                     "pos": {
                         "x": 340,
                         "y": 180
-                    }
+                    },
+                    "type": "coin"
                 },
                 {
                     "pos": {
                         "x": 1800,
                         "y": 30
-                    }
+                    },
+                    "type": "coin"
                 }
             ],
             "background": "url('/assets/img/nightsky.jpg')",
