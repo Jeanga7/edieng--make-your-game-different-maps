@@ -10,7 +10,8 @@ export var gameData = {
     totalScore: 0,
     lives: 3,
     coins: 0,
-    levelScore: 0
+    levelScore: 0,
+    distance: 0,
 }
 
 export let paused = false;
@@ -59,10 +60,12 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
     function animate() {
         const PauseMenu = document.querySelector("#pauseMenu")
         requestAnimationFrame(animate);
-        let posX = player.element.getBoundingClientRect().left
-        if (posX !== 0 && posX % 1000 === 0) {
+
+        let posX = player.position.x
+        if (posX !== 0 && posX > gameData.distance && posX - gameData.distance >= 1000) {
             gameData.totalScore += 10
             gameData.levelScore += 10
+            gameData.distance = player.position.x
             updateScore()
         }
 
