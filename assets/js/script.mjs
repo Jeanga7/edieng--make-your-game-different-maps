@@ -59,7 +59,8 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
     function animate() {
         const PauseMenu = document.querySelector("#pauseMenu")
         requestAnimationFrame(animate);
-        if (player.position.x % 1000 === 0) {
+        let posX = player.element.getBoundingClientRect().left
+        if (posX !== 0 && posX % 1000 === 0) {
             gameData.totalScore += 10
             gameData.levelScore += 10
             updateScore()
