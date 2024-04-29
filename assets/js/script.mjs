@@ -240,8 +240,8 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
     }
 
     function decreaseLife() {
-        if (gameData.lives > 1) {
-            gameData.lives--
+        gameData.lives--
+        if (gameData.lives >= 1) {
             gameData.totalScore -= gameData.levelScore
             game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].bonus, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end)
         } else {
