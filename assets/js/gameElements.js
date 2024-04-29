@@ -60,21 +60,6 @@ function createWorldElements(bg, duration, gameData, img) {
     life.style.fontSize = "30px";
     world.appendChild(life);
 
-    // Ajoute le menu pause
-    const pauseMenu = document.createElement("div");
-    pauseMenu.id = "pauseMenu";
-    pauseMenu.style.display = "flex";
-    pauseMenu.style.position = "fixed";
-    pauseMenu.style.height = "100px";
-    pauseMenu.style.top = "300px";
-    pauseMenu.style.left = "600px";
-    pauseMenu.style.alignItems = "center";
-    pauseMenu.style.justifyContent = "center";
-    pauseMenu.style.fontSize = "60px";
-    pauseMenu.textContent = "PAUSED";
-    pauseMenu.style.display = "none";
-    world.appendChild(pauseMenu);
-
     // Ajoute le modal de fin de jeu
     const gameOverModal = document.createElement("div");
     gameOverModal.id = "gameOver";

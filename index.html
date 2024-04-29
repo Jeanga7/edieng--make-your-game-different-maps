@@ -7,10 +7,24 @@
 </head>
 
 <body>
-    <div id="menu"></div>
-    <!-- <div id="gameOver"></div> -->
+    <div id="pauseModal">
+        <div id="menuPauseModal">
+            <div id="continu" >CONTINUE</div>
+            <div id="restart" >RESTART</div>
+            <div id="main-menu" >MAIN-MENU</div>
+        </div>
+        <div id="pauseModalStats"></div>
+    </div>
+    <div id="gameOverModal">
+        <div id="game-over-container">
+            <div id="gameOverImg"></div>
+            <div id="game-over-text">GAME OVER</div>
+        </div>
+        <div id="pauseModalStats"></div>
+    </div>
     <div id="world"></div>
 </body>
+<script src="./assets/js/main.js" type="module"></script>
 <script src="./assets/js/script.mjs" type="module"></script>
 <script src="./assets/js/levels.js" type="module"></script>
 <script src="./assets/js/utils.js" type="module"></script>

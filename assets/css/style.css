@@ -18,15 +18,109 @@ body {
 
 }
 
- #player, .enemy {
+#player,
+.enemy {
     position: absolute;
     background-position: bottom center;
     background-size: cover;
-} 
+}
 
-/* #gameOver{
-    width: 20%;
-    height: 30%;
-    z-index: 1000;
-    background-color: white;
-} */
+#pauseModal {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: none;
+}
+
+#menuPauseModal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 30%;
+    height: 60%;
+}
+
+#continu,
+#restart,
+#main-menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url("../img/ardoise-bois.png");
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 20%;
+    width: 100%;
+    margin: 5%;
+    font-size: xx-large;
+    font-weight: bolder;
+    font-style: italic;
+    color: white;
+    text-shadow: 5px 3px 3px rgba(0, 0, 0, 0.7);
+}
+
+#continu:hover,
+#restart:hover,
+#main-menu:hover {
+    height: 23%;
+}
+
+#pauseModalStats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url("../img/parchemin.png");
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+    width: 55%;
+    height: 50%;
+}
+
+#gameOverModal {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: none;
+}
+
+#game-over-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 55%;
+    height: 50%;
+}
+
+#gameOverImg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 90%;
+    background-image: url("../img/anibus_gameOver.png");
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;   
+}
+
+#game-over-text{
+    font-size: 45px;
+    font-weight: bolder;
+    text-shadow: 3px 3px 3px rgba(255, 255, 255, 0.7);
+}

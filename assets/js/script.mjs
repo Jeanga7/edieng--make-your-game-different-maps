@@ -93,7 +93,7 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
 
     // var val = 1
     function animate() {
-        const PauseMenu = document.querySelector("#pauseMenu")
+        const PauseMenu = document.querySelector("#pauseModal")
         requestAnimationFrame(animate);
 
         let posX = player.position.x
@@ -211,7 +211,7 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
                 }
             })
         } else {
-            PauseMenu.style.display = "block"
+            PauseMenu.style.display = "flex"
         };
 
         characters.forEach((char, i) => {
@@ -312,15 +312,16 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
     document.addEventListener('keydown', (event) => {
         event.preventDefault()
 
-
         switch (event.key) {
             case "p":
             case "P":
+            case "Escape":
                 pauseGame();
                 break;
 
             case "r":
             case "R":
+            case "Escape":
                 restartGame();
                 break;
 
@@ -366,7 +367,16 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
     Timer()
 }
 
-game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].bonus, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end);
+
+const continu = document.querySelector("#continu")
+continu.addEventListener('click', () => {
+    pauseGame();
+})
+
+const restart = document.querySelector("#restart")
+restart.addEventListener('click', () => {
+    restartGame();
+})
 
 // handle pause option
 function pauseGame() {
@@ -377,6 +387,7 @@ function pauseGame() {
     }
 }
 
+
 // handle the restart option
 function restartGame() {
     currentLevel = 0;
@@ -384,5 +395,5 @@ function restartGame() {
     gameData.totalScore = 0;
     gameData.levelScore = 0;
     paused = false
-    game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].bonus, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end, levels[currentLevel].bonus);
+    window.location.reload()
 }
