@@ -1,8 +1,27 @@
-import { levels } from "./levels.js";
-import { Player, Obstacle, Enemy, SceneElement, Bonus } from "./models.js";
-import { Timer, gameOver, checkCollision } from "./utils.js";
-import { img, enemyContact, world } from "./constants.js";
-import { createWorldElements } from "./gameElements.js";
+import {
+    levels
+} from "./levels.js";
+import {
+    Player,
+    Obstacle,
+    Enemy,
+    SceneElement,
+    Bonus
+} from "./models.js";
+import {
+    Timer,
+    gameOver,
+    checkCollision
+} from "./utils.js";
+import {
+    img,
+    enemyContact,
+    world,
+    powerDuration
+} from "./constants.js";
+import {
+    createWorldElements
+} from "./gameElements.js";
 
 export let currentLevel = 0;
 
@@ -27,6 +46,12 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
     let updateScore = () => document.querySelector("#score").textContent = `Score: ${gameData.totalScore}`
     let updateLives = () => document.querySelector("#life").textContent = `Lives: ${gameData.lives}`
 
+    function addScore(n) {
+        gameData.totalScore += n
+        gameData.levelScore += n
+        updateScore()
+    }
+
     let decor = []
 
     // Scene
@@ -40,7 +65,10 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
     characters.push(player);
 
     bonus.forEach(bon => {
-        characters.push(new Bonus(bon.pos, bon.type, { w: 175/4, h: 200/4 }))
+        characters.push(new Bonus(bon.pos, bon.type, {
+            w: 175 / 4,
+            h: 200 / 4
+        }))
     })
 
     ennemies.forEach(en => {
@@ -54,7 +82,14 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
         platforms.push(new Obstacle(obs.pos, obs.type, obs.size))
     })
 
-    const keys = { right: { pressed: false }, left: { pressed: false } };
+    const keys = {
+        right: {
+            pressed: false
+        },
+        left: {
+            pressed: false
+        }
+    };
 
     // var val = 1
     function animate() {
@@ -63,10 +98,8 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
 
         let posX = player.position.x
         if (posX !== 0 && posX > gameData.distance && posX - gameData.distance >= 1000) {
-            gameData.totalScore += 10
-            gameData.levelScore += 10
+            addScore(10)
             gameData.distance = player.position.x
-            updateScore()
         }
 
         platforms.forEach(platform => platform.draw());
@@ -100,31 +133,35 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
                         // Le joueur et l'obstacle sont sur le même alignement Vertical
                         const obstacleAndPlayerSameVAxis = (
                             (obstacleLeft <= playerLeft && playerLeft <= obstacleRight) // Le joueur dépasse l'obstacle sur la droite
-                            || (obstacleLeft <= playerRight && playerRight <= obstacleRight) // Le joueur dépasse l'obstacle sur la gauche
-                            || (playerLeft <= obstacleLeft && obstacleRight <= playerRight) // L'obstacle est entre la gauche et la droite du joueur
+                            ||
+                            (obstacleLeft <= playerRight && playerRight <= obstacleRight) // Le joueur dépasse l'obstacle sur la gauche
+                            ||
+                            (playerLeft <= obstacleLeft && obstacleRight <= playerRight) // L'obstacle est entre la gauche et la droite du joueur
                         )
 
                         const obstacleAndPlayerSameHAxis = (
                             (obstacleBottom <= playerBottom && playerBottom <= obstacleTop) // La tête du joueur dépasse l'obstacle
-                            || (obstacleBottom <= playerTop && playerTop <= obstacleTop) // L'obstacle dépasse la tête du joueur
-                            || (playerBottom <= obstacleBottom && obstacleTop <= playerTop) // L'obstacle est entre la tête et les pieds du joueur
+                            ||
+                            (obstacleBottom <= playerTop && playerTop <= obstacleTop) // L'obstacle dépasse la tête du joueur
+                            ||
+                            (playerBottom <= obstacleBottom && obstacleTop <= playerTop) // L'obstacle est entre la tête et les pieds du joueur
                         )
 
                         // Est en dessous de l'obstacle
-                        const playerUnderObstacle = obstacleAndPlayerSameVAxis
-                            && (playerBottom < obstacleBottom && obstacleBottom < playerTop)
+                        const playerUnderObstacle = obstacleAndPlayerSameVAxis &&
+                            (playerBottom < obstacleBottom && obstacleBottom < playerTop)
 
                         // Est au dessus de l'obstacle
-                        const playerOverObstacle = obstacleAndPlayerSameVAxis
-                            && (playerBottom < obstacleTop && obstacleTop < playerTop)
+                        const playerOverObstacle = obstacleAndPlayerSameVAxis &&
+                            (playerBottom < obstacleTop && obstacleTop < playerTop)
 
                         // Est avant l'obstacle
-                        const playerBeforeObstacle = obstacleAndPlayerSameHAxis
-                            && (playerLeft < obstacleLeft && obstacleLeft < playerRight)
+                        const playerBeforeObstacle = obstacleAndPlayerSameHAxis &&
+                            (playerLeft < obstacleLeft && obstacleLeft < playerRight)
 
                         // Est après l'obstacle
-                        const playerAfterObstacle = obstacleAndPlayerSameHAxis
-                            && (playerLeft < obstacleRight && obstacleRight < playerRight)
+                        const playerAfterObstacle = obstacleAndPlayerSameHAxis &&
+                            (playerLeft < obstacleRight && obstacleRight < playerRight)
 
                         if (playerUnderObstacle) {
                             char.position.y = obstacleBottom - char.height
@@ -177,39 +214,39 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
             PauseMenu.style.display = "block"
         };
 
-        characters.forEach(char => {
+        characters.forEach((char, i) => {
             if (checkCollision(player, char, enemyContact)) {
                 if (char.type === "coin") {
-                    // if (char.element.parentNode) {
-                    world.removeChild(char.element);
-                    // }
-                    gameData.totalScore += 20
-                    gameData.levelScore += 20
+                    console.log("Got coin !");
+                    char.element.remove()
+                    characters.splice(i, 1)
+                    addScore(20)
                     gameData.coins++
-                    updateScore()
                 } else if (char.type === "life") {
-                    // if (char.element.parentNode) {
-                    world.removeChild(char.element);
-                    // }
+                    console.log("Got life !");
+                    char.element.remove()
+                    characters.splice(i, 1)
                     gameData.lives += 1
                     updateLives()
                 } else if (char.type === "power" && !player.power) {
-                    // if (char.element.parentNode) {
-                    world.removeChild(char.element);
-                    // }
+                    console.log("Got power !");
+                    char.element.remove()
+                    characters.splice(i, 1)
                     player.power = true;
-                    console.log(player.power);
                 } else if (char.type === "enemy") {
                     if (!player.power) {
-                        console.log(player.power);
+                        console.log("Dead !");
                         player.velocity.y -= 20
                     } else {
-                        console.log(player.power);
-                        world.removeChild(char.element);
+                        console.log("Enemy killed !");
+                        char.element.remove()
+                        characters.splice(i, 1)
+                        // On doit supprimer l'élément de la liste des characters
+
                         // Sleep for 5 seconds
                         setTimeout(function () {
                             player.power = false;
-                        }, 2000); // 5000 milliseconds = 5 seconds
+                        }, powerDuration); // 5000 milliseconds = 5 seconds
                     }
 
                 }
