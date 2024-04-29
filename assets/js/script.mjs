@@ -1,7 +1,8 @@
 import { levels } from "./levels.js";
 import { Player, Obstacle, Enemy, SceneElement, Bonus } from "./models.js";
-import { Timer, gameOver } from "./utils.js";
+import { Timer, gameOver, checkCollision } from "./utils.js";
 import { img, enemyContact, world } from "./constants.js";
+import { createWorldElements } from "./gameElements.js";
 
 export let currentLevel = 0;
 
@@ -14,130 +15,11 @@ export var gameData = {
 
 export let paused = false;
 
-// handle the pause option
-document.addEventListener("keydown", (e) => {
-    if (e.key === "p" || e.key === "P") {
-        if (!paused) {
-            paused = true
-        } else {
-            paused = false
-        }
-    }
-})
-
-// handle the restart option
-document.addEventListener("keydown", (e) => {
-    if (e.key === "r" || e.key === "R") {
-        currentLevel = 0;
-        gameData.lives = 3;
-        gameData.totalScore = 0;
-        gameData.levelScore = 0;
-        paused = false
-        // window.location.reload()
-        game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].bonus, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end, levels[currentLevel].bonus);
-    }
-})
-
 const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
 const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+
 export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, end) {
-    world.innerHTML = ""
-    world.style.width = `100%`;
-    world.style.height = `100%`;
-    world.style.backgroundSize = 'contain';
-    world.style.position = 'relative';
-    world.style.overflow = 'hidden';
-    world.scrollLeft = 0
-
-    // Background Sky
-    let scene = document.createElement("div")
-    scene.style.background = bg
-    scene.style.backgroundSize = "cover"
-    scene.style.position = "fixed"
-    scene.style.top = "0px"
-    scene.style.left = "0px"
-    scene.style.width = "100vw"
-    scene.style.height = "100vh"
-    scene.style.zIndex = "0"
-    scene.id = "scene"
-    world.appendChild(scene)
-
-    // timer initialization
-    const timer = document.createElement("div")
-    timer.id = "timer"
-    timer.style.display = "flex"
-    timer.textContent = `Timer: ${duration}`
-    timer.style.justifyContent = "center"
-    timer.style.backgroundColor = "white"
-    timer.style.position = "fixed"
-    timer.style.right = "600px"
-    timer.style.fontSize = "30px"
-
-    // life initialization
-    const Life = document.createElement("div")
-    Life.id = "live"
-    Life.style.display = "flex"
-    Life.textContent = `live: ${gameData.lives}`
-    Life.style.justifyContent = "center"
-    // Life.style.alignContent = "center"
-    Life.style.backgroundColor = "white"
-    Life.style.position = "fixed"
-    Life.style.right = "800px"
-    Life.style.fontSize = "30px"
-
-    // score initialization
-    const score = document.createElement("div")
-    score.id = "score"
-    score.style.display = "flex"
-    score.textContent = `score: ${gameData.totalScore}`
-    score.style.justifyContent = "center"
-    // score.style.alignContent = "center"
-    score.style.backgroundColor = "white"
-    score.style.position = "fixed"
-    score.style.left = "300px"
-    score.style.fontSize = "30px"
-
-    // pause initialization
-    const PauseMenu = document.createElement("div");
-    PauseMenu.id = "Menupause";
-    PauseMenu.style.display = "flex";
-    PauseMenu.style.position = "fixed";
-    PauseMenu.style.height = "100px";
-    PauseMenu.style.top = '300px';
-    PauseMenu.style.left = "600px";
-    PauseMenu.style.alignItems = "center";
-    PauseMenu.style.justifyContent = "center";
-    PauseMenu.style.fontSize = "60px";
-    PauseMenu.textContent = "PAUSED";
-    PauseMenu.style.display = "none"
-
-    // pause initialization
-    const gameOverModal = document.createElement("div");
-    gameOverModal.id = "gameOver";
-    gameOverModal.style.display = "flex";
-    gameOverModal.style.position = "fixed";
-    gameOverModal.style.height = "80%";
-    gameOverModal.style.width = "40%";
-    gameOverModal.style.top = "10%";
-    gameOverModal.style.left = "30%";
-    gameOverModal.style.backgroundSize = "cover"
-    // gameOverModal.style.backgroundColor = "white";
-    gameOverModal.style.backgroundImage = `url('${img.gameOver}')`
-    gameOverModal.style.alignItems = "center";
-    gameOverModal.style.justifyContent = "center";
-    gameOverModal.style.fontSize = "70px";
-    gameOverModal.textContent = "GAME OVER";
-    gameOverModal.style.color = "white"
-    gameOverModal.style.fontWeight = "bold"
-    gameOverModal.style.zIndex = "100"
-    gameOverModal.style.display = "none"
-
-
-    world.appendChild(gameOverModal)
-    world.appendChild(score)
-    world.appendChild(PauseMenu)
-    world.appendChild(timer)
-    world.appendChild(Life)
+    createWorldElements(bg, duration, gameData, img);
 
     gameData.levelScore = 0
 
@@ -173,33 +55,9 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
 
     const keys = { right: { pressed: false }, left: { pressed: false } };
 
-    function checkCollision(player, obstacle, contact = 0) {
-        // Calculer les coordonnées des bords du joueur et de l'obstacle
-        const playerLeft = player.position.x;
-        const playerRight = playerLeft + player.width;
-        const playerBottom = player.position.y
-        const playerTop = playerBottom + player.height;
-
-        const obstacleLeft = obstacle.position.x;
-        const obstacleRight = obstacleLeft + obstacle.width;
-        const obstacleBottom = obstacle.position.y
-        const obstacleTop = obstacleBottom + obstacle.height;
-
-        // Vérifier s'il y a collision
-        if (
-            playerLeft + contact < obstacleRight &&
-            obstacleLeft + contact < playerRight &&
-            obstacleBottom + contact < playerTop &&
-            playerBottom + contact < obstacleTop
-        ) {
-            return true;
-        }
-
-        return false;
-    }
-
     // var val = 1
     function animate() {
+        const PauseMenu = document.querySelector("#pauseMenu")
         requestAnimationFrame(animate);
         if (player.position.x % 1000 === 0) {
             gameData.totalScore += 10
@@ -319,7 +177,7 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
             if (checkCollision(player, char, enemyContact)) {
                 if (char.type === "coin") {
                     // if (char.element.parentNode) {
-                        world.removeChild(char.element);
+                    world.removeChild(char.element);
                     // }
                     gameData.totalScore += 20
                     gameData.levelScore += 20
@@ -327,7 +185,7 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
                     updateScore()
                 } else if (char.type === "life") {
                     // if (char.element.parentNode) {
-                        world.removeChild(char.element);
+                    world.removeChild(char.element);
                     // }
                     gameData.lives += 1
                     updateLives()
@@ -341,25 +199,25 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
                     if (!player.power) {
                         console.log(player.power);
                         player.velocity.y -= 20
-                    }else {
+                    } else {
                         console.log(player.power);
                         world.removeChild(char.element);
                         // Sleep for 5 seconds
-                        setTimeout(function() {
+                        setTimeout(function () {
                             player.power = false;
                         }, 2000); // 5000 milliseconds = 5 seconds
                     }
-                    
+
                 }
-            }  
+            }
         });
         checkEnd()
     }
 
-     function sleep(ms) {
+    function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
-       }
-       
+    }
+
 
     function switchLevel() {
         currentLevel++;
@@ -413,9 +271,18 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
     document.addEventListener('keydown', (event) => {
         event.preventDefault()
 
-        // gestion de la fonctionnalité restart
 
         switch (event.key) {
+            case "p":
+            case "P":
+                pauseGame();
+                break;
+
+            case "r":
+            case "R":
+                restartGame();
+                break;
+
             case "ArrowLeft":
                 keys.left.pressed = true;
                 break;
@@ -425,15 +292,8 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
                 keys.right.pressed = true;
                 break;
 
-            case "ArrowUp":
-                if (!isJumping && player.onground) {
-                    isJumping = true;
-                    player.velocity.y += 20;
-                    player.onground = false
-                }
-                break;
-
             case " ":
+            case "ArrowUp":
                 if (!isJumping && player.onground) {
                     isJumping = true;
                     player.velocity.y += 20;
@@ -446,12 +306,12 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
     document.addEventListener('keyup', (event) => {
         if (event.key === "ArrowLeft") {
             keys.left.pressed = false;
-            player.velocity.x = 0; // Arrêter le mouvement horizontal
+            player.velocity.x = 0;
             player.element.style.backgroundImage = `url('${img.player}')`;
         }
         if (event.key === "ArrowRight") {
             keys.right.pressed = false;
-            player.velocity.x = 0; // Arrêter le mouvement horizontal
+            player.velocity.x = 0;
             player.element.style.backgroundImage = `url('${img.player}')`;
         }
 
@@ -465,6 +325,23 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
     Timer()
 }
 
-
 game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].bonus, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end);
 
+// handle pause option
+function pauseGame() {
+    if (!paused) {
+        paused = true
+    } else {
+        paused = false
+    }
+}
+
+// handle the restart option
+function restartGame() {
+    currentLevel = 0;
+    gameData.lives = 3;
+    gameData.totalScore = 0;
+    gameData.levelScore = 0;
+    paused = false
+    game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].bonus, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end, levels[currentLevel].bonus);
+}
