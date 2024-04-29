@@ -342,7 +342,8 @@ export let levels =
                         "x": 1800,
                         "y": 30
                     },
-                    "type": "coin"
+                    "type": "coin",
+                    
                 }
             ],
             "background": "url('/assets/img/nightsky.jpg')",

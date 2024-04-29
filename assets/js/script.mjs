@@ -23,8 +23,8 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
 
     gameData.levelScore = 0
 
-    let updateScore = () => score.textContent = `score: ${gameData.totalScore}`
-    let updateLives = () => Life.textContent = `live: ${gameData.lives}`
+    let updateScore = () => document.querySelector("#score").textContent = `Score: ${gameData.totalScore}`
+    let updateLives = () => document.querySelector("#life").textContent = `Lives: ${gameData.lives}`
 
     let decor = []
 
@@ -39,7 +39,7 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
     characters.push(player);
 
     bonus.forEach(bon => {
-        characters.push(new Bonus(bon.pos, bon.type, { w: 50, h: 50 }))
+        characters.push(new Bonus(bon.pos, bon.type, { w: 175/4, h: 200/4 }))
     })
 
     ennemies.forEach(en => {
