@@ -318,44 +318,48 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
         characters.forEach(char => {
             if (checkCollision(player, char, enemyContact)) {
                 if (char.type === "coin") {
-                    if (char.element.parentNode) {
-                        char.element.parentNode.removeChild(char.element);
-                    }
+                    // if (char.element.parentNode) {
+                        world.removeChild(char.element);
+                    // }
                     gameData.totalScore += 20
                     gameData.levelScore += 20
                     gameData.coins++
                     updateScore()
                 } else if (char.type === "life") {
-                    if (char.element.parentNode) {
-                        char.element.parentNode.removeChild(char.element);
-                    }
+                    // if (char.element.parentNode) {
+                        world.removeChild(char.element);
+                    // }
                     gameData.lives += 1
                     updateLives()
                 } else if (char.type === "power" && !player.power) {
-                    if (char.element.parentNode) {
-                        char.element.parentNode.removeChild(char.element);
-                    }
+                    // if (char.element.parentNode) {
+                    world.removeChild(char.element);
+                    // }
                     player.power = true;
                     console.log(player.power);
                 } else if (char.type === "enemy") {
                     if (!player.power) {
                         console.log(player.power);
                         player.velocity.y -= 20
-                    }
-
-                    if (player.power) {
+                    }else {
                         console.log(player.power);
-                        if (char.element.parentNode) {
-                            char.element.parentNode.removeChild(char.element);
-                        }
-                        player.power = false
+                        world.removeChild(char.element);
+                        // Sleep for 5 seconds
+                        setTimeout(function() {
+                            player.power = false;
+                        }, 2000); // 5000 milliseconds = 5 seconds
                     }
+                    
                 }
-            }
+            }  
         });
         checkEnd()
     }
 
+     function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+       }
+       
 
     function switchLevel() {
         currentLevel++;
