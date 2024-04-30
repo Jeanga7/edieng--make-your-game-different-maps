@@ -106,7 +106,7 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
         let posX = gameData.player.position.x
         if (posX !== 0 && posX > gameData.distance && posX - gameData.distance >= 1000) {
             addScore(10)
-            console.log("Distance: ",gameData.distance, " posX: ", posX, " VelocityX: ", gameData.player.velocity.x);
+            console.log("Distance: ", gameData.distance, " posX: ", posX, " VelocityX: ", gameData.player.velocity.x);
             gameData.distance = gameData.player.position.x
         }
 
@@ -227,7 +227,7 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
                 if (char.type === "coin") {
                     console.log("Got coin !");
                     char.element.remove()
-                    coinaudio.play() 
+                    coinaudio.play()
                     characters.splice(i, 1)
                     addScore(20)
                     gameData.coins++
@@ -273,8 +273,12 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
         if (currentLevel < levels.length) {
             const level = levels[currentLevel];
             // Notifications de fin de niveau
+
             document.querySelector('#winModal').style.display = "flex"
-            game(level.scene, level.obstacles, level.ennemies, level.bonus, level.background, level.duration, level.end, score);
+            document.querySelector("#btn_continue_win").addEventListener('click', () => {
+                document.querySelector('#winModal').style.display = "none"
+                game(level.scene, level.obstacles, level.ennemies, level.bonus, level.background, level.duration, level.end, score);
+            })
         } else {
             alert("You finished the GAME !")
         }
