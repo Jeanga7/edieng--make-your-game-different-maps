@@ -31,6 +31,7 @@ export var gameData = {
     coins: 0,
     levelScore: 0,
     distance: 0,
+    timeLoop: null
 }
 
 export let paused = false;
@@ -284,6 +285,7 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
         gameData.lives--
         if (gameData.lives >= 1) {
             gameData.totalScore -= gameData.levelScore
+            clearInterval(gameData.timeLoop)
             game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].bonus, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end)
         } else {
             gameOver()
