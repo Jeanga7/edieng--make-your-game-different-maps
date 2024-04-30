@@ -26,6 +26,7 @@ import {
 export let currentLevel = 0;
 
 export var gameData = {
+    player: null,
     totalScore: 0,
     lives: 3,
     coins: 0,
@@ -61,8 +62,8 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
 
     let characters = [];
 
-    const player = new Player();
-    characters.push(player);
+    gameData.player = new Player();
+    characters.push(gameData.player);
 
     bonus.forEach(bon => {
         characters.push(new Bonus(bon.pos, bon.type, {
@@ -95,11 +96,11 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
     function animate() {
         const PauseMenu = document.querySelector("#pauseModal")
         requestAnimationFrame(animate);
-
-        let posX = player.position.x
+        let posX = gameData.player.position.x
         if (posX !== 0 && posX > gameData.distance && posX - gameData.distance >= 1000) {
             addScore(10)
-            gameData.distance = player.position.x
+            console.log("Distance: ",gameData.distance, " posX: ", posX, " VelocityX: ", gameData.player.velocity.x);
+            gameData.distance = gameData.player.position.x
         }
 
         platforms.forEach(platform => platform.draw());
@@ -198,10 +199,10 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
                         char.element.style.backgroundImage = `url('${img.runningPlayer}')`;
                     }
 
-                    if (isJumping === true && player.onground === false) {
+                    if (isJumping === true && gameData.player.onground === false) {
                         char.element.style.backgroundImage = `url('${img.playerJumping}')`;
                     }
-                    if (isJumping === false && player.onground === false) {
+                    if (isJumping === false && gameData.player.onground === false) {
                         char.element.style.backgroundImage = `url('${img.playerFalling}')`;
                     }
 
@@ -215,7 +216,7 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
         };
 
         characters.forEach((char, i) => {
-            if (checkCollision(player, char, enemyContact)) {
+            if (checkCollision(gameData.player, char, enemyContact)) {
                 if (char.type === "coin") {
                     console.log("Got coin !");
                     char.element.remove()
@@ -228,15 +229,15 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
                     characters.splice(i, 1)
                     gameData.lives += 1
                     updateLives()
-                } else if (char.type === "power" && !player.power) {
+                } else if (char.type === "power" && !gameData.player.power) {
                     console.log("Got power !");
                     char.element.remove()
                     characters.splice(i, 1)
-                    player.power = true;
+                    gameData.player.power = true;
                 } else if (char.type === "enemy") {
-                    if (!player.power) {
+                    if (!gameData.player.power) {
                         console.log("Dead !");
-                        player.velocity.y -= 20
+                        gameData.player.velocity.y -= 20
                     } else {
                         console.log("Enemy killed !");
                         char.element.remove()
@@ -245,7 +246,7 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
 
                         // Sleep for 5 seconds
                         setTimeout(function () {
-                            player.power = false;
+                            gameData.player.power = false;
                         }, powerDuration); // 5000 milliseconds = 5 seconds
                     }
 
@@ -295,7 +296,7 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
 
     function camera() {
         window.requestAnimationFrame(camera)
-        let playerSize = player.element.getBoundingClientRect()
+        let playerSize = gameData.player.element.getBoundingClientRect()
 
 
 
@@ -327,10 +328,10 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
 
             case " ":
             case "ArrowUp":
-                if (!isJumping && player.onground) {
+                if (!isJumping && gameData.player.onground) {
                     isJumping = true;
-                    player.velocity.y += 20;
-                    player.onground = false
+                    gameData.player.velocity.y += 20;
+                    gameData.player.onground = false
                 }
                 break;
         }
@@ -339,18 +340,18 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
     document.addEventListener('keyup', (event) => {
         if (event.key === "ArrowLeft") {
             keys.left.pressed = false;
-            player.velocity.x = 0;
-            player.element.style.backgroundImage = `url('${img.player}')`;
+            gameData.player.velocity.x = 0;
+            gameData.player.element.style.backgroundImage = `url('${img.player}')`;
         }
         if (event.key === "ArrowRight") {
             keys.right.pressed = false;
-            player.velocity.x = 0;
-            player.element.style.backgroundImage = `url('${img.player}')`;
+            gameData.player.velocity.x = 0;
+            gameData.player.element.style.backgroundImage = `url('${img.player}')`;
         }
 
         if (event.key === "ArrowUp" || event.key === " ") {
             isJumping = false;
-            // player.onground = true
+            // gameData.player.onground = true
         }
     });
 
