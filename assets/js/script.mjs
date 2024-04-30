@@ -275,8 +275,10 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
             // Notifications de fin de niveau
 
             document.querySelector('#winModal').style.display = "flex"
+            gameData.levelEndPause = true
             document.querySelector("#btn_continue_win").addEventListener('click', () => {
                 document.querySelector('#winModal').style.display = "none"
+                gameData.levelEndPause = false
                 game(level.scene, level.obstacles, level.ennemies, level.bonus, level.background, level.duration, level.end, score);
             })
         } else {
