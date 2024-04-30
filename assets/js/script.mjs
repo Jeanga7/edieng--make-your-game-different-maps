@@ -31,10 +31,9 @@ export var gameData = {
     coins: 0,
     levelScore: 0,
     distance: 0,
-    timeLoop: null
+    timeLoop: null,
+    paused: false,
 }
-
-export let paused = false;
 
 const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
 const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
@@ -105,7 +104,7 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
 
         platforms.forEach(platform => platform.draw());
         // obstacles.forEach(obstacle => obstacle.draw());
-        if (!paused) {
+        if (!gameData.paused) {
             PauseMenu.style.display = "none"
             characters.forEach(char => {
                 char.update();
@@ -267,7 +266,7 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
             const level = levels[currentLevel];
             // Notifications de fin de niveau
             alert("Level cleared !")
-            console.log(paused);
+            console.log(gameData.paused);
             game(level.scene, level.obstacles, level.ennemies, level.bonus, level.background, level.duration, level.end, score);
         } else {
             alert("You finished the GAME !")
@@ -286,6 +285,8 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
         if (gameData.lives >= 1) {
             gameData.totalScore -= gameData.levelScore
             clearInterval(gameData.timeLoop)
+            // gameData.paused = false
+            console.log(gameData);
             game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].bonus, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end)
         } else {
             gameOver()
@@ -315,18 +316,6 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
         event.preventDefault()
 
         switch (event.key) {
-            case "p":
-            case "P":
-            case "Escape":
-                pauseGame();
-                break;
-
-            case "r":
-            case "R":
-            case "Escape":
-                restartGame();
-                break;
-
             case "ArrowLeft":
                 keys.left.pressed = true;
                 break;
@@ -369,6 +358,17 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
     Timer()
 }
 
+document.addEventListener("keydown", (event) => {
+    event.preventDefault()
+    let keys = ["P", "p", "Escape"]
+    if (keys.includes(event.key)) pauseGame()
+})
+
+document.addEventListener("keydown", (event) => {
+    event.preventDefault()
+    let keys = ["R", "r"]
+    if (keys.includes(event.key)) restartGame()
+})
 
 const continu = document.querySelector("#continu")
 continu.addEventListener('click', () => {
@@ -382,10 +382,10 @@ restart.addEventListener('click', () => {
 
 // handle pause option
 function pauseGame() {
-    if (!paused) {
-        paused = true
+    if (!gameData.paused) {
+        gameData.paused = true
     } else {
-        paused = false
+        gameData.paused = false
     }
 }
 
@@ -396,6 +396,6 @@ function restartGame() {
     gameData.lives = 3;
     gameData.totalScore = 0;
     gameData.levelScore = 0;
-    paused = false
+    gameData.paused = false
     window.location.reload()
 }

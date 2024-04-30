@@ -1,6 +1,13 @@
-import { gameData, paused } from "./script.mjs";
+import {
+    gameData
+} from "./script.mjs";
 
-export { Timer, gameOver, randomInterval, checkCollision };
+export {
+    Timer,
+    gameOver,
+    randomInterval,
+    checkCollision
+};
 
 let gameDuration = 240
 
@@ -10,7 +17,7 @@ function Timer() {
     var countdownTime = gameDuration;
 
     gameData.timeLoop = setInterval(function () {
-        if (!paused) {
+        if (!gameData.paused) {
             countdownTime--;
         }
         countdownElement.textContent = "Timer: " + countdownTime;
@@ -19,7 +26,7 @@ function Timer() {
             clearInterval(gameData.timeLoop);
             gameOver()
         }
-    }, 50);
+    }, 1000);
 }
 
 function gameOver() {
