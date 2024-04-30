@@ -9,18 +9,52 @@
 <body>
     <div id="pauseModal">
         <div id="menuPauseModal">
-            <div id="continu" >CONTINUE</div>
-            <div id="restart" >RESTART</div>
-            <div id="main-menu" >MAIN-MENU</div>
+            <div id="continu">CONTINUE</div>
+            <div id="restart">RESTART</div>
+            <div id="main-menu">MAIN-MENU</div>
         </div>
-        <div id="pauseModalStats"></div>
+        <div id="modalStats">
+            <div id="scoreStats_pause">🎯</div>
+            <div id="livesStats_pause">❤️</div>
+            <div id="timeStats_pause">⌛</div>
+        </div>
     </div>
+
     <div id="gameOverModal">
         <div id="game-over-container">
             <div id="gameOverImg"></div>
             <div id="game-over-text">GAME OVER</div>
         </div>
-        <div id="pauseModalStats"></div>
+        <div id="modalStats">
+            <div id="scoreStats_GO">🎯</div>
+            <div id="livesStats_GO">❤️</div>
+            <div id="timeStats_GO">⌛</div>
+            <div id="buttonStats">
+                <div class="btn" id="btn_mainmenu_GO">MAIN-MENU</div>
+                <div class="btn" id="btn_restart_GO">RESTART</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="winModal">
+        <div id="win-container">
+            <div class="winImg" id="winImg-1"></div>
+            <div id="win-text">LEVEL</div>
+            <hr>
+            <span id="line"></span>
+            <hr>
+            <div id="win-text">CLEARED</div>
+            <div class="winImg" id="winImg-2"></div>
+        </div>
+        <div id="modalStats">
+            <div id="scoreStats_win">🎯</div>
+            <div id="livesStats_win">❤️</div>
+            <div id="timeStats_win">⌛</div>
+            <div id="buttonStats">
+                <div class="btn" id="btn_continue_win">CONTINUE</div>
+                <div class="btn" id="btn_restart_win">RESTART</div>
+            </div>
+        </div>
     </div>
     <div id="world"></div>
 </body>

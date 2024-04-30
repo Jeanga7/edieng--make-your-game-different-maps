@@ -268,16 +268,12 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
         checkEnd()
     }
 
-  
-
-
     function switchLevel() {
         currentLevel++;
         if (currentLevel < levels.length) {
             const level = levels[currentLevel];
             // Notifications de fin de niveau
-            alert("Level cleared !")
-            console.log(gameData.paused);
+            document.querySelector('#winModal').style.display = "flex"
             game(level.scene, level.obstacles, level.ennemies, level.bonus, level.background, level.duration, level.end, score);
         } else {
             alert("You finished the GAME !")
@@ -387,10 +383,12 @@ continu.addEventListener('click', () => {
     pauseGame();
 })
 
-const restart = document.querySelector("#restart")
-restart.addEventListener('click', () => {
-    restartGame();
-})
+const restartBtn = document.querySelectorAll("#restart, #btn_restart_GO, #btn_restart_win");
+restartBtn.forEach(btn => {
+    btn.addEventListener('click', () => {
+        restartGame();
+    });
+});
 
 // handle pause option
 function pauseGame() {

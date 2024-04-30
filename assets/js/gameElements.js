@@ -1,7 +1,7 @@
-export { createWorldElements };
+export { createWorldElements, createTimeStats };
 
+const world = document.getElementById("world");
 function createWorldElements(bg, duration, gameData, img) {
-    const world = document.getElementById("world");
 
     world.innerHTML = "";
     world.style.width = "100%";
@@ -60,24 +60,27 @@ function createWorldElements(bg, duration, gameData, img) {
     life.style.fontSize = "30px";
     world.appendChild(life);
 
-    // Ajoute le modal de fin de jeu
-    const gameOverModal = document.createElement("div");
-    gameOverModal.id = "gameOver";
-    gameOverModal.style.display = "flex";
-    gameOverModal.style.position = "fixed";
-    gameOverModal.style.height = "80%";
-    gameOverModal.style.width = "40%";
-    gameOverModal.style.top = "10%";
-    gameOverModal.style.left = "30%";
-    gameOverModal.style.backgroundSize = "cover";
-    gameOverModal.style.backgroundImage = `url('${img.gameOver}')`;
-    gameOverModal.style.alignItems = "center";
-    gameOverModal.style.justifyContent = "center";
-    gameOverModal.style.fontSize = "70px";
-    gameOverModal.textContent = "GAME OVER";
-    gameOverModal.style.color = "white";
-    gameOverModal.style.fontWeight = "bold";
-    gameOverModal.style.zIndex = "100";
-    gameOverModal.style.display = "none";
-    world.appendChild(gameOverModal);
+    // handle the print of tab sta
+    document.querySelectorAll("#timeStats_pause, #timeStats_GO, #timeStats_win").forEach(element => {
+        element.style.color = "white";
+    });
+    
+    document.querySelectorAll("#livesStats_pause, #livesStats_GO, #livesStats_win").forEach(element => {
+        element.textContent = `❤️ Lives: ${gameData.lives}`;
+        element.style.color = "white";
+        element.style.fontSize = "30px"
+    });
+    
+    document.querySelectorAll("#scoreStats_pause, #scoreStats_GO, #scoreStats_win").forEach(element => {
+        element.textContent = `🎯 ${gameData.totalScore}`;
+        element.style.color = "white";
+        element.style.fontSize = "30px"
+    });
+}
+
+function createTimeStats(countdownTime) {
+    document.querySelectorAll("#timeStats_pause, #timeStats_GO, #timeStats_win").forEach(element => {
+        element.textContent = `⌚${countdownTime}`;
+        element.style.fontSize = "30px"
+    });
 }

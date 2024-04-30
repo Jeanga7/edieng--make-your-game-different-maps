@@ -1,6 +1,7 @@
 import {
     gameData
 } from "./script.mjs";
+import { createTimeStats } from "./gameElements.js";
 
 export {
     Timer,
@@ -14,6 +15,7 @@ let gameDuration = 240
 // Start animation
 function Timer() {
     var countdownElement = document.getElementById('timer');
+    
     var countdownTime = gameDuration;
 
     gameData.timeLoop = setInterval(function () {
@@ -21,6 +23,8 @@ function Timer() {
             countdownTime--;
         }
         countdownElement.textContent = "Timer: " + countdownTime;
+
+        createTimeStats(countdownTime)
 
         if (countdownTime <= 0) {
             clearInterval(gameData.timeLoop);
