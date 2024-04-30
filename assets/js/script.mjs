@@ -32,9 +32,16 @@ export var gameData = {
     coins: 0,
     levelScore: 0,
     distance: 0,
-    timeLoop: null,
-    paused: false,
 }
+
+const backaudio = new Audio("/assets/css/Epic Symphonic Ancient Egyptian Music - Valley of the Kings (Wādī Al-Mulūk)(1)(1).mp3")
+const Runaudio = new Audio("/assets/css/Run on Sand Sound Effect.mp3")
+const coinaudio = new Audio("/assets/css/rang.mp3")
+const bonusaudio = new Audio("/assets/css/bonus.mp3")
+const dieaudio = new Audio("/assets/css/dying.mp3")
+
+
+export let paused = false;
 
 const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
 const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
@@ -64,7 +71,6 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
 
     gameData.player = new Player();
     characters.push(gameData.player);
-
     bonus.forEach(bon => {
         characters.push(new Bonus(bon.pos, bon.type, {
             w: 175 / 4,
@@ -94,6 +100,7 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
 
     // var val = 1
     function animate() {
+        backaudio.play()
         const PauseMenu = document.querySelector("#pauseModal")
         requestAnimationFrame(animate);
         let posX = gameData.player.position.x
@@ -220,27 +227,32 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
                 if (char.type === "coin") {
                     console.log("Got coin !");
                     char.element.remove()
+                    coinaudio.play() 
                     characters.splice(i, 1)
                     addScore(20)
                     gameData.coins++
                 } else if (char.type === "life") {
                     console.log("Got life !");
                     char.element.remove()
+                    bonusaudio.play()
                     characters.splice(i, 1)
                     gameData.lives += 1
                     updateLives()
                 } else if (char.type === "power" && !gameData.player.power) {
                     console.log("Got power !");
                     char.element.remove()
+                    bonusaudio.play()
                     characters.splice(i, 1)
                     gameData.player.power = true;
                 } else if (char.type === "enemy") {
                     if (!gameData.player.power) {
                         console.log("Dead !");
+                        dieaudio.play()
                         gameData.player.velocity.y -= 20
                     } else {
                         console.log("Enemy killed !");
                         char.element.remove()
+                        killaudio.play()
                         characters.splice(i, 1)
                         // On doit supprimer l'élément de la liste des characters
 
@@ -256,9 +268,7 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
         checkEnd()
     }
 
-    function sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
+  
 
 
     function switchLevel() {
@@ -286,8 +296,6 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
         if (gameData.lives >= 1) {
             gameData.totalScore -= gameData.levelScore
             clearInterval(gameData.timeLoop)
-            // gameData.paused = false
-            console.log(gameData);
             game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].bonus, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end)
         } else {
             gameOver()
@@ -318,11 +326,12 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
 
         switch (event.key) {
             case "ArrowLeft":
+                Runaudio.play()
                 keys.left.pressed = true;
                 break;
 
             case "ArrowRight":
-
+                Runaudio.play()
                 keys.right.pressed = true;
                 break;
 
@@ -339,11 +348,13 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
 
     document.addEventListener('keyup', (event) => {
         if (event.key === "ArrowLeft") {
+            Runaudio.pause()
             keys.left.pressed = false;
             gameData.player.velocity.x = 0;
             gameData.player.element.style.backgroundImage = `url('${img.player}')`;
         }
         if (event.key === "ArrowRight") {
+            Runaudio.pause()
             keys.right.pressed = false;
             gameData.player.velocity.x = 0;
             gameData.player.element.style.backgroundImage = `url('${img.player}')`;
