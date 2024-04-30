@@ -73,15 +73,18 @@ body {
     display: flex;
     align-items: center;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: center;
     background-image: url("../img/parchemin.png");
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
     width: 42%;
     height: 55%;
-    padding-top: 1%;
-    padding-bottom: 1%;
+}
+
+#modalStats p {
+    padding: 0 7em;
+    text-align: center;
 }
 
 #game-over-container,

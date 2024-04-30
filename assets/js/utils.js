@@ -19,7 +19,7 @@ function Timer() {
     var countdownTime = gameDuration;
 
     gameData.timeLoop = setInterval(function () {
-        if (!gameData.paused) {
+        if (!(gameData.paused || gameData.levelEndPause)) {
             countdownTime--;
         }
         countdownElement.textContent = "Timer: " + countdownTime;
