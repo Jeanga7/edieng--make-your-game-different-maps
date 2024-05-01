@@ -2,3 +2,8 @@
 
 2 --> lorsque le player meurt 2x ou plus, si il prend le life le nombre de live devient 4 automatiquement
 
+3 --> affichage du score sur les modals de pause, win et game over
+
+4 --> le timer ne s'arrete pas sur les modals pause 
+
+5 --> bloquer pause lors du game over
