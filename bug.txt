@@ -4,6 +4,6 @@
 
 3 --> affichage du score sur les modals de pause, win et game over
 
-4 --> le timer ne s'arrete pas sur les modals pause 
+4 --> le timer ne s'arrete pas sur les modals (pause, game over...)
 
 5 --> bloquer pause lors du game over

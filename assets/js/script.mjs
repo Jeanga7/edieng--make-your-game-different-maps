@@ -392,9 +392,21 @@ continu.addEventListener('click', () => {
 const restartBtn = document.querySelectorAll("#restart, #btn_restart_GO, #btn_restart_win");
 restartBtn.forEach(btn => {
     btn.addEventListener('click', () => {
+        // const modals = document.querySelectorAll("#pauseModal, #gameOverModal, #winModal")
+        // modals.forEach(modal => {
+        //     modal.style.display = "none"
+        // })
         restartGame();
     });
 });
+
+// handle main menu
+const mainMenuBtn = document.querySelectorAll("#main-menu, #btn_mainmenu_GO")
+mainMenuBtn.forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelector('#mainMenuModal').style.display = "flex"
+    })
+})
 
 // handle pause option
 function pauseGame() {
@@ -413,5 +425,6 @@ function restartGame() {
     gameData.totalScore = 0;
     gameData.levelScore = 0;
     gameData.paused = false
-    window.location.reload()
+    // window.location.reload()
+    game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].bonus, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end);
 }

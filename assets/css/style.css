@@ -61,6 +61,7 @@ body {
     font-style: italic;
     color: white;
     text-shadow: 5px 3px 3px rgba(0, 0, 0, 0.7);
+    cursor: pointer;
 }
 
 #continu:hover,
@@ -189,6 +190,7 @@ span#line {
     box-shadow: 2px 3px 2px rgba(0, 0, 0, 0.4);
     font-weight: bolder;
     color: beige;
+    cursor: pointer;
 }
 
 .btn:hover {
@@ -197,16 +199,16 @@ span#line {
 }
 
 /*      MAIN MENU       */
-#mainMenu {
+#mainMenuModal {
     display: flex;
     align-items: center;
     justify-content: center;
     position: absolute;
     height: 100%;
     width: 100%;
-    z-index: 1000;
     background-image: url(../img/bg-main-menu.jpg);
     background-size: cover;
+    z-index: 200;
 }
 
 /* fonts */
@@ -350,8 +352,50 @@ span#line {
     cursor: pointer;
     transform: scale(0.7);
     transition: all ease-in-out 200ms;
+    /* background-color: aquamarine; */
 }
 
 .main-menu-btn:hover {
     transform: scale(0.8);
+}
+
+#getInModal {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+    position: absolute;
+    width: 20%;
+    height: 25%;
+    z-index: 1000;
+    background-color: rgb(151, 150, 150);
+    border-radius: 25px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
+    display: none;
+}
+
+#input_name {
+    height: 30%;
+    width: 80%;
+    font-size: 17px;
+    border-radius: 10px;
+    border-style: groove;
+    border-color: black;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
+    outline: none;
+}
+
+#getIn {
+    height: 20%;
+    width: 80%;
+    border-radius: 15px;
+    background-color: rgb(134, 90, 33);
+    font-size: large;
+    font-weight: bolder;
+    border-color: black;
+    box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.9);
+}
+
+#getIn:hover {
+    transform: scale(1.03);
 }

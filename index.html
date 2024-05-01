@@ -4,14 +4,23 @@
 <head>
     <title>Making our Game</title>
     <link rel="stylesheet" href="./assets/css/style.css">
+    <script>
+        var username;
+    </script>
 </head>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Cookie&family=Holtwood+One+SC&family=Pacifico&family=Sedgwick+Ave+Display&family=Yellowtail&display=swap');
 </style>
 
 <body>
+    <!-- get in modal -->
+    <div id="getInModal">
+        <input type="text" id="input_name" name="username" placeholder="Enter your username please!">
+        <button type="button" id="getIn" >GET IN</button>
+    </div>
+
     <!-- main menu page -->
-    <div id="mainMenu">
+    <div id="mainMenuModal">
         <div id="horloge"></div>
         <div id="titre">ANACHRONOS</div>
         <div id="slogan">fix the past, save your future.</div>
@@ -88,10 +97,17 @@
 
     <!-- div principal du game -->
     <div id="world"></div>
-</body>
-<script src="./assets/js/main.js" type="module"></script>
-<script src="./assets/js/script.mjs" type="module"></script>
-<script src="./assets/js/levels.js" type="module"></script>
-<script src="./assets/js/utils.js" type="module"></script>
 
+
+    <script type="module">
+        document.querySelector('#getIn').addEventListener('click', () => {
+            username = document.querySelector('#input_name').value;
+        });
+    </script>
+    <script src="./assets/js/main.js" type="module"></script>
+    <!-- 
+        <script src="./assets/js/script.mjs" type="module"></script>
+    <script src="./assets/js/levels.js" type="module"></script>
+    <script src="./assets/js/utils.js" type="module"></script> -->
+</body>
 </html>
