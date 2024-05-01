@@ -5,8 +5,31 @@
     <title>Making our Game</title>
     <link rel="stylesheet" href="./assets/css/style.css">
 </head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Cookie&family=Holtwood+One+SC&family=Pacifico&family=Sedgwick+Ave+Display&family=Yellowtail&display=swap');
+</style>
 
 <body>
+    <!-- main menu page -->
+    <div id="mainMenu">
+        <div id="horloge"></div>
+        <div id="titre">ANACHRONOS</div>
+        <div id="slogan">fix the past, save your future.</div>
+
+        <div id="block_menu">
+            <div id="play" class="main-menu-btn">PLAY</div>
+            <div id="instructions" class="main-menu-btn">INSTRUCTIONS</div>
+            <div id="history" class="main-menu-btn">HISTORY</div>
+        </div>
+        <div id="player_main_menu">
+            <div id="arrow_left"></div>
+            <div id="player_img"></div>
+            <div id="arrow_right"></div>
+        </div>
+
+    </div>
+
+    <!-- modal du menu pause -->
     <div id="pauseModal">
         <div id="menuPauseModal">
             <div id="continu">CONTINUE</div>
@@ -14,16 +37,17 @@
             <div id="main-menu">MAIN-MENU</div>
         </div>
         <div id="modalStats">
-            <!-- <div id="scoreStats_pause">🎯</div>
-            <div id="livesStats_pause">❤️</div>
-            <div id="timeStats_pause">⌛</div> -->
             <h2>Histoire</h2>
             <p>
-                Aliqua qui eiusmod exercitation eiusmod ex. Sit excepteur adipisicing velit esse esse anim enim ullamco et dolore officia. Qui fugiat sint irure eu tempor irure ea laborum labore voluptate. Excepteur tempor esse nisi aliquip elit culpa. Qui do exercitation magna voluptate consequat. Ut quis culpa cillum commodo. Fugiat veniam commodo laborum consequat.
+                Aliqua qui eiusmod exercitation eiusmod ex. Sit excepteur adipisicing velit esse esse anim enim ullamco
+                et dolore officia. Qui fugiat sint irure eu tempor irure ea laborum labore voluptate. Excepteur tempor
+                esse nisi aliquip elit culpa. Qui do exercitation magna voluptate consequat. Ut quis culpa cillum
+                commodo. Fugiat veniam commodo laborum consequat.
             </p>
         </div>
     </div>
 
+    <!-- modal du menu game over -->
     <div id="gameOverModal">
         <div id="game-over-container">
             <div id="gameOverImg"></div>
@@ -40,6 +64,7 @@
         </div>
     </div>
 
+    <!-- modal du menu level cleared -->
     <div id="winModal">
         <div id="win-container">
             <div class="winImg" id="winImg-1"></div>
@@ -60,6 +85,8 @@
             </div>
         </div>
     </div>
+
+    <!-- div principal du game -->
     <div id="world"></div>
 </body>
 <script src="./assets/js/main.js" type="module"></script>
