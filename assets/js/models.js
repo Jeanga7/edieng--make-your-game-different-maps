@@ -1,163 +1,137 @@
 import {
-    fall,
-    jump,
-    runLeft,
-    runRight,
-    motionless
-} from "./motions.js"
+    img,
+    gravity,
+    world,
+    playerInitialPosition,
+    playerDims,
+    numberOfEnnemies
+} from "./constants.js"
+import { randomInterval } from "./utils.js"
+export { Character, Player, Enemy, Obstacle, Bonus, SceneElement }
 
-export const skins = {
-    player: "/assets/img/static.png",
-    runningPlayer: "/assets/img/running-player.gif",
-    wall: "/assets/img/wall-removebg-preview.png",
-    // A ajouter : coins, wall, paka
-}
-
-const maxJumpHeight = 500;
-
-export const elements = {
-    character: "span",
-    obstacle: "div"
-}
-
-export class Obstacle {
-    // type is a string and the type of obstacle
-    // position is a list containing [x, y] position of the obstacle
-    // dimensions is a list containing [width, height] of the obstacle
-    constructor(type, position, dimensions) {
+class Character {
+    constructor(type, pos, dims, mobile = true, speedUp = 1) {
+        this.position = { x: pos.x, y: pos.y };
         this.type = type
-        this.skin = skins[type]
-        this.x = position[0]
-        this.y = position[1]
-        this.width = dimensions[0]
-        this.height = dimensions[1]
+        this.velocity = { x: 0, y: 0 };
+        this.onground = true
+        this.mobile = mobile
+        this.speedUp = speedUp
+        this.width = dims.w;
+        this.height = dims.h;
+        this.element = document.createElement('div');
+        this.element.style.zIndex = "999"
+        if (type === "player") {
+            this.element.id = type;
+            this.live = 3
+        } else {
+            this.element.className = type
+        }
+        world.appendChild(this.element);
+    }
+
+    draw() {
+        this.element.style.left = `${this.position.x}px`;
+        this.element.style.bottom = `${this.position.y}px`;
+        this.element.style.width = `${this.width}px`
+        this.element.style.height = `${this.height}px`
+    }
+
+    update() {
+        this.draw();
+        if (this.mobile) {
+            this.position.x += (this.velocity.x * this.speedUp);
+        }
+        this.position.y += this.velocity.y;
+        if (this.position.y + this.velocity.y <= world.clientHeight) {
+            this.velocity.y += gravity;
+        }
+        else { this.velocity.y = 0; }
     }
 }
 
-export class Character {
-    constructor(type, position) {
-        this.type = type
-        this.skin = skins[type]
-        this.x = position[0]
-        this.y = position[1]
-        this.DOMElement = document.createElement(elements.character)
-    }
-
-    get direction() {
-        return this._direction
-    }
-    set direction(val) {
-        this._direction = val
-        this.DOMElement.style.transform = `scaleX(${val})`
-    }
-
-    createDOMElement() {
-        let world = document.querySelector("#world")
-        world.append(this.DOMElement)
-    }
-
-    move(direction) {
-        if (direction.x !== undefined) {
-            if (direction.x === 1) {
-                requestAnimationFrame(() => {
-                    runRight(this)
-                })
-            } else {
-                requestAnimationFrame(() => {
-                    runLeft(this)
-                })
-            }
-        }
-
-        if (direction.y !== undefined) {
-            if (direction.y === 1) {
-                requestAnimationFrame(() => {
-                    jump(this)
-                })
-            } else {
-                requestAnimationFrame(() => {
-                    fall(this)
-                })
-            }
-        }
-    }
-
-    stop(type) {
-        if (type === "run") {
-            requestAnimationFrame(motionless)
-            cancelAnimationFrame(runRight)
-            cancelAnimationFrame(runLeft)
-            cancelAnimationFrame(motionless)
-        } else if (type === "jump") {
-            requestAnimationFrame(fall)
-            cancelAnimationFrame(jump)
-            cancelAnimationFrame(fall)
-        }
-    }
-}
-
-export class Player extends Character {
+class Player extends Character {
     constructor(position) {
-        super("player", position)
-        this.weapon = false
-        this._jumping = false
-        this._landed = true
-        this._jumpHeight = 0
-        this._direction = 1
-        this._maxJumpHeight = maxJumpHeight
-        this.DOMElement.id = "player"
-        this.DOMElement.style.left = this.x
-        this.DOMElement.style.top = this.y
-        this.createDOMElement()
-    }
-
-    get jumpHeight() {
-        return this._jumpHeight
-    }
-    get maxJumpHeight() {
-        return this._maxJumpHeight
-    }
-    get jumping() {
-        return this._jumping
-    }
-    get landed() {
-        return this._landed
-    }
-
-    set jumping(val) {
-        this._jumping = val
-    }
-    set landed(val) {
-        this._landed = val
-    }
-    set jumpHeight(val) {
-        this._jumpHeight = val > 0 ? -val : 0
-        this.DOMElement.animate({transform: `translateY(${this._jumpHeight}px)`},800)
-    }
-
-    manualMove() {
-
+        super("player", playerInitialPosition, playerDims)
+        this.element.style.backgroundImage = `url('${img[this.type]}')`
+        this.power = false
     }
 }
 
-export class Collision {
-    constructor(character, obstacles) {
-        this.character = character;
-        this.obstacles = obstacles;
+class Enemy extends Character {
+    constructor(pos, mobile, speedUp) {
+        super("enemy", pos, { w: 50, h: 60 }, mobile, speedUp)
+        let imgName = img[this.type + "_" + randomInterval(1, numberOfEnnemies)]
+        this.element.style.backgroundImage = `url('${imgName}')`
+        this.direction = 1
     }
-    checkCollisions() {
-        const character = this.character;
-        const obstacles = this.obstacles;
-        
-        if (
-            this.character.x < this.obstacles.x + this.obstacles.width &&
-            this.character.x + this.character.width > this.obstacles.x &&
-            this.character.y < this.obstacles.y + this.obstacles.height &&
-            this.character.y + this.character.height > this.obstacles.y
-          ) {
-            // Collision detected, handle it here
-            console.log("Collision detected!");
-            // Example: Stop the player's movement or reduce their health
-          }
+
+    turn() {
+        this.direction = -this.direction
+        this.element.style.transform = `scaleX(${this.direction})`;
+    }
+}
+
+class Obstacle {
+    constructor({ x, y }, type, dims) {
+        this.position = { x, y };
+        this.width = dims.w;
+        this.height = dims.h;
+        this.type = type
+        this.element = document.createElement('div');
+        this.element.style.backgroundImage = `url(${img[type]})`
+        this.element.classList.add('obstacle');
+        this.element.style.position = "absolute"
+        this.element.style.left = `${x}px`;
+        this.element.style.bottom = `${y}px`;
+        if (type === "ground" || type === "groundNL") {
+            this.element.style.backgroundSize = "auto 100%"
+            this.element.style.backgroundRepeat = "repeat-x"
+        } else {
+            this.element.style.backgroundSize = "cover"
+            this.element.style.backgroundPosition = "center center"
+            this.element.style.backgroundRepeat = "no-repeat"
+        }
+        world.appendChild(this.element);
+    }
+
+    draw() {
+        this.element.style.left = `${this.position.x}px`;
+        this.element.style.bottom = `${this.position.y}px`;
+        this.element.style.width = `${this.width}px`
+        this.element.style.height = `${this.height}px`
+    }
+
+    update() {
+        this.draw();
+        // this.position.y += this.velocity.y;
+        // this.position.x += this.velocity.x;
+        // if (this.position.y + this.height + this.velocity.y <= world.clientHeight)
+        //     this.velocity.y += gravity;
+        // else this.velocity.y = 0;
+    }
+}
+
+class Bonus extends Obstacle {
+    constructor(pos, type, dimension) {
+        super(pos, type, dimension)
+    }
+}
+
+class SceneElement {
+    constructor({ x, y }, dims, ele, p) {
+        this.position = { x, y };
+        this.element = document.createElement('div');
+        this.element.style.backgroundImage = `url(${img[ele]})`
+        this.element.className = ele;
+        this.element.style.width = dims.w + "px";
+        this.element.style.height = dims.h + "px";
+        this.element.style.position = p
+        this.element.style.left = `${x}px`;
+        this.element.style.bottom = `${y}px`;
+        this.element.style.backgroundSize = "cover"
+        this.element.style.backgroundPosition = "center center"
+        this.element.style.backgroundRepeat = "no-repeat"
+        world.appendChild(this.element);
     }
 }

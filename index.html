@@ -1,17 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <title>GAME</title>
+    <title>Making our Game</title>
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <script>
+        var username;
+    </script>
 </head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Cookie&family=Holtwood+One+SC&family=Pacifico&family=Sedgwick+Ave+Display&family=Yellowtail&display=swap');
+</style>
+
 <body>
+    <!-- get in modal -->
+    <div id="getInModal">
+        <input type="text" id="input_name" name="username" placeholder="Enter your username please!">
+        <button type="button" id="getIn">GET IN</button>
+    </div>
+
+    <!-- main menu page -->
+    <div id="mainMenuModal">
+        <div id="horloge"></div>
+        <div id="titre">ANACHRONOS</div>
+        <div id="slogan">fix the past, save your future.</div>
+
+        <div id="block_menu">
+            <div id="play" class="main-menu-btn">PLAY</div>
+            <div id="instructions" class="main-menu-btn">INSTRUCTIONS</div>
+            <div id="history" class="main-menu-btn">HISTORY
+                <div id="play_history"></div>
+            </div>
+        </div>
+        <div id="player_main_menu">
+            <div id="arrow_left"></div>
+            <div id="player_img"></div>
+            <div id="arrow_right"></div>
+        </div>
+
+    </div>
+
+    <!-- modal du menu pause -->
+    <div id="pauseModal">
+        <div id="menuPauseModal">
+            <div id="continu">CONTINUE</div>
+            <div id="restart">RESTART</div>
+            <div id="main-menu">MAIN-MENU</div>
+        </div>
+        <div id="modalStats">
+            <h2>Histoire</h2>
+            <p>
+                Aliqua qui eiusmod exercitation eiusmod ex. Sit excepteur adipisicing velit esse esse anim enim ullamco
+                et dolore officia. Qui fugiat sint irure eu tempor irure ea laborum labore voluptate. Excepteur tempor
+                esse nisi aliquip elit culpa. Qui do exercitation magna voluptate consequat. Ut quis culpa cillum
+                commodo. Fugiat veniam commodo laborum consequat.
+            </p>
+        </div>
+    </div>
+
+    <!-- modal du menu game over -->
+    <div id="gameOverModal">
+        <div id="game-over-container">
+            <div id="gameOverImg"></div>
+            <div id="game-over-text">GAME OVER</div>
+        </div>
+        <div id="modalStats">
+            <div id="scoreStats_GO">🎯</div>
+            <div id="livesStats_GO">❤️</div>
+            <div id="timeStats_GO">⌛</div>
+            <div id="buttonStats">
+                <div class="btn" id="btn_mainmenu_GO">MENU</div>
+                <div class="btn" id="btn_restart_GO">RESTART</div>
+                <div class="podium" id="btn_classement_GO"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal du menu level cleared -->
+    <div id="winModal">
+        <div id="win-container">
+            <div class="winImg" id="winImg-1"></div>
+            <div id="win-text">LEVEL</div>
+            <hr>
+            <span id="line"></span>
+            <hr>
+            <div id="win-text">CLEARED</div>
+            <div class="winImg" id="winImg-2"></div>
+        </div>
+        <div id="modalStats">
+            <div id="scoreStats_win">🎯</div>
+            <div id="livesStats_win">❤️</div>
+            <div id="timeStats_win">⌛</div>
+            <div id="buttonStats">
+                <div class="btn" id="btn_continue_win">CONTINUE</div>
+                <div class="btn" id="btn_restart_win">RESTART</div>
+                <div class="podium" id="btn_classement_win"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- div principal du game -->
     <div id="world"></div>
 
 
-    <script src="assets/js/models.js" type="module"></script>
-    <script src="assets/js/motions.js" type="module"></script>
-    <script src="assets/js/events.js" type="module"></script>
+    <script type="module">
+        document.querySelector('#getIn').addEventListener('click', () => {
+            username = document.querySelector('#input_name').value;
+        });
+    </script>
+    <script src="./assets/js/main.js" type="module"></script>
+    <script src="./assets/js/script.mjs" type="module"></script>
+    <script src="./assets/js/levels.js" type="module"></script>
+    <script src="./assets/js/utils.js" type="module"></script>
 </body>
+
 </html>
