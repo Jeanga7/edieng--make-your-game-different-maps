@@ -64,6 +64,20 @@ document.querySelector('#history').addEventListener('click', () => {
     }
 });
 
+document.querySelector('#instructions').addEventListener('click', () => {
+    document.querySelector('#instuctionsModal').style.display = 'flex'
+})
+
+document.querySelector('#fermerInstruction').addEventListener('click', () => {
+    const modal = document.querySelector('#instuctionsModal');
+    modal.classList.add('closing'); 
+    setTimeout(() => {
+        modal.style.display = 'none';
+        modal.classList.remove('closing');
+    }, 500); 
+});
+
+
 
 
 // function addScripts() {

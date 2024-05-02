@@ -84,8 +84,9 @@ body {
 }
 
 #modalStats p {
-    padding: 0 7em;
+    padding: 0 5em;
     text-align: center;
+    font-weight: 400;
 }
 
 #game-over-container,
@@ -431,7 +432,7 @@ span#line {
     transform: scale(1.03);
 }
 
-#play_history{
+#play_history {
     height: 25%;
     width: 4%;
     background-image: url(../img/pause.png);
@@ -443,13 +444,73 @@ span#line {
 
 @keyframes pulse {
     0% {
-      transform: scale(1) translate(0, 0);
+        transform: scale(1) translate(0, 0);
     }
+
     50% {
-      transform: scale(1.2) translate(-5%, -5%);
+        transform: scale(1.2) translate(-5%, -5%);
     }
+
     100% {
-      transform: scale(1) translate(0, 0);
+        transform: scale(1) translate(0, 0);
     }
-  }
-  
+}
+
+/* INSTRUCTION */
+
+#instuctionsModal {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 2%;
+    height: 80%;
+    width: 40%;
+    left: 15%;
+    z-index: 1000;
+    border: solid rgba(184, 80, 11, 0.836);
+    border-radius: 30px;
+    border-width: 10px;
+    border-style: ridge;
+    background-color: rgb(149, 177, 185);
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.8);
+    overflow-y: scroll;
+    text-align: justify;
+    display: none;
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+#instuctionsModal.closing {
+    animation: fadeOut 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+#fermerInstruction{
+    position: fixed;
+    border-radius: 10px;
+    right: 42%;
+    top: 10%;
+    color:  white;
+    background-color: rgb(214, 8, 8);
+    cursor: pointer;
+}
+#fermerInstruction:hover{
+    transform: scale(1.1);
+}
