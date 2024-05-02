@@ -42,6 +42,7 @@ const dieaudio = new Audio("/assets/css/dying.mp3")
 
 
 export let paused = false;
+export let gameover = false
 
 const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
 const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
@@ -112,7 +113,7 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
 
         platforms.forEach(platform => platform.draw());
         // obstacles.forEach(obstacle => obstacle.draw());
-        if (!gameData.paused) {
+        if (!gameData.paused && !gameover) {
             PauseMenu.style.display = "none"
             characters.forEach(char => {
                 char.update();
@@ -126,7 +127,7 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
                             char.velocity.x = char.direction;
                             if (found) {
                                 char.turn()
-                            }
+                            } 
                         }
                         // Empêcher le joueur de passer à travers l'obstacle par le haut, le bas, la gauche ou la droite
                         const playerLeft = char.position.x;
@@ -218,7 +219,7 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
                     }
                 }
             })
-        } else {
+        } else if (gameData.paused && !gameover){
             PauseMenu.style.display = "flex"
         };
 
@@ -236,7 +237,9 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
                     char.element.remove()
                     bonusaudio.play()
                     characters.splice(i, 1)
-                    gameData.lives += 1
+                    var life = document.querySelector("#life").textContent.split(" ")[1]
+                    console.log(life);
+                    gameData.lives = parseInt(life) + 1
                     updateLives()
                 } else if (char.type === "power" && !gameData.player.power) {
                     console.log("Got power !");
@@ -273,7 +276,6 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
         if (currentLevel < levels.length) {
             const level = levels[currentLevel];
             // Notifications de fin de niveau
-
             document.querySelector('#winModal').style.display = "flex"
             gameData.levelEndPause = true
             document.querySelector("#btn_continue_win").addEventListener('click', () => {
@@ -300,6 +302,8 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
             clearInterval(gameData.timeLoop)
             game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].bonus, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end)
         } else {
+            gameData.paused = true
+            gameover = true
             gameOver()
         }
     }
@@ -307,8 +311,6 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
     function camera() {
         window.requestAnimationFrame(camera)
         let playerSize = gameData.player.element.getBoundingClientRect()
-
-
 
         if (playerSize.left >= (vw / 2)) {
             world.scrollLeft += 5
@@ -425,6 +427,8 @@ function restartGame() {
     gameData.totalScore = 0;
     gameData.levelScore = 0;
     gameData.paused = false
+    gameover = false
+    document.querySelector("#gameOverModal").style.display = "none"
     // window.location.reload()
     game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].bonus, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end);
 }
