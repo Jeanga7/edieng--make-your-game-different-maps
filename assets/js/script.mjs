@@ -11,7 +11,12 @@ import {
 import {
     Timer,
     gameOver,
-    checkCollision
+    restartGame,
+    pauseGame,
+    checkCollision,
+    updateLives,
+    updateScore,
+    hideModals
 } from "./utils.js";
 import {
     img,
@@ -23,15 +28,17 @@ import {
     createWorldElements
 } from "./gameElements.js";
 
-export let currentLevel = 0;
-
 export var gameData = {
     player: null,
+    currentLevel: 0,
     totalScore: 0,
     lives: 3,
     coins: 0,
     levelScore: 0,
     distance: 0,
+    paused: false,
+    levelEndPause: false,
+    gameOverPause: false
 }
 
 const backaudio = new Audio("/assets/css/Epic Symphonic Ancient Egyptian Music - Valley of the Kings (Wādī Al-Mulūk)(1)(1).mp3")
@@ -48,11 +55,10 @@ const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeig
 
 export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, end) {
     createWorldElements(bg, duration, gameData, img);
+    hideModals()
 
     gameData.levelScore = 0
 
-    let updateScore = () => document.querySelector("#score").textContent = `Score: ${gameData.totalScore}`
-    let updateLives = () => document.querySelector("#life").textContent = `Lives: ${gameData.lives}`
 
     function addScore(n) {
         gameData.totalScore += n
@@ -218,7 +224,7 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
                     }
                 }
             })
-        } else {
+        } else if (!gameData.levelEndPause && !gameData.gameOverPause) {
             PauseMenu.style.display = "flex"
         };
 
@@ -269,12 +275,13 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
     }
 
     function switchLevel() {
-        currentLevel++;
-        if (currentLevel < levels.length) {
-            const level = levels[currentLevel];
+        gameData.currentLevel++;
+        if (gameData.currentLevel < levels.length) {
+            const level = levels[gameData.currentLevel];
             // Notifications de fin de niveau
 
             document.querySelector('#winModal').style.display = "flex"
+            gameData.paused = false
             gameData.levelEndPause = true
             document.querySelector("#btn_continue_win").addEventListener('click', () => {
                 document.querySelector('#winModal').style.display = "none"
@@ -288,7 +295,7 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
 
     function checkEnd() {
         const playerPos = parseInt(document.querySelector("#player").style.left)
-        if ((playerPos) >= levels[currentLevel].end) {
+        if ((playerPos) >= levels[gameData.currentLevel].end) {
             switchLevel();
         }
     }
@@ -298,7 +305,7 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
         if (gameData.lives >= 1) {
             gameData.totalScore -= gameData.levelScore
             clearInterval(gameData.timeLoop)
-            game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].bonus, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end)
+            game(levels[gameData.currentLevel].scene, levels[gameData.currentLevel].obstacles, levels[gameData.currentLevel].ennemies, levels[gameData.currentLevel].bonus, levels[gameData.currentLevel].background, levels[gameData.currentLevel].duration, levels[gameData.currentLevel].end)
         } else {
             gameOver()
         }
@@ -316,7 +323,6 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
 
         if (playerSize.top >= vh) {
             decreaseLife()
-            // game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end)
         }
     }
     camera()
@@ -392,10 +398,6 @@ continu.addEventListener('click', () => {
 const restartBtn = document.querySelectorAll("#restart, #btn_restart_GO, #btn_restart_win");
 restartBtn.forEach(btn => {
     btn.addEventListener('click', () => {
-        // const modals = document.querySelectorAll("#pauseModal, #gameOverModal, #winModal")
-        // modals.forEach(modal => {
-        //     modal.style.display = "none"
-        // })
         restartGame();
     });
 });
@@ -407,24 +409,3 @@ mainMenuBtn.forEach(btn => {
         document.querySelector('#mainMenuModal').style.display = "flex"
     })
 })
-
-// handle pause option
-function pauseGame() {
-    if (!gameData.paused) {
-        gameData.paused = true
-    } else {
-        gameData.paused = false
-    }
-}
-
-
-// handle the restart option
-function restartGame() {
-    currentLevel = 0;
-    gameData.lives = 3;
-    gameData.totalScore = 0;
-    gameData.levelScore = 0;
-    gameData.paused = false
-    // window.location.reload()
-    game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].bonus, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end);
-}

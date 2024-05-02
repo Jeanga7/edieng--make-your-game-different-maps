@@ -1,0 +1,11 @@
+[X] bloquer pause lors du game over
+
+[X] bloquer timer sur le modal game over
+
+[ ] lorsque le player meurt 2x ou plus, si il prend le life le nombre de live devient 4 automatiquement
+
+[ ] lorsque le player meurt une fois, il meurt en boucle à côté du coin
+
+[ ] affichage du score sur les modals de pause, win et game over
+
+[ ] le timer ne s'arrete pas sur les modals (pause, game over...)
