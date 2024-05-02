@@ -394,10 +394,10 @@ continu.addEventListener('click', () => {
 const restartBtn = document.querySelectorAll("#restart, #btn_restart_GO, #btn_restart_win");
 restartBtn.forEach(btn => {
     btn.addEventListener('click', () => {
-        // const modals = document.querySelectorAll("#pauseModal, #gameOverModal, #winModal")
-        // modals.forEach(modal => {
-        //     modal.style.display = "none"
-        // })
+        const modals = document.querySelectorAll("#pauseModal, #gameOverModal, #winModal")
+        modals.forEach(modal => {
+            modal.style.display = "none"
+        })
         restartGame();
     });
 });

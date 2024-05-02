@@ -27,6 +27,45 @@ document.querySelectorAll("#btn_classement_GO, #btn_classement_win").forEach(but
     });
 });
 
+
+let currentIndex = 0;
+const audios = [
+    "../../audio/paragraphe1_histoire.mp3",
+    "../../audio/paragraphe2_histoire.mp3",
+    "../../audio/paragraphe3_histoire.mp3",
+    "../../audio/paragraphe4_histoire.mp3"
+];
+let audio = new Audio(audios[currentIndex]);
+let music = new Audio("../../audio/music_history.mp3")
+
+audio.addEventListener('ended', () => {
+    currentIndex = (currentIndex + 1) % audios.length;
+    if (currentIndex === 0) {
+        audio.pause();
+        music.pause();
+    } else {
+        music.volume = 0.2;
+        audio.src = audios[currentIndex];
+        audio.play();
+        music.play();
+    }
+});
+
+document.querySelector('#history').addEventListener('click', () => {
+    if (audio.paused) {
+        music.volume = 0.2;
+        audio.play();
+        music.play();
+    } else {
+        audio.pause();
+        music.pause();
+        audio.currentTime = 0;
+        currentIndex = 0;
+    }
+});
+
+
+
 // function addScripts() {
 //     let links = ["./assets/js/script.mjs", "./assets/js/levels.js", "./assets/js/utils.js"]
 //     links.forEach(l => {

@@ -430,3 +430,26 @@ span#line {
 #getIn:hover {
     transform: scale(1.03);
 }
+
+#play_history{
+    height: 25%;
+    width: 4%;
+    background-image: url(../img/pause.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin: 2%;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% {
+      transform: scale(1) translate(0, 0);
+    }
+    50% {
+      transform: scale(1.2) translate(-5%, -5%);
+    }
+    100% {
+      transform: scale(1) translate(0, 0);
+    }
+  }
+  
