@@ -24,6 +24,7 @@ var gameData = {
     distance: 0,
     obstacles: [],
     characters: [],
+    isGameOver: false
 }
 
 // Start animation
@@ -50,6 +51,8 @@ function Timer() {
 function gameOver() {
     document.querySelector("#gameOverModal").style.display = "flex"
     clearInterval(gameData.timeLoop)
+    gameData.player.element.remove()
+    gameData.characters.filter(c=>c.type === "player").map(c=>{c.element.remove()})
 }
 
 let randomInterval = (min, max) => Math.floor(Math.random() * (max - min) + min)

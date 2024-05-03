@@ -19,7 +19,7 @@ class Character {
         this.speedUp = speedUp
         this.width = dims.w;
         this.height = dims.h;
-        this.element = document.createElement('div');
+        this.element = document.createElement('span');
         this.element.style.zIndex = "999"
         if (type === "player") {
             this.element.id = type;

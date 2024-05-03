@@ -15,7 +15,12 @@ play.addEventListener('click', () => {
     gameData.levelScore = 0
     gameData.distance = 0
     hideModals()
-    game(levels[gameData.currentLevel].scene, levels[gameData.currentLevel].obstacles, levels[gameData.currentLevel].enemies, levels[gameData.currentLevel].bonus, levels[gameData.currentLevel].background, levels[gameData.currentLevel].duration, levels[gameData.currentLevel].end);
+    if (levels.length === 0) {
+        alert("Add levels to the game.")
+        window.location.reload()
+    } else {
+        game(levels[0].scene, levels[0].obstacles, levels[0].enemies, levels[0].bonus, levels[0].background, levels[0].duration, levels[0].end);
+    }
 })
 
 document.querySelectorAll("#btn_classement_GO, #btn_classement_win").forEach(button => {

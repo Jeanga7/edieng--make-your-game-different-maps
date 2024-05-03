@@ -37,7 +37,6 @@ const killaudio = new Audio("/assets/css/kill.mp3")
 
 
 export let paused = false;
-export let gameover = false
 var ContactWithennemy = false
 
 const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
@@ -45,6 +44,7 @@ const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeig
 
 export function game(sceneElements, obstacles, enemies, bonus, bg, duration, end) {
     hideModals()
+    gameData.isGameOver = false
     cancelAnimationFrame(gameData.globalAnimation)
     createWorldElements(bg, duration, gameData, img);
 
@@ -97,7 +97,7 @@ export function game(sceneElements, obstacles, enemies, bonus, bg, duration, end
 
         gameData.obstacles.forEach(platform => platform.draw());
         
-        if (!gameData.paused && !gameover) {
+        if (!gameData.paused && !gameData.isGameOver) {
             PauseMenu.style.display = "none"
             gameData.characters.forEach(char => {
                 char.update();
@@ -206,7 +206,7 @@ export function game(sceneElements, obstacles, enemies, bonus, bg, duration, end
                     }
                 }
             })
-        } else if (gameData.paused && !gameover && !gameData.levelEndPause) {
+        } else if (gameData.paused && !gameData.isGameOver && !gameData.levelEndPause) {
             PauseMenu.style.display = "flex"
         };
 
@@ -307,7 +307,7 @@ export function game(sceneElements, obstacles, enemies, bonus, bg, duration, end
             game(levels[gameData.currentLevel].scene, levels[gameData.currentLevel].obstacles, levels[gameData.currentLevel].enemies, levels[gameData.currentLevel].bonus, levels[gameData.currentLevel].background, levels[gameData.currentLevel].duration, levels[gameData.currentLevel].end)
         } else {
             gameData.paused = true
-            gameover = true
+            gameData.isGameOver = true
             console.log(gameData.player);
             gameOver()
             cancelAnimationFrame(gameData.cameraAnimation)
@@ -435,7 +435,7 @@ function restartGame() {
     gameData.paused = false
     gameData.levelEndPause = false
     gameData.player = null
-    gameover = false
+    gameData.isGameOver = false
     hideModals()
     game(levels[gameData.currentLevel].scene, levels[gameData.currentLevel].obstacles, levels[gameData.currentLevel].enemies, levels[gameData.currentLevel].bonus, levels[gameData.currentLevel].background, levels[gameData.currentLevel].duration, levels[gameData.currentLevel].end);
 }
