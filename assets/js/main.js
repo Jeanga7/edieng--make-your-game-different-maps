@@ -1,23 +1,21 @@
-import { game, gameData } from "./script.mjs";
+import { game } from "./script.mjs";
 import { levels } from "./levels.js";
-import { currentLevel } from "./script.mjs";
-
+import { gameData, hideModals } from "./utils.js";
 
 const play = document.querySelector("#play")
 
 play.addEventListener('click', () => {
     document.querySelector('#mainMenuModal').style.display = "none"
     gameData.paused = false;
+    gameData.levelEndPause = false;
+    gameData.timeLoop = null;
     gameData.totalScore = 0
     gameData.lives = 3
     gameData.coins = 0
     gameData.levelScore = 0
     gameData.distance = 0
-    const modals = document.querySelectorAll("#pauseModal, #gameOverModal, #winModal")
-    modals.forEach(modal => {
-        modal.style.display = "none"
-    })
-    game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].bonus, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end);
+    hideModals()
+    game(levels[gameData.currentLevel].scene, levels[gameData.currentLevel].obstacles, levels[gameData.currentLevel].enemies, levels[gameData.currentLevel].bonus, levels[gameData.currentLevel].background, levels[gameData.currentLevel].duration, levels[gameData.currentLevel].end);
 })
 
 document.querySelectorAll("#btn_classement_GO, #btn_classement_win").forEach(button => {

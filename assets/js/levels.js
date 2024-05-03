@@ -196,7 +196,7 @@ export let levels =
                     "type": "coin"
                 }
             ],
-            "ennemies": [
+            "enemies": [
                 {
                     "pos": {
                         "x": 1400,
@@ -378,7 +378,7 @@ export let levels =
                     "type": "life"
                 }
             ],
-            "ennemies": [
+            "enemies": [
                 {
                     "pos": {
                         "x": 1200,

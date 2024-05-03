@@ -11,7 +11,12 @@ import {
 import {
     Timer,
     gameOver,
-    checkCollision
+    checkCollision,
+    gameData,
+    updateLives,
+    updateScore,
+    addScore,
+    hideModals
 } from "./utils.js";
 import {
     img,
@@ -22,18 +27,6 @@ import {
 import {
     createWorldElements
 } from "./gameElements.js";
-
-export let currentLevel = 0;
-
-export var gameData = {
-    player: null,
-    totalScore: 0,
-    lives: 3,
-    coins: 0,
-    levelScore: 0,
-    distance: 0,
-    obstacles: []
-}
 
 const backaudio = new Audio("/assets/css/Epic Symphonic Ancient Egyptian Music - Valley of the Kings (Wādī Al-Mulūk)(1)(1).mp3")
 const Runaudio = new Audio("/assets/css/Run on Sand Sound Effect.mp3")
@@ -50,19 +43,13 @@ var ContactWithennemy = false
 const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
 const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
 
-export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, end) {
+export function game(sceneElements, obstacles, enemies, bonus, bg, duration, end) {
+    hideModals()
+    cancelAnimationFrame(gameData.globalAnimation)
     createWorldElements(bg, duration, gameData, img);
 
+    gameData.duration = duration
     gameData.levelScore = 0
-
-    let updateScore = () => document.querySelector("#score").textContent = `Score: ${gameData.totalScore}`
-    let updateLives = () => document.querySelector("#life").textContent = `Lives: ${gameData.lives}`
-
-    function addScore(n) {
-        gameData.totalScore += n
-        gameData.levelScore += n
-        updateScore()
-    }
 
     let decor = []
 
@@ -71,19 +58,13 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
         decor.push(new SceneElement(se.pos, se.size, se.type, se.cssPosition))
     });
 
-    let characters = [];
+    gameData.characters = [];
 
     gameData.player = new Player();
-    characters.push(gameData.player);
-    // bonus.forEach(bon => {
-    //     characters.push(new Bonus(bon.pos, bon.type, {
-    //         w: 175 / 4,
-    //         h: 200 / 4
-    //     }))
-    // })
+    gameData.characters.push(gameData.player);
 
-    ennemies.forEach(en => {
-        characters.push(new Enemy(en.pos, en.mobile, en.speedUp))
+    enemies.forEach(en => {
+        gameData.characters.push(new Enemy(en.pos, en.mobile, en.speedUp))
     })
 
 
@@ -107,26 +88,24 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
     function animate() {
         backaudio.play()
         const PauseMenu = document.querySelector("#pauseModal")
-        requestAnimationFrame(animate);
+        gameData.globalAnimation = requestAnimationFrame(animate);
         let posX = gameData.player.position.x
         if (posX !== 0 && posX > gameData.distance && posX - gameData.distance >= 1000) {
             addScore(10)
-            console.log("Distance: ", gameData.distance, " posX: ", posX, " VelocityX: ", gameData.player.velocity.x);
             gameData.distance = gameData.player.position.x
         }
 
         gameData.obstacles.forEach(platform => platform.draw());
-        // obstacles.forEach(obstacle => obstacle.draw());
+        
         if (!gameData.paused && !gameover) {
             PauseMenu.style.display = "none"
-            characters.forEach(char => {
+            gameData.characters.forEach(char => {
                 char.update();
                 var found = false
 
                 // Vérifier les collisions avec les obstacles
                 gameData.obstacles.forEach(obstacle => {
-                    // console.log(obstacle.position);
-                    if (obstacle.type != "life" && obstacle.type != "power" && obstacle.type != "coin") {
+                    if (obstacle.type !== "life" && obstacle.type !== "power" && obstacle.type !== "coin") {
                         if (checkCollision(char, obstacle)) {
                             if (char.type === "enemy") {
                                 char.velocity.x = char.direction;
@@ -227,7 +206,7 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
                     }
                 }
             })
-        } else if (gameData.paused && !gameover) {
+        } else if (gameData.paused && !gameover && !gameData.levelEndPause) {
             PauseMenu.style.display = "flex"
         };
 
@@ -257,10 +236,8 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
                 console.log("Got life !");
                 obstacleFound.element.remove()
                 bonusaudio.play()
-                console.log(obstacles[obstacleIndex]);
                 gameData.obstacles.splice(obstacleIndex, 1)
                 var life = document.querySelector("#life").textContent.split(" ")[1]
-                console.log(life);
                 gameData.lives = parseInt(life) + 1
                 updateLives()
             } else if (obstacleType === "power" && !gameData.player.power) {
@@ -270,32 +247,11 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
                 gameData.obstacles.splice(obstacleIndex, 1)
                 gameData.player.power = true;
             }
-            // } else if (obstacleType === "enemy") {
-            //     console.log("power", gameData.player.power);
-            //     if (!gameData.player.power && ContactWithennemy) {
-            //         console.log("Dead !");
-            //         dieaudio.play()
-            //         gameData.player.velocity.y -= 20
-            //         ContactWithennemy = false
-            //     } else if (gameData.player.power && !ContactWithennemy) {
-            //         console.log("Enemy killed !");
-            //         obstacleFound.element.remove()
-            //         killaudio.play()
-            //         gameData.obstacles.splice(obstacleIndex, 1)
-            //         // On doit supprimer l'élément de la liste des characters
-
-            //         // Sleep for 5 seconds
-            //         setTimeout(function () {
-            //             gameData.player.power = false;
-            //         }, powerDuration); // 5000 milliseconds = 5 seconds
-            //     }
-            // }
         }
 
-        characters.forEach((char, i) => {
+        gameData.characters.forEach((char, i) => {
             if (char.type === "enemy") {
                 if (checkCollision(gameData.player, char, enemyContact)) {
-                    // console.log("power", gameData.player.power);
                     if (!gameData.player.power) {
                         console.log("Dead !");
                         dieaudio.play()
@@ -305,8 +261,8 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
                         console.log("Enemy killed !");
                         char.element.remove()
                         killaudio.play()
-                        characters.splice(i, 1)
-                        // On doit supprimer l'élément de la liste des characters
+                        gameData.characters.splice(i, 1)
+                        // On doit supprimer l'élément de la liste des gameData.characters
 
                         // Sleep for 5 seconds
                         setTimeout(function () {
@@ -321,16 +277,15 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
     }
 
     function switchLevel() {
-        currentLevel++;
-        if (currentLevel < levels.length) {
-            const level = levels[currentLevel];
+        gameData.currentLevel++;
+        if (gameData.currentLevel < levels.length) {
+            const level = levels[gameData.currentLevel];
             // Notifications de fin de niveau
             document.querySelector('#winModal').style.display = "flex"
             gameData.levelEndPause = true
             document.querySelector("#btn_continue_win").addEventListener('click', () => {
-                document.querySelector('#winModal').style.display = "none"
                 gameData.levelEndPause = false
-                game(level.scene, level.obstacles, level.ennemies, level.bonus, level.background, level.duration, level.end, score);
+                game(level.scene, level.obstacles, level.enemies, level.bonus, level.background, level.duration, level.end, score);
             })
         } else {
             alert("You finished the GAME !")
@@ -339,7 +294,7 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
 
     function checkEnd() {
         const playerPos = parseInt(document.querySelector("#player").style.left)
-        if ((playerPos) >= levels[currentLevel].end) {
+        if ((playerPos) >= levels[gameData.currentLevel].end) {
             switchLevel();
         }
     }
@@ -349,16 +304,18 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
         if (gameData.lives >= 1) {
             gameData.totalScore -= gameData.levelScore
             clearInterval(gameData.timeLoop)
-            game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].bonus, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end)
+            game(levels[gameData.currentLevel].scene, levels[gameData.currentLevel].obstacles, levels[gameData.currentLevel].enemies, levels[gameData.currentLevel].bonus, levels[gameData.currentLevel].background, levels[gameData.currentLevel].duration, levels[gameData.currentLevel].end)
         } else {
             gameData.paused = true
             gameover = true
+            console.log(gameData.player);
             gameOver()
+            cancelAnimationFrame(gameData.cameraAnimation)
         }
     }
 
     function camera() {
-        window.requestAnimationFrame(camera)
+        gameData.cameraAnimation = window.requestAnimationFrame(camera)
         let playerSize = gameData.player.element.getBoundingClientRect()
 
         if (playerSize.left >= (vw / 2)) {
@@ -367,7 +324,7 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
 
         if (playerSize.top >= vh) {
             decreaseLife()
-            // game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end)
+            // game(levels[gameData.currentLevel].scene, levels[gameData.currentLevel].obstacles, levels[gameData.currentLevel].enemies, levels[gameData.currentLevel].background, levels[gameData.currentLevel].duration, levels[gameData.currentLevel].end)
         }
     }
     camera()
@@ -471,13 +428,14 @@ function pauseGame() {
 
 // handle the restart option
 function restartGame() {
-    currentLevel = 0;
+    gameData.currentLevel = 0;
     gameData.lives = 3;
     gameData.totalScore = 0;
     gameData.levelScore = 0;
     gameData.paused = false
+    gameData.levelEndPause = false
+    gameData.player = null
     gameover = false
-    document.querySelector("#gameOverModal").style.display = "none"
-    // window.location.reload()
-    game(levels[currentLevel].scene, levels[currentLevel].obstacles, levels[currentLevel].ennemies, levels[currentLevel].bonus, levels[currentLevel].background, levels[currentLevel].duration, levels[currentLevel].end);
+    hideModals()
+    game(levels[gameData.currentLevel].scene, levels[gameData.currentLevel].obstacles, levels[gameData.currentLevel].enemies, levels[gameData.currentLevel].bonus, levels[gameData.currentLevel].background, levels[gameData.currentLevel].duration, levels[gameData.currentLevel].end);
 }

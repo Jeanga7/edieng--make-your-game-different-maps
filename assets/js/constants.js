@@ -6,7 +6,7 @@ export {
     enemyContact,
     playerInitialPosition,
     playerDims,
-    numberOfEnnemies,
+    numberOfEnemies,
     powerDuration
 }
 
@@ -51,6 +51,6 @@ const img = Object.fromEntries(Object.entries({
     coin: "coin.gif"
 }).map(el => [el[0], imgStorage + el[1]]))
 
-const numberOfEnnemies = Object.entries(img)
+const numberOfEnemies = Object.entries(img)
                                 .filter(el=>el[0].includes("enemy_"))
                                 .length

@@ -4,9 +4,10 @@
 
 [ ] affichage du score sur les modals de pause, win et game over
 
-[ ] le timer ne s'arrete pas sur les modals (pause, game over...)
+[x] le timer ne s'arrete pas sur les modals (pause, game over...)
 
 [x] bloquer pause lors du game over
 
 [ ] lorsque la game est terminée et que nous allons dans menu puis play le player n'apparait pas
 
+[x] player accélère quand il meurt

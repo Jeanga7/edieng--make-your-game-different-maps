@@ -1,22 +1,36 @@
-import {
-    gameData
-} from "./script.mjs";
 import { createTimeStats } from "./gameElements.js";
 
 export {
+    gameData,
     Timer,
     gameOver,
     randomInterval,
-    checkCollision
+    checkCollision,
+    updateLives,
+    updateScore,
+    addScore,
+    hideModals
 };
 
-let gameDuration = 240
+var gameData = {
+    duration: 240,
+    currentLevel: 0,
+    globalAnimation: null,
+    player: null,
+    totalScore: 0,
+    lives: 3,
+    coins: 0,
+    levelScore: 0,
+    distance: 0,
+    obstacles: [],
+    characters: [],
+}
 
 // Start animation
 function Timer() {
     var countdownElement = document.getElementById('timer');
     
-    var countdownTime = gameDuration;
+    var countdownTime = gameData.duration;
 
     gameData.timeLoop = setInterval(function () {
         if (!(gameData.paused || gameData.levelEndPause)) {
@@ -63,4 +77,20 @@ function checkCollision(player, obstacle, contact = 0) {
     }
 
     return false;
+}
+
+let updateScore = () => document.querySelector("#score").textContent = `Score: ${gameData.totalScore}`
+let updateLives = () => document.querySelector("#life").textContent = `Lives: ${gameData.lives}`
+
+function addScore(n) {
+    gameData.totalScore += n
+    gameData.levelScore += n
+    updateScore()
+}
+
+function hideModals() {
+    const modals = document.querySelectorAll("#pauseModal, #gameOverModal, #winModal")
+    modals.forEach(modal => {
+        modal.style.display = "none"
+    })
 }

@@ -4,7 +4,7 @@ import {
     world,
     playerInitialPosition,
     playerDims,
-    numberOfEnnemies
+    numberOfEnemies
 } from "./constants.js"
 import { randomInterval } from "./utils.js"
 export { Character, Player, Enemy, Obstacle, Bonus, SceneElement }
@@ -61,7 +61,7 @@ class Player extends Character {
 class Enemy extends Character {
     constructor(pos, mobile, speedUp) {
         super("enemy", pos, { w: 50, h: 60 }, mobile, speedUp)
-        let imgName = img[this.type + "_" + randomInterval(1, numberOfEnnemies)]
+        let imgName = img[this.type + "_" + randomInterval(1, numberOfEnemies)]
         this.element.style.backgroundImage = `url('${imgName}')`
         this.direction = 1
     }
@@ -78,7 +78,6 @@ class Obstacle {
         this.width = dims.w;
         this.height = dims.h;
         this.type = type
-        this.taken = false
         this.element = document.createElement('div');
         this.element.style.backgroundImage = `url(${img[type]})`
         this.element.classList.add('obstacle');
