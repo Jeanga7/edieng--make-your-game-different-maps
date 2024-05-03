@@ -488,6 +488,7 @@ span#line {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -497,20 +498,71 @@ span#line {
     from {
         opacity: 1;
     }
+
     to {
         opacity: 0;
     }
 }
 
-#fermerInstruction{
+#fermerInstruction {
     position: fixed;
     border-radius: 10px;
     right: 42%;
     top: 10%;
-    color:  white;
+    color: white;
     background-color: rgb(214, 8, 8);
     cursor: pointer;
 }
-#fermerInstruction:hover{
+
+#fermerInstruction:hover {
     transform: scale(1.1);
+}
+
+/* MODAL HISTORY */
+
+#historyModal {
+    position: absolute;
+    height: 80%;
+    width: 58%;
+    top: 2%;
+    right: 1%;
+    z-index: 2500;
+    background-color: brown;
+    display: none;
+}
+
+#historien {
+    position: absolute;
+    width: 32%;
+    height: 55%;
+    bottom: 0;
+    right: 0;
+    background-image: url(../img/historien.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: aqua;
+}
+
+#bulleHistory {
+    position: absolute;
+    width: 75%;
+    height: 75%;
+    top: 0;
+    left: 0;
+    background-image: url(../img/bulle.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    transform: scaleX(-1);
+    background-color: black;
+}
+
+#textHistory {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    height: 72%;
+    width: 85%;
+
+    border-radius: 20px;
+    background-color: blue;
 }

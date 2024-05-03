@@ -7,3 +7,5 @@
 4 --> le timer ne s'arrete pas sur les modals (pause, game over...)
 
 5 --> bloquer pause lors du game over
+
+6 -> lorsque la game est terminée et que nous allons dans menu puis play le player n'apparait pas

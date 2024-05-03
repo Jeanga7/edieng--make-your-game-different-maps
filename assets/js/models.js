@@ -78,6 +78,7 @@ class Obstacle {
         this.width = dims.w;
         this.height = dims.h;
         this.type = type
+        this.taken = false
         this.element = document.createElement('div');
         this.element.style.backgroundImage = `url(${img[type]})`
         this.element.classList.add('obstacle');
