@@ -97,7 +97,7 @@ export function game(sceneElements, obstacles, enemies, bonus, bg, duration, end
 
         gameData.obstacles.forEach(platform => platform.draw());
         
-        if (!gameData.paused && !gameData.isGameOver) {
+        if (!gameData.paused && !gameData.isGameOver && !gameData.levelEndPause) {
             PauseMenu.style.display = "none"
             gameData.characters.forEach(char => {
                 char.update();

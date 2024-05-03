@@ -1,4 +1,4 @@
-[ ] lorsque le player meurt une fois, il meurt en boucle à côté du coin 
+[x] lorsque le player meurt une fois, il meurt en boucle à côté du coin 
 
 [x] lorsque le player meurt 2x ou plus, si il prend le life le nombre de live devient 4 automatiquement (le problème est que Gamedata est toujours reinitialiser à 3 après une mort)
 
