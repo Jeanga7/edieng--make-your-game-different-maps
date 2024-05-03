@@ -35,6 +35,7 @@ function Timer() {
 
 function gameOver() {
     document.querySelector("#gameOverModal").style.display = "flex"
+    clearInterval(gameData.timeLoop)
 }
 
 let randomInterval = (min, max) => Math.floor(Math.random() * (max - min) + min)
