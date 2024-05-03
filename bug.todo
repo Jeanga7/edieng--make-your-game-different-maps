@@ -15,3 +15,5 @@
 [x] player accélère quand il meurt
 
 [ ] Lorsque le jeu est terminé, le player continue de courir
+
+[ ] L'input ne marche pas lorsqu'on doit entrer son nom d'utilisateur à la fin du jeu
