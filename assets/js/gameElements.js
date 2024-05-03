@@ -1,8 +1,9 @@
+import { gameData } from "./utils.js";
+
 export { createWorldElements, createTimeStats };
 
-const world = document.getElementById("world");
-function createWorldElements(bg, duration, gameData, img) {
-
+function createWorldElements(bg, duration) {
+    const world = document.getElementById("world");
     world.innerHTML = "";
     world.style.width = "100%";
     world.style.height = "100%";
@@ -72,7 +73,7 @@ function createWorldElements(bg, duration, gameData, img) {
     });
     
     document.querySelectorAll("#scoreStats_pause, #scoreStats_GO, #scoreStats_win").forEach(element => {
-        element.textContent = `🎯 ${gameData.totalScore}`;
+        element.textContent = `🎯 Score: ${gameData.totalScore}`;
         element.style.color = "white";
         element.style.fontSize = "30px"
     });

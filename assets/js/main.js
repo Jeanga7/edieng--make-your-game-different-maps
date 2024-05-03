@@ -1,6 +1,6 @@
-import { game, gameData } from "./script.mjs";
+import { game } from "./script.mjs";
 import { levels } from "./levels.js";
-import { hideModals } from "./utils.js";
+import { gameData, hideModals } from "./utils.js";
 
 
 const play = document.querySelector("#play")
@@ -23,7 +23,7 @@ play.addEventListener('click', () => {
 
         // alert(username)
 
-        game(levels[gameData.currentLevel].scene, levels[gameData.currentLevel].obstacles, levels[gameData.currentLevel].ennemies, levels[gameData.currentLevel].bonus, levels[gameData.currentLevel].background, levels[gameData.currentLevel].duration, levels[gameData.currentLevel].end);
+        game(levels[gameData.currentLevel].scene, levels[gameData.currentLevel].obstacles, levels[gameData.currentLevel].enemies, levels[gameData.currentLevel].bonus, levels[gameData.currentLevel].background, levels[gameData.currentLevel].duration, levels[gameData.currentLevel].end);
     })
 
 

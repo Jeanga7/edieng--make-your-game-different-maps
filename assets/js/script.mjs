@@ -16,7 +16,9 @@ import {
     checkCollision,
     updateLives,
     updateScore,
-    hideModals
+    hideModals,
+    gameData,
+    addScore
 } from "./utils.js";
 import {
     img,
@@ -27,19 +29,6 @@ import {
 import {
     createWorldElements
 } from "./gameElements.js";
-
-export var gameData = {
-    player: null,
-    currentLevel: 0,
-    totalScore: 0,
-    lives: 3,
-    coins: 0,
-    levelScore: 0,
-    distance: 0,
-    paused: false,
-    levelEndPause: false,
-    gameOverPause: false
-}
 
 const backaudio = new Audio("/assets/css/Epic Symphonic Ancient Egyptian Music - Valley of the Kings (Wādī Al-Mulūk)(1)(1).mp3")
 const Runaudio = new Audio("/assets/css/Run on Sand Sound Effect.mp3")
@@ -53,18 +42,11 @@ export let paused = false;
 const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
 const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
 
-export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, end) {
-    createWorldElements(bg, duration, gameData, img);
+export function game(sceneElements, obstacles, enemies, bonus, bg, duration, end) {
+    createWorldElements(bg, gameData.duration);
     hideModals()
 
     gameData.levelScore = 0
-
-
-    function addScore(n) {
-        gameData.totalScore += n
-        gameData.levelScore += n
-        updateScore()
-    }
 
     let decor = []
 
@@ -84,7 +66,7 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
         }))
     })
 
-    ennemies.forEach(en => {
+    enemies.forEach(en => {
         characters.push(new Enemy(en.pos, en.mobile, en.speedUp))
     })
 
@@ -121,7 +103,10 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
         if (!gameData.paused) {
             PauseMenu.style.display = "none"
             characters.forEach(char => {
-                char.update();
+                if (!gameData.levelEndPause && !gameData.gameOverPause) {
+                    char.update();
+                }
+                
                 var found = false
 
                 // Vérifier les collisions avec les obstacles
@@ -242,7 +227,8 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
                     char.element.remove()
                     bonusaudio.play()
                     characters.splice(i, 1)
-                    gameData.lives += 1
+                    alert(gameData.lives)
+                    gameData.lives++
                     updateLives()
                 } else if (char.type === "power" && !gameData.player.power) {
                     console.log("Got power !");
@@ -286,7 +272,7 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
             document.querySelector("#btn_continue_win").addEventListener('click', () => {
                 document.querySelector('#winModal').style.display = "none"
                 gameData.levelEndPause = false
-                game(level.scene, level.obstacles, level.ennemies, level.bonus, level.background, level.duration, level.end, score);
+                game(level.scene, level.obstacles, level.enemies, level.bonus, level.background, level.duration, level.end, score);
             })
         } else {
             alert("You finished the GAME !")
@@ -305,7 +291,8 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
         if (gameData.lives >= 1) {
             gameData.totalScore -= gameData.levelScore
             clearInterval(gameData.timeLoop)
-            game(levels[gameData.currentLevel].scene, levels[gameData.currentLevel].obstacles, levels[gameData.currentLevel].ennemies, levels[gameData.currentLevel].bonus, levels[gameData.currentLevel].background, levels[gameData.currentLevel].duration, levels[gameData.currentLevel].end)
+
+            game(levels[gameData.currentLevel].scene, levels[gameData.currentLevel].obstacles, levels[gameData.currentLevel].enemies, levels[gameData.currentLevel].bonus, levels[gameData.currentLevel].background, levels[gameData.currentLevel].duration, levels[gameData.currentLevel].end)
         } else {
             gameOver()
         }

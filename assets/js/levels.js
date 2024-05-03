@@ -163,7 +163,7 @@ export let levels =
                     }
                 },
             ],
-            "ennemies": [
+            "enemies": [
                 {
                     "pos": {
                         "x": 1400,
@@ -312,7 +312,7 @@ export let levels =
                     }
                 }
             ],
-            "ennemies": [
+            "enemies": [
                 {
                     "pos": {
                         "x": 1200,

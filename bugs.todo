@@ -8,4 +8,4 @@
 
 [ ] affichage du score sur les modals de pause, win et game over
 
-[ ] le timer ne s'arrete pas sur les modals (pause, game over...)
+[X] le timer ne s'arrete pas sur les modals (pause, game over...)

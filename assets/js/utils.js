@@ -1,11 +1,11 @@
 import {
-    game,
-    gameData
+    game
 } from "./script.mjs";
 import { createTimeStats } from "./gameElements.js";
 import { levels } from "./levels.js";
 
 export {
+    gameData,
     Timer,
     restartGame,
     pauseGame,
@@ -14,16 +14,29 @@ export {
     checkCollision,
     updateLives,
     updateScore,
-    hideModals
+    hideModals,
+    addScore
 };
 
-let gameDuration = 240
+var gameData = {
+    duration: 240,
+    player: null,
+    currentLevel: 0,
+    totalScore: 0,
+    lives: 3,
+    coins: 0,
+    levelScore: 0,
+    distance: 0,
+    paused: false,
+    levelEndPause: false,
+    gameOverPause: false
+}
 
 // Start animation
 function Timer() {
     var countdownElement = document.getElementById('timer');
     
-    var countdownTime = gameDuration;
+    var countdownTime = gameData.duration;
 
     gameData.timeLoop = setInterval(function () {
         if (!(gameData.paused || gameData.levelEndPause || gameData.gameOverPause)) {
@@ -61,7 +74,7 @@ function restartGame() {
     gameData.levelEndPause = false
     gameData.gameOverPause = false
     // window.location.reload()
-    game(levels[gameData.currentLevel].scene, levels[gameData.currentLevel].obstacles, levels[gameData.currentLevel].ennemies, levels[gameData.currentLevel].bonus, levels[gameData.currentLevel].background, levels[gameData.currentLevel].duration, levels[gameData.currentLevel].end);
+    game(levels[gameData.currentLevel].scene, levels[gameData.currentLevel].obstacles, levels[gameData.currentLevel].enemies, levels[gameData.currentLevel].bonus, levels[gameData.currentLevel].background, levels[gameData.currentLevel].duration, levels[gameData.currentLevel].end);
 }
 
 function gameOver() {
@@ -106,4 +119,13 @@ function hideModals() {
     modals.forEach(modal => {
         modal.style.display = "none"
     })
+    gameData.paused = false
+    gameData.levelEndPause = false
+    gameData.gameOverPause = false
+}
+
+function addScore(n) {
+    gameData.totalScore += n
+    gameData.levelScore += n
+    updateScore()
 }
