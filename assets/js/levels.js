@@ -296,13 +296,13 @@ export let levels =
                     },
                     "type": "ground",
                     "size": {
-                        "w": 600,
+                        "w": 2850,
                         "h": 30
                     }
                 },
                 {
                     "pos": {
-                        "x": 1000,
+                        "x": 3000,
                         "y": 0
                     },
                     "type": "ground",
@@ -313,8 +313,8 @@ export let levels =
                 },
                 {
                     "pos": {
-                        "x": 250,
-                        "y": 100
+                        "x": 2100,
+                        "y": 140
                     },
                     "type": "platform2",
                     "size": {
@@ -324,8 +324,8 @@ export let levels =
                 },
                 {
                     "pos": {
-                        "x": 650,
-                        "y": 20
+                        "x": 2400,
+                        "y": 250
                     },
                     "type": "platform2",
                     "size": {
@@ -335,7 +335,7 @@ export let levels =
                 },
                 {
                     "pos": {
-                        "x": 1250,
+                        "x": 1750,
                         "y": 10
                     },
                     "type": "colonne",
@@ -343,6 +343,39 @@ export let levels =
                         "w": 176,
                         "h": 143
                     }
+                },
+                {
+                    "pos": {
+                        "x": 3750,
+                        "y": 10
+                    },
+                    "type": "colonne",
+                    "size": {
+                        "w": 176,
+                        "h": 143
+                    }
+                },
+                {
+                    "pos": {
+                        "x": 2480,
+                        "y": 320
+                    },
+                    "size": {
+                        "w": 50,
+                        "h": 60
+                    },
+                    "type": "coin"
+                },
+                {
+                    "pos": {
+                        "x": 2900,
+                        "y": 100
+                    },
+                    "size": {
+                        "w": 70,
+                        "h": 60
+                    },
+                    "type": "life"
                 }
             ],
             "ennemies": [
@@ -351,34 +384,35 @@ export let levels =
                         "x": 1200,
                         "y": 500
                     },
-                    "mobile": false
+                    "mobile": true,
+                    "speedUp": 3
                 },
                 {
                     "pos": {
-                        "x": 1500,
+                        "x": 3500,
                         "y": 500
                     },
                     "mobile": true,
                     "speedUp": 3
                 }
             ],
-            "bonus": [
-                {
-                    "pos": {
-                        "x": 340,
-                        "y": 180
-                    },
-                    "type": "coin"
-                },
-                {
-                    "pos": {
-                        "x": 1800,
-                        "y": 30
-                    },
-                    "type": "coin",
+            // "bonus": [
+            //     {
+            //         "pos": {
+            //             "x": 340,
+            //             "y": 180
+            //         },
+            //         "type": "coin"
+            //     },
+            //     {
+            //         "pos": {
+            //             "x": 1800,
+            //             "y": 30
+            //         },
+            //         "type": "coin",
                     
-                }
-            ],
+            //     }
+            // ],
             "background": "url('/assets/img/nightsky.jpg')",
             "duration": 240,
             "end": 5000

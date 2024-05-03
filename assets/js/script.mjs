@@ -32,6 +32,7 @@ export var gameData = {
     coins: 0,
     levelScore: 0,
     distance: 0,
+    obstacles: []
 }
 
 const backaudio = new Audio("/assets/css/Epic Symphonic Ancient Egyptian Music - Valley of the Kings (Wādī Al-Mulūk)(1)(1).mp3")
@@ -86,10 +87,10 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
     })
 
 
-    const platforms = [];
+    gameData.obstacles = [];
 
     obstacles.forEach(obs => {
-        platforms.push(new Obstacle(obs.pos, obs.type, obs.size))
+        gameData.obstacles.push(new Obstacle(obs.pos, obs.type, obs.size))
     })
 
     const keys = {
@@ -102,6 +103,7 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
     };
 
     // var val = 1
+    let obstacleType;
     function animate() {
         backaudio.play()
         const PauseMenu = document.querySelector("#pauseModal")
@@ -113,7 +115,7 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
             gameData.distance = gameData.player.position.x
         }
 
-        platforms.forEach(platform => platform.draw());
+        gameData.obstacles.forEach(platform => platform.draw());
         // obstacles.forEach(obstacle => obstacle.draw());
         if (!gameData.paused && !gameover) {
             PauseMenu.style.display = "none"
@@ -122,7 +124,7 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
                 var found = false
 
                 // Vérifier les collisions avec les obstacles
-                platforms.forEach(obstacle => {
+                gameData.obstacles.forEach(obstacle => {
                     // console.log(obstacle.position);
                     if (obstacle.type != "life" && obstacle.type != "power" && obstacle.type != "coin") {
                         if (checkCollision(char, obstacle)) {
@@ -178,20 +180,16 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
                             if (playerUnderObstacle) {
                                 char.position.y = obstacleBottom - char.height
                                 char.velocity.y = 0
-                                ContactWithennemy = true
                             } else if (playerOverObstacle) {
                                 char.position.y = obstacleTop - (obstacle.type === "ground" ? 20 : 8)
                                 char.velocity.y = 0
                                 char.onground = true
-                                ContactWithennemy = true
                             } else if (playerBeforeObstacle) {
                                 char.position.x = obstacleLeft - char.width
                                 char.velocity.x = 0
-                                ContactWithennemy = true
                             } else if (playerAfterObstacle) {
                                 char.position.x = obstacleRight
                                 char.velocity.x = 0
-                                ContactWithennemy = true
                             }
                             found = true
                         }
@@ -234,64 +232,76 @@ export function game(sceneElements, obstacles, ennemies, bonus, bg, duration, en
         };
 
 
-        platforms.forEach((obs, i) => {
-            if (checkCollision(gameData.player, obs, enemyContact)) {
-                if (obs.type === "coin") {
-                    console.log("Got coin !");
-                    obs.element.remove()
-                    coinaudio.play()
-                    obstacles.splice(i, 1)
-                    addScore(20)
-                    gameData.coins++
-                } else if (obs.type === "life") {
-                    console.log("Got life !");
-                    obs.element.remove()
-                    bonusaudio.play()
-                    obstacles.splice(i, 1)
-                    var life = document.querySelector("#life").textContent.split(" ")[1]
-                    console.log(life);
-                    gameData.lives = parseInt(life) + 1
-                    updateLives()
-                } else if (obs.type === "power" && !gameData.player.power) {
-                    console.log("Got power !");
-                    obs.element.remove()
-                    bonusaudio.play()
-                    obstacles.splice(i, 1)
-                    gameData.player.power = true;
-                }
-                // } else if (obs.type === "enemy") {
-                //     console.log("power", gameData.player.power);
-                //     if (!gameData.player.power && ContactWithennemy) {
-                //         console.log("Dead !");
-                //         dieaudio.play()
-                //         gameData.player.velocity.y -= 20
-                //         ContactWithennemy = false
-                //     } else if (gameData.player.power && !ContactWithennemy) {
-                //         console.log("Enemy killed !");
-                //         obs.element.remove()
-                //         killaudio.play()
-                //         obstacles.splice(i, 1)
-                //         // On doit supprimer l'élément de la liste des characters
-
-                //         // Sleep for 5 seconds
-                //         setTimeout(function () {
-                //             gameData.player.power = false;
-                //         }, powerDuration); // 5000 milliseconds = 5 seconds
-                //     }
-                // }
+        let newObstacleType;
+        let obstacleFound;
+        let obstacleIndex;
+        gameData.obstacles.forEach((obs, i) => {
+            if (checkCollision(gameData.player, obs, (obs.width/2)) && !obs.taken) {
+                newObstacleType = obs.type
+                obstacleFound = obs
+                obstacleIndex = i
             }
         });
 
-        characters.forEach((char) => {
+        if (newObstacleType !== obstacleType) {
+            obstacleType = newObstacleType
+            if (obstacleType === "coin") {
+                console.log("Got coin !");
+                obstacleFound.element.remove()
+                obstacleFound.taken = true
+                coinaudio.play()
+                gameData.obstacles.splice(obstacleIndex, 1)
+                addScore(20)
+                gameData.coins++
+            } else if (obstacleType === "life") {
+                console.log("Got life !");
+                obstacleFound.element.remove()
+                bonusaudio.play()
+                console.log(obstacles[obstacleIndex]);
+                gameData.obstacles.splice(obstacleIndex, 1)
+                var life = document.querySelector("#life").textContent.split(" ")[1]
+                console.log(life);
+                gameData.lives = parseInt(life) + 1
+                updateLives()
+            } else if (obstacleType === "power" && !gameData.player.power) {
+                console.log("Got power !");
+                obstacleFound.element.remove()
+                bonusaudio.play()
+                gameData.obstacles.splice(obstacleIndex, 1)
+                gameData.player.power = true;
+            }
+            // } else if (obstacleType === "enemy") {
+            //     console.log("power", gameData.player.power);
+            //     if (!gameData.player.power && ContactWithennemy) {
+            //         console.log("Dead !");
+            //         dieaudio.play()
+            //         gameData.player.velocity.y -= 20
+            //         ContactWithennemy = false
+            //     } else if (gameData.player.power && !ContactWithennemy) {
+            //         console.log("Enemy killed !");
+            //         obstacleFound.element.remove()
+            //         killaudio.play()
+            //         gameData.obstacles.splice(obstacleIndex, 1)
+            //         // On doit supprimer l'élément de la liste des characters
+
+            //         // Sleep for 5 seconds
+            //         setTimeout(function () {
+            //             gameData.player.power = false;
+            //         }, powerDuration); // 5000 milliseconds = 5 seconds
+            //     }
+            // }
+        }
+
+        characters.forEach((char, i) => {
             if (char.type === "enemy") {
                 if (checkCollision(gameData.player, char, enemyContact)) {
-                    console.log("power", gameData.player.power);
-                    if (!gameData.player.power && ContactWithennemy) {
+                    // console.log("power", gameData.player.power);
+                    if (!gameData.player.power) {
                         console.log("Dead !");
                         dieaudio.play()
                         gameData.player.velocity.y -= 20
                         ContactWithennemy = false
-                    } else if (gameData.player.power && !ContactWithennemy) {
+                    } else if (gameData.player.power) {
                         console.log("Enemy killed !");
                         char.element.remove()
                         killaudio.play()
