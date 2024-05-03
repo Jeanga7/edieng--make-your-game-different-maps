@@ -13,3 +13,5 @@
 [ ] le timer qui apparait sur le game over n'est pas celui du jeu
 
 [x] player accélère quand il meurt
+
+[ ] Lorsque le jeu est terminé, le player continue de courir

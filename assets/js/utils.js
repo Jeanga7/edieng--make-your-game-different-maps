@@ -1,4 +1,6 @@
 import { createTimeStats } from "./gameElements.js";
+import { levels } from "./levels.js";
+import { game } from "./script.mjs";
 
 export {
     gameData,
@@ -9,7 +11,10 @@ export {
     updateLives,
     updateScore,
     addScore,
-    hideModals
+    hideModals,
+    switchLevel,
+    checkEnd,
+    decreaseLife
 };
 
 var gameData = {
@@ -51,8 +56,7 @@ function Timer() {
 function gameOver() {
     document.querySelector("#gameOverModal").style.display = "flex"
     clearInterval(gameData.timeLoop)
-    gameData.player.element.remove()
-    gameData.characters.filter(c=>c.type === "player").map(c=>{c.element.remove()})
+    gameData.isGameOver = true
 }
 
 let randomInterval = (min, max) => Math.floor(Math.random() * (max - min) + min)
@@ -96,4 +100,42 @@ function hideModals() {
     modals.forEach(modal => {
         modal.style.display = "none"
     })
+}
+
+function switchLevel() {
+    gameData.currentLevel++;
+    if (gameData.currentLevel < levels.length) {
+        const level = levels[gameData.currentLevel];
+        // Notifications de fin de niveau
+        document.querySelector('#winModal').style.display = "flex"
+        gameData.levelEndPause = true
+        document.querySelector("#btn_continue_win").addEventListener('click', () => {
+            gameData.levelEndPause = false
+            game(level.scene, level.obstacles, level.enemies, level.bonus, level.background, level.duration, level.end, score);
+        })
+    } else {
+        alert("You finished the GAME !")
+    }
+}
+
+function checkEnd() {
+    const playerPos = parseInt(document.querySelector("#player").style.left)
+    if ((playerPos) >= levels[gameData.currentLevel].end) {
+        switchLevel();
+    }
+}
+
+function decreaseLife() {
+    gameData.lives--
+    if (gameData.lives >= 1) {
+        gameData.totalScore -= gameData.levelScore
+        clearInterval(gameData.timeLoop)
+        game(levels[gameData.currentLevel].scene, levels[gameData.currentLevel].obstacles, levels[gameData.currentLevel].enemies, levels[gameData.currentLevel].bonus, levels[gameData.currentLevel].background, levels[gameData.currentLevel].duration, levels[gameData.currentLevel].end)
+    } else {
+        gameData.paused = true
+        gameData.isGameOver = true
+        console.log(gameData.player);
+        gameOver()
+        cancelAnimationFrame(gameData.cameraAnimation)
+    }
 }
