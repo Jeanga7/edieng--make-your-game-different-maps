@@ -29,7 +29,9 @@ var gameData = {
     distance: 0,
     paused: false,
     levelEndPause: false,
-    gameOverPause: false
+    gameOverPause: false,
+    obstacles: [],
+    characters: []
 }
 
 // Start animation
