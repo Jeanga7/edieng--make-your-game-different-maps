@@ -5,6 +5,11 @@ import { gameData, hideModals } from "./utils.js";
 const play = document.querySelector("#play")
 
 play.addEventListener('click', () => {
+    audio.pause();
+    music.pause();
+    audio.currentTime = 0;
+    currentIndex = 0;
+    
     document.querySelector('#mainMenuModal').style.display = "none"
     gameData.paused = false;
     gameData.levelEndPause = false;
