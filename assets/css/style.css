@@ -527,7 +527,7 @@ span#line {
     top: 2%;
     right: 1%;
     z-index: 2500;
-    background-color: brown;
+    /* background-color: brown; */
     display: none;
 }
 
@@ -540,7 +540,7 @@ span#line {
     background-image: url(../img/historien.png);
     background-size: contain;
     background-repeat: no-repeat;
-    background-color: aqua;
+    /* background-color: aqua; */
 }
 
 #bulleHistory {
@@ -553,7 +553,7 @@ span#line {
     background-size: contain;
     background-repeat: no-repeat;
     transform: scaleX(-1);
-    background-color: black;
+    /* background-color: black; */
 }
 
 #textHistory {
@@ -564,5 +564,5 @@ span#line {
     width: 85%;
 
     border-radius: 20px;
-    background-color: blue;
+    /* background-color: blue; */
 }

@@ -22,6 +22,8 @@ const powerDuration = 5000
 const img = Object.fromEntries(Object.entries({
     sky: "sky.jpg",
     ground: "desert-ground.png",
+    groundNL: "groundNextLevel.jpeg",
+    ground_grotte: "ground-grotte.jpg",
     player: "static.png",
     playerJumping: "jumping.png",
     playerFalling: "falling.png",
@@ -34,6 +36,7 @@ const img = Object.fromEntries(Object.entries({
     sun: "sun.png",
     moon: "moon.png",
     scene2: "desert1.png",
+    nuage: "nuage.png",
     enemy_1: "enemy1.gif",
     enemy_2: "enemy2.gif",
     enemy_3: "enemy3.gif",
@@ -46,7 +49,6 @@ const img = Object.fromEntries(Object.entries({
     status: "status_colonne.png",
     sphinx: "sphinx.png",
     gameOver: "anibus_gameOver.jpeg",
-    groundNL: "groundNextLevel.jpeg",
     life: "coeur.gif",
     power: "power.gif",
     coin: "coin.gif"

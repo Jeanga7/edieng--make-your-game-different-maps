@@ -9,7 +9,7 @@ play.addEventListener('click', () => {
     music.pause();
     audio.currentTime = 0;
     currentIndex = 0;
-    
+
     document.querySelector('#mainMenuModal').style.display = "none"
     gameData.paused = false;
     gameData.levelEndPause = false;
@@ -102,7 +102,6 @@ document.querySelector('#fermerInstruction').addEventListener('click', () => {
 
 // function removeScripts() {
 //     let scripts = document.querySelectorAll('script');
-
 //     scripts.forEach(script => {
 //         if (script.type === 'module') {
 //             script.body.removeChild(script);
