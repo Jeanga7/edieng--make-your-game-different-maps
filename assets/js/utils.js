@@ -1,3 +1,4 @@
+import { vh, vw } from "./constants.js";
 import { createTimeStats } from "./gameElements.js";
 import { levels } from "./levels.js";
 import { game } from "./script.mjs";
@@ -14,7 +15,8 @@ export {
     hideModals,
     switchLevel,
     checkEnd,
-    decreaseLife
+    decreaseLife,
+    camera
 };
 
 var gameData = {
@@ -137,5 +139,19 @@ function decreaseLife() {
         console.log(gameData.player);
         gameOver()
         cancelAnimationFrame(gameData.cameraAnimation)
+    }
+}
+
+function camera() {
+    gameData.cameraAnimation = window.requestAnimationFrame(camera)
+    let playerSize = gameData.player.element.getBoundingClientRect()
+
+    if (playerSize.left >= (vw / 2)) {
+        world.scrollLeft += 5
+    }
+
+    if (playerSize.top >= vh) {
+        decreaseLife()
+        // game(levels[gameData.currentLevel].scene, levels[gameData.currentLevel].obstacles, levels[gameData.currentLevel].enemies, levels[gameData.currentLevel].background, levels[gameData.currentLevel].duration, levels[gameData.currentLevel].end)
     }
 }

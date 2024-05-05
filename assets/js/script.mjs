@@ -18,7 +18,8 @@ import {
     addScore,
     hideModals,
     checkEnd,
-    decreaseLife
+    decreaseLife,
+    camera
 } from "./utils.js";
 import {
     img,
@@ -30,19 +31,9 @@ import {
     createWorldElements
 } from "./gameElements.js";
 
-const backaudio = new Audio("/assets/audio/Epic Symphonic Ancient Egyptian Music - Valley of the Kings (Wādī Al-Mulūk)(1)(1).mp3")
-const Runaudio = new Audio("/assets/audio/Run on Sand Sound Effect.mp3")
-const coinaudio = new Audio("/assets/audio/rang.mp3")
-const bonusaudio = new Audio("/assets/audio/bonus.mp3")
-const dieaudio = new Audio("/assets/audio/dying.mp3")
-const killaudio = new Audio("/assets/audio/kill.mp3")
-
-
 export let paused = false;
 var ContactWithennemy = false
 
-const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
-const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
 
 export function game(sceneElements, obstacles, enemies, bonus, bg, duration, end) {
     hideModals()
@@ -88,7 +79,7 @@ export function game(sceneElements, obstacles, enemies, bonus, bg, duration, end
     // var val = 1
     let obstacleType;
     function animate() {
-        backaudio.play()
+        backAudio.play()
         const PauseMenu = document.querySelector("#pauseModal")
         gameData.globalAnimation = requestAnimationFrame(animate);
         let posX = gameData.player.position.x
@@ -230,14 +221,14 @@ export function game(sceneElements, obstacles, enemies, bonus, bg, duration, end
                 console.log("Got coin !");
                 obstacleFound.element.remove()
                 obstacleFound.taken = true
-                coinaudio.play()
+                coinAudio.play()
                 gameData.obstacles.splice(obstacleIndex, 1)
                 addScore(20)
                 gameData.coins++
             } else if (obstacleType === "life") {
                 console.log("Got life !");
                 obstacleFound.element.remove()
-                bonusaudio.play()
+                bonusAudio.play()
                 gameData.obstacles.splice(obstacleIndex, 1)
                 var life = document.querySelector("#life").textContent.split(" ")[1]
                 gameData.lives = parseInt(life) + 1
@@ -245,7 +236,7 @@ export function game(sceneElements, obstacles, enemies, bonus, bg, duration, end
             } else if (obstacleType === "power" && !gameData.player.power) {
                 console.log("Got power !");
                 obstacleFound.element.remove()
-                bonusaudio.play()
+                bonusAudio.play()
                 gameData.obstacles.splice(obstacleIndex, 1)
                 gameData.player.power = true;
             }
@@ -256,13 +247,13 @@ export function game(sceneElements, obstacles, enemies, bonus, bg, duration, end
                 if (checkCollision(gameData.player, char, enemyContact)) {
                     if (!gameData.player.power) {
                         console.log("Dead !");
-                        dieaudio.play()
+                        dieAudio.play()
                         gameData.player.velocity.y -= 20
                         ContactWithennemy = false
                     } else if (gameData.player.power) {
                         console.log("Enemy killed !");
                         char.element.remove()
-                        killaudio.play()
+                        killAudio.play()
                         gameData.characters.splice(i, 1)
                         // On doit supprimer l'élément de la liste des gameData.characters
 
@@ -278,19 +269,6 @@ export function game(sceneElements, obstacles, enemies, bonus, bg, duration, end
         checkEnd()
     }
 
-    function camera() {
-        gameData.cameraAnimation = window.requestAnimationFrame(camera)
-        let playerSize = gameData.player.element.getBoundingClientRect()
-
-        if (playerSize.left >= (vw / 2)) {
-            world.scrollLeft += 5
-        }
-
-        if (playerSize.top >= vh) {
-            decreaseLife()
-            // game(levels[gameData.currentLevel].scene, levels[gameData.currentLevel].obstacles, levels[gameData.currentLevel].enemies, levels[gameData.currentLevel].background, levels[gameData.currentLevel].duration, levels[gameData.currentLevel].end)
-        }
-    }
     camera()
 
     let isJumping = false;
@@ -300,12 +278,12 @@ export function game(sceneElements, obstacles, enemies, bonus, bg, duration, end
 
         switch (event.key) {
             case "ArrowLeft":
-                Runaudio.play()
+                runAudio.play()
                 keys.left.pressed = true;
                 break;
 
             case "ArrowRight":
-                Runaudio.play()
+                runAudio.play()
                 keys.right.pressed = true;
                 break;
 
@@ -322,13 +300,13 @@ export function game(sceneElements, obstacles, enemies, bonus, bg, duration, end
 
     document.addEventListener('keyup', (event) => {
         if (event.key === "ArrowLeft") {
-            Runaudio.pause()
+            runAudio.pause()
             keys.left.pressed = false;
             gameData.player.velocity.x = 0;
             gameData.player.element.style.backgroundImage = `url('${img.player}')`;
         }
         if (event.key === "ArrowRight") {
-            Runaudio.pause()
+            runAudio.pause()
             keys.right.pressed = false;
             gameData.player.velocity.x = 0;
             gameData.player.element.style.backgroundImage = `url('${img.player}')`;

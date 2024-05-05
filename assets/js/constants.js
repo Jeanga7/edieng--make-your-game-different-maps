@@ -7,7 +7,15 @@ export {
     playerInitialPosition,
     playerDims,
     numberOfEnemies,
-    powerDuration
+    powerDuration,
+    backAudio,
+    runAudio,
+    coinAudio,
+    bonusAudio,
+    killAudio,
+    dieAudio,
+    vw,
+    vh
 }
 
 const imgStorage = "./assets/img/"
@@ -54,3 +62,13 @@ const img = Object.fromEntries(Object.entries({
 const numberOfEnemies = Object.entries(img)
                                 .filter(el=>el[0].includes("enemy_"))
                                 .length
+
+const backAudio = new Audio("/assets/audio/ancian-egyptian-theme.mp3")
+const runAudio = new Audio("/assets/audio/run-on-sand.mp3")
+const coinAudio = new Audio("/assets/audio/rang.mp3")
+const bonusAudio = new Audio("/assets/audio/bonus.mp3")
+const dieAudio = new Audio("/assets/audio/dying.mp3")
+const killAudio = new Audio("/assets/audio/kill.mp3")
+
+const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
