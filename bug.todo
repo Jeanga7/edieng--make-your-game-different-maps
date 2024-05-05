@@ -10,7 +10,7 @@
 
 [x] lorsque la game est terminée et que nous allons dans menu puis play le player n'apparait pas
 
-[ ] le timer qui apparait sur le game over n'est pas celui du jeu
+[x] le timer qui apparait sur le game over n'est pas celui du jeu
 
 [x] player accélère quand il meurt
 
