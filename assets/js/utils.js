@@ -1,7 +1,24 @@
-import { backAudio, bonusAudio, coinAudio, dieAudio, enemyContact, img, killAudio, powerDuration, vh, vw } from "./constants.js";
-import { createTimeStats } from "./gameElements.js";
-import { levels } from "./levels.js";
-import { game } from "./game.mjs";
+import {
+    backAudio,
+    bonusAudio,
+    coinAudio,
+    dieAudio,
+    enemyContact,
+    img,
+    killAudio,
+    powerDuration,
+    vh,
+    vw
+} from "./constants.js";
+import {
+    createTimeStats
+} from "./gameElements.js";
+import {
+    levels
+} from "./levels.js";
+import {
+    game
+} from "./script.mjs";
 
 export {
     gameData,
@@ -40,7 +57,7 @@ var gameData = {
 // Start animation
 function Timer() {
     var countdownElement = document.getElementById('timer');
-    
+
     var countdownTime = gameData.duration;
 
     gameData.timeLoop = setInterval(function () {
@@ -193,7 +210,7 @@ function animate(end) {
     }
 
     gameData.obstacles.forEach(platform => platform.draw());
-    
+
     if (!gameData.paused && !gameData.isGameOver && !gameData.levelEndPause) {
         PauseMenu.style.display = "none"
         gameData.characters.forEach(char => {
@@ -312,7 +329,7 @@ function animate(end) {
     let obstacleFound;
     let obstacleIndex;
     gameData.obstacles.forEach((obs, i) => {
-        if (checkCollision(gameData.player, obs, (obs.width/2)) && !obs.taken) {
+        if (checkCollision(gameData.player, obs, (obs.width / 2)) && !obs.taken) {
             newObstacleType = obs.type
             obstacleFound = obs
             obstacleIndex = i

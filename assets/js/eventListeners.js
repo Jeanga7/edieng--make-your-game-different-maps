@@ -1,7 +1,20 @@
-import { audioStorage, img, runAudio } from "./constants.js"
-import { game } from "./game.mjs"
-import { levels } from "./levels.js"
-import { gameData, hideModals, pauseGame, restartGame } from "./utils.js"
+import {
+    audioStorage,
+    img,
+    runAudio
+} from "./constants.js"
+import {
+    game
+} from "./script.mjs"
+import {
+    levels
+} from "./levels.js"
+import {
+    gameData,
+    hideModals,
+    pauseGame,
+    restartGame
+} from "./utils.js"
 
 document.addEventListener("keydown", (event) => {
     event.preventDefault()
@@ -120,13 +133,13 @@ document.querySelectorAll("#btn_classement_GO, #btn_classement_win").forEach(but
 
 let currentIndex = 0;
 const audios = [
-    audioStorage+"/paragraphe1_histoire.mp3",
-    audioStorage+"/paragraphe2_histoire.mp3",
-    audioStorage+"/paragraphe3_histoire.mp3",
-    audioStorage+"/paragraphe4_histoire.mp3"
+    audioStorage + "/paragraphe1_histoire.mp3",
+    audioStorage + "/paragraphe2_histoire.mp3",
+    audioStorage + "/paragraphe3_histoire.mp3",
+    audioStorage + "/paragraphe4_histoire.mp3"
 ];
 let audio = new Audio(audios[currentIndex]);
-let music = new Audio(audioStorage+"/music_history.mp3")
+let music = new Audio(audioStorage + "/music_history.mp3")
 
 audio.addEventListener('ended', () => {
     currentIndex = (currentIndex + 1) % audios.length;
@@ -160,9 +173,9 @@ document.querySelector('#instructions').addEventListener('click', () => {
 
 document.querySelector('#fermerInstruction').addEventListener('click', () => {
     const modal = document.querySelector('#instuctionsModal');
-    modal.classList.add('closing'); 
+    modal.classList.add('closing');
     setTimeout(() => {
         modal.style.display = 'none';
         modal.classList.remove('closing');
-    }, 500); 
+    }, 500);
 });

@@ -14,8 +14,14 @@ const imgStorage = "./assets/img/"
 const gravity = -1.5;
 const world = document.querySelector('#world');
 const enemyContact = 25
-const playerInitialPosition = { x: 50, y: 80 }
-const playerDims = { w: 66, h: 65 }
+const playerInitialPosition = {
+    x: 50,
+    y: 80
+}
+const playerDims = {
+    w: 66,
+    h: 65
+}
 const powerDuration = 5000
 
 

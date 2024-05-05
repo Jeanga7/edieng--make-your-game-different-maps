@@ -1,6 +1,10 @@
-export { createWorldElements, createTimeStats };
+export {
+    createWorldElements,
+    createTimeStats
+};
 
 const world = document.getElementById("world");
+
 function createWorldElements(bg, duration, gameData, img) {
 
     world.innerHTML = "";
@@ -64,13 +68,13 @@ function createWorldElements(bg, duration, gameData, img) {
     document.querySelectorAll("#timeStats_pause, #timeStats_GO, #timeStats_win").forEach(element => {
         element.style.color = "white";
     });
-    
+
     document.querySelectorAll("#livesStats_pause, #livesStats_GO, #livesStats_win").forEach(element => {
         element.textContent = `❤️ Lives: ${gameData.lives}`;
         element.style.color = "white";
         element.style.fontSize = "30px"
     });
-    
+
     document.querySelectorAll("#scoreStats_pause, #scoreStats_GO, #scoreStats_win").forEach(element => {
         element.textContent = `🎯 ${gameData.totalScore}`;
         element.style.color = "white";

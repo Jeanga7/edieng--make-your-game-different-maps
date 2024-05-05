@@ -5,7 +5,10 @@ import {
     SceneElement
 } from "./models.js";
 import {
-    Timer, gameData, hideModals, camera,
+    Timer,
+    gameData,
+    hideModals,
+    camera,
     animate
 } from "./utils.js";
 import {
