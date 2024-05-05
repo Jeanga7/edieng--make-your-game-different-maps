@@ -1,39 +1,24 @@
 import {
-    levels
-} from "./levels.js";
-import {
     Player,
     Obstacle,
     Enemy,
-    SceneElement,
-    Bonus
+    SceneElement
 } from "./models.js";
 import {
-    Timer,
-    gameOver,
-    checkCollision,
+    Timer, checkCollision,
     gameData,
-    updateLives,
-    updateScore,
-    addScore,
+    updateLives, addScore,
     hideModals,
-    checkEnd,
-    decreaseLife,
-    camera,
-    restartGame,
-    pauseGame
+    checkEnd, camera
 } from "./utils.js";
 import {
     img,
-    enemyContact,
-    world,
-    powerDuration,
+    enemyContact, powerDuration,
     backAudio,
     coinAudio,
     bonusAudio,
     dieAudio,
-    killAudio,
-    runAudio
+    killAudio
 } from "./constants.js";
 import {
     createWorldElements
@@ -75,7 +60,7 @@ export function game(sceneElements, obstacles, enemies, bonus, bg, duration, end
         gameData.obstacles.push(new Obstacle(obs.pos, obs.type, obs.size))
     })
 
-    const keys = {
+    gameData.keys = {
         right: {
             pressed: false
         },
@@ -179,10 +164,10 @@ export function game(sceneElements, obstacles, enemies, bonus, bg, duration, end
 
 
                 if (char.type === "player") {
-                    if (keys.right.pressed) {
+                    if (gameData.keys.right.pressed) {
                         char.velocity.x = 5;
                         char.element.style.transform = `scaleX(1)`;
-                    } else if (keys.left.pressed && char.element.getBoundingClientRect().left > 10) {
+                    } else if (gameData.keys.left.pressed && char.element.getBoundingClientRect().left > 10) {
                         char.velocity.x = -5;
                         char.element.style.transform = `scaleX(-1)`;
                     } else {
@@ -195,10 +180,10 @@ export function game(sceneElements, obstacles, enemies, bonus, bg, duration, end
                         char.element.style.backgroundImage = `url('${img.runningPlayer}')`;
                     }
 
-                    if (isJumping === true && gameData.player.onground === false) {
+                    if (gameData.isJumping === true && gameData.player.onground === false) {
                         char.element.style.backgroundImage = `url('${img.playerJumping}')`;
                     }
-                    if (isJumping === false && gameData.player.onground === false) {
+                    if (gameData.isJumping === false && gameData.player.onground === false) {
                         char.element.style.backgroundImage = `url('${img.playerFalling}')`;
                     }
 
@@ -278,90 +263,6 @@ export function game(sceneElements, obstacles, enemies, bonus, bg, duration, end
     }
 
     camera()
-
-    let isJumping = false;
-
-    document.addEventListener('keydown', (event) => {
-        event.preventDefault()
-
-        switch (event.key) {
-            case "ArrowLeft":
-                runAudio.play()
-                keys.left.pressed = true;
-                break;
-
-            case "ArrowRight":
-                runAudio.play()
-                keys.right.pressed = true;
-                break;
-
-            case " ":
-            case "ArrowUp":
-                if (!isJumping && gameData.player.onground) {
-                    isJumping = true;
-                    gameData.player.velocity.y += 20;
-                    gameData.player.onground = false
-                }
-                break;
-        }
-    });
-
-    document.addEventListener('keyup', (event) => {
-        if (event.key === "ArrowLeft") {
-            runAudio.pause()
-            keys.left.pressed = false;
-            gameData.player.velocity.x = 0;
-            gameData.player.element.style.backgroundImage = `url('${img.player}')`;
-        }
-        if (event.key === "ArrowRight") {
-            runAudio.pause()
-            keys.right.pressed = false;
-            gameData.player.velocity.x = 0;
-            gameData.player.element.style.backgroundImage = `url('${img.player}')`;
-        }
-
-        if (event.key === "ArrowUp" || event.key === " ") {
-            isJumping = false;
-            // gameData.player.onground = true
-        }
-    });
-
     animate();
     Timer()
 }
-
-document.addEventListener("keydown", (event) => {
-    event.preventDefault()
-    let keys = ["P", "p", "Escape"]
-    if (keys.includes(event.key)) pauseGame()
-})
-
-document.addEventListener("keydown", (event) => {
-    event.preventDefault()
-    let keys = ["R", "r"]
-    if (keys.includes(event.key)) restartGame()
-})
-
-const continu = document.querySelector("#continu")
-continu.addEventListener('click', () => {
-    pauseGame();
-})
-
-const restartBtn = document.querySelectorAll("#restart, #btn_restart_GO, #btn_restart_win");
-restartBtn.forEach(btn => {
-    btn.addEventListener('click', () => {
-        const modals = document.querySelectorAll("#pauseModal, #gameOverModal, #winModal")
-        modals.forEach(modal => {
-            modal.style.display = "none"
-        })
-        restartGame();
-    });
-});
-
-// handle main menu
-const mainMenuBtn = document.querySelectorAll("#main-menu, #btn_mainmenu_GO")
-mainMenuBtn.forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.querySelector('#mainMenuModal').style.display = "flex"
-    })
-})
