@@ -17,7 +17,7 @@ function createWorldElements(bg, duration, gameData, img) {
     let gameInfosZone = document.createElement("div")
     gameInfosZone.id = "gameInfosZone"
     gameInfosZone.style.display = "flex"
-    gameInfosZone.style.position = "relative"
+    gameInfosZone.style.position = "fixed"
     gameInfosZone.style.width = "100vw"
     gameInfosZone.style.top = "12px"
     gameInfosZone.style.flexDirection = "row"

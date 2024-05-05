@@ -111,7 +111,7 @@ function checkCollision(player, obstacle, contact = 0) {
 }
 
 let updateScore = () => document.querySelector("#score").textContent = `Score: ${gameData.totalScore}`
-let updateLives = () => document.querySelector("#life").textContent = `Lives: ${gameData.lives}`
+let updateLives = () => document.querySelector("#life").textContent = " ❤️ ".repeat(gameData.lives)
 
 function addScore(n) {
     gameData.totalScore += n
@@ -354,8 +354,7 @@ function animate(end) {
             obstacleFound.element.remove()
             bonusAudio.play()
             gameData.obstacles.splice(obstacleIndex, 1)
-            var life = document.querySelector("#life").textContent.split(" ")[1]
-            gameData.lives = parseInt(life) + 1
+            gameData.lives++
             updateLives()
         } else if (gameData.lastObstacleType === "power" && !gameData.player.power) {
             console.log("Got power !");
@@ -377,6 +376,7 @@ function animate(end) {
                     console.log("Enemy killed !");
                     char.element.remove()
                     killAudio.play()
+                    addScore(10)
                     gameData.characters.splice(i, 1)
                     // On doit supprimer l'élément de la liste des gameData.characters
 
@@ -399,7 +399,7 @@ function showStats() {
     });
 
     document.querySelectorAll("#livesStats_pause, #livesStats_GO, #livesStats_win").forEach(element => {
-        element.textContent = `❤️ Lives: ${gameData.lives}`;
+        element.textContent = " ❤️ ".repeat(gameData.lives);
         element.style.color = "white";
         element.style.fontSize = "30px"
     });
