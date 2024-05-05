@@ -1,3 +1,4 @@
+import { img, runAudio } from "./constants.js"
 import { gameData } from "./utils.js"
 
 document.addEventListener("keydown", (event) => {
