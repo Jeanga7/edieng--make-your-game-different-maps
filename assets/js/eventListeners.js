@@ -5,7 +5,7 @@ import {
 } from "./constants.js"
 import {
     game
-} from "./script.mjs"
+} from "./game.mjs"
 import {
     levels
 } from "./levels.js"

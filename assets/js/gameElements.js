@@ -63,23 +63,6 @@ function createWorldElements(bg, duration, gameData, img) {
     life.style.right = "800px";
     life.style.fontSize = "30px";
     world.appendChild(life);
-
-    // handle the print of tab sta
-    document.querySelectorAll("#timeStats_pause, #timeStats_GO, #timeStats_win").forEach(element => {
-        element.style.color = "white";
-    });
-
-    document.querySelectorAll("#livesStats_pause, #livesStats_GO, #livesStats_win").forEach(element => {
-        element.textContent = `❤️ Lives: ${gameData.lives}`;
-        element.style.color = "white";
-        element.style.fontSize = "30px"
-    });
-
-    document.querySelectorAll("#scoreStats_pause, #scoreStats_GO, #scoreStats_win").forEach(element => {
-        element.textContent = `🎯 ${gameData.totalScore}`;
-        element.style.color = "white";
-        element.style.fontSize = "30px"
-    });
 }
 
 function createTimeStats(countdownTime) {

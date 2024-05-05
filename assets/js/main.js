@@ -1,5 +1,5 @@
 // function addScripts() {
-//     let links = ["./assets/js/script.mjs", "./assets/js/levels.js", "./assets/js/utils.js"]
+//     let links = ["./assets/js/game.mjs", "./assets/js/levels.js", "./assets/js/utils.js"]
 //     links.forEach(l => {
 //         let el = document.createElement("script")
 //         el.src = l

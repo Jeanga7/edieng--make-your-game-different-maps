@@ -18,7 +18,7 @@ import {
 } from "./levels.js";
 import {
     game
-} from "./script.mjs";
+} from "./game.mjs";
 
 export {
     gameData,
@@ -36,7 +36,8 @@ export {
     camera,
     restartGame,
     pauseGame,
-    animate
+    animate,
+    showStats
 };
 
 var gameData = {
@@ -76,6 +77,7 @@ function Timer() {
 }
 
 function gameOver() {
+    showStats()
     document.querySelector("#gameOverModal").style.display = "flex"
     clearInterval(gameData.timeLoop)
     gameData.isGameOver = true
@@ -129,6 +131,7 @@ function switchLevel() {
     if (gameData.currentLevel < levels.length) {
         const level = levels[gameData.currentLevel];
         // Notifications de fin de niveau
+        showStats()
         document.querySelector('#winModal').style.display = "flex"
         gameData.levelEndPause = true
         document.querySelector("#btn_continue_win").addEventListener('click', () => {
@@ -387,4 +390,23 @@ function animate(end) {
     })
 
     checkEnd()
+}
+
+function showStats() {
+    // handle the print of tab sta
+    document.querySelectorAll("#timeStats_pause, #timeStats_GO, #timeStats_win").forEach(element => {
+        element.style.color = "white";
+    });
+
+    document.querySelectorAll("#livesStats_pause, #livesStats_GO, #livesStats_win").forEach(element => {
+        element.textContent = `❤️ Lives: ${gameData.lives}`;
+        element.style.color = "white";
+        element.style.fontSize = "30px"
+    });
+
+    document.querySelectorAll("#scoreStats_pause, #scoreStats_GO, #scoreStats_win").forEach(element => {
+        element.textContent = `🎯 ${gameData.totalScore}`;
+        element.style.color = "white";
+        element.style.fontSize = "30px"
+    });
 }
