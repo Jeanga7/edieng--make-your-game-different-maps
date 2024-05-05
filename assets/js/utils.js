@@ -16,7 +16,9 @@ export {
     switchLevel,
     checkEnd,
     decreaseLife,
-    camera
+    camera,
+    restartGame,
+    pauseGame
 };
 
 var gameData = {
@@ -154,4 +156,28 @@ function camera() {
         decreaseLife()
         // game(levels[gameData.currentLevel].scene, levels[gameData.currentLevel].obstacles, levels[gameData.currentLevel].enemies, levels[gameData.currentLevel].background, levels[gameData.currentLevel].duration, levels[gameData.currentLevel].end)
     }
+}
+
+// handle pause option
+function pauseGame() {
+    if (!gameData.paused) {
+        gameData.paused = true
+    } else {
+        gameData.paused = false
+    }
+}
+
+
+// handle the restart option
+function restartGame() {
+    gameData.currentLevel = 0;
+    gameData.lives = 3;
+    gameData.totalScore = 0;
+    gameData.levelScore = 0;
+    gameData.paused = false
+    gameData.levelEndPause = false
+    gameData.player = null
+    gameData.isGameOver = false
+    hideModals()
+    game(levels[gameData.currentLevel].scene, levels[gameData.currentLevel].obstacles, levels[gameData.currentLevel].enemies, levels[gameData.currentLevel].bonus, levels[gameData.currentLevel].background, levels[gameData.currentLevel].duration, levels[gameData.currentLevel].end);
 }

@@ -19,13 +19,21 @@ import {
     hideModals,
     checkEnd,
     decreaseLife,
-    camera
+    camera,
+    restartGame,
+    pauseGame
 } from "./utils.js";
 import {
     img,
     enemyContact,
     world,
-    powerDuration
+    powerDuration,
+    backAudio,
+    coinAudio,
+    bonusAudio,
+    dieAudio,
+    killAudio,
+    runAudio
 } from "./constants.js";
 import {
     createWorldElements
@@ -357,27 +365,3 @@ mainMenuBtn.forEach(btn => {
         document.querySelector('#mainMenuModal').style.display = "flex"
     })
 })
-
-// handle pause option
-function pauseGame() {
-    if (!gameData.paused) {
-        gameData.paused = true
-    } else {
-        gameData.paused = false
-    }
-}
-
-
-// handle the restart option
-function restartGame() {
-    gameData.currentLevel = 0;
-    gameData.lives = 3;
-    gameData.totalScore = 0;
-    gameData.levelScore = 0;
-    gameData.paused = false
-    gameData.levelEndPause = false
-    gameData.player = null
-    gameData.isGameOver = false
-    hideModals()
-    game(levels[gameData.currentLevel].scene, levels[gameData.currentLevel].obstacles, levels[gameData.currentLevel].enemies, levels[gameData.currentLevel].bonus, levels[gameData.currentLevel].background, levels[gameData.currentLevel].duration, levels[gameData.currentLevel].end);
-}
