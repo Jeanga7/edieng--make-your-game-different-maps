@@ -30,12 +30,12 @@ import {
     createWorldElements
 } from "./gameElements.js";
 
-const backaudio = new Audio("/assets/css/Epic Symphonic Ancient Egyptian Music - Valley of the Kings (Wādī Al-Mulūk)(1)(1).mp3")
-const Runaudio = new Audio("/assets/css/Run on Sand Sound Effect.mp3")
-const coinaudio = new Audio("/assets/css/rang.mp3")
-const bonusaudio = new Audio("/assets/css/bonus.mp3")
-const dieaudio = new Audio("/assets/css/dying.mp3")
-const killaudio = new Audio("/assets/css/kill.mp3")
+const backaudio = new Audio("/assets/audio/Epic Symphonic Ancient Egyptian Music - Valley of the Kings (Wādī Al-Mulūk)(1)(1).mp3")
+const Runaudio = new Audio("/assets/audio/Run on Sand Sound Effect.mp3")
+const coinaudio = new Audio("/assets/audio/rang.mp3")
+const bonusaudio = new Audio("/assets/audio/bonus.mp3")
+const dieaudio = new Audio("/assets/audio/dying.mp3")
+const killaudio = new Audio("/assets/audio/kill.mp3")
 
 
 export let paused = false;

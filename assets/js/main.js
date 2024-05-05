@@ -38,13 +38,13 @@ document.querySelectorAll("#btn_classement_GO, #btn_classement_win").forEach(but
 
 let currentIndex = 0;
 const audios = [
-    "../../audio/paragraphe1_histoire.mp3",
-    "../../audio/paragraphe2_histoire.mp3",
-    "../../audio/paragraphe3_histoire.mp3",
-    "../../audio/paragraphe4_histoire.mp3"
+    "/assets/audio/paragraphe1_histoire.mp3",
+    "/assets/audio/paragraphe2_histoire.mp3",
+    "/assets/audio/paragraphe3_histoire.mp3",
+    "/assets/audio/paragraphe4_histoire.mp3"
 ];
 let audio = new Audio(audios[currentIndex]);
-let music = new Audio("../../audio/music_history.mp3")
+let music = new Audio("/assets/audio/music_history.mp3")
 
 audio.addEventListener('ended', () => {
     currentIndex = (currentIndex + 1) % audios.length;
