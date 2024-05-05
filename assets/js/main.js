@@ -24,7 +24,7 @@ play.addEventListener('click', () => {
         alert("Add levels to the game.")
         window.location.reload()
     } else {
-        game(levels[0].scene, levels[0].obstacles, levels[0].enemies, levels[0].bonus, levels[0].background, levels[0].duration, levels[0].end);
+        game(levels[0].scene, levels[0].obstacles, levels[0].enemies, levels[0].background, levels[0].duration, levels[0].end);
     }
 })
 

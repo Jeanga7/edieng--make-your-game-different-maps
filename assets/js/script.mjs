@@ -28,7 +28,7 @@ export let paused = false;
 var ContactWithennemy = false
 
 
-export function game(sceneElements, obstacles, enemies, bonus, bg, duration, end) {
+export function game(sceneElements, obstacles, enemies, bg, duration, end) {
     hideModals()
     gameData.isGameOver = false
     cancelAnimationFrame(gameData.globalAnimation)

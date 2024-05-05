@@ -1,5 +1,5 @@
 import { img, runAudio } from "./constants.js"
-import { gameData } from "./utils.js"
+import { gameData, pauseGame, restartGame } from "./utils.js"
 
 document.addEventListener("keydown", (event) => {
     event.preventDefault()

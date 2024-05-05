@@ -115,7 +115,7 @@ function switchLevel() {
         gameData.levelEndPause = true
         document.querySelector("#btn_continue_win").addEventListener('click', () => {
             gameData.levelEndPause = false
-            game(level.scene, level.obstacles, level.enemies, level.bonus, level.background, level.duration, level.end, score);
+            game(level.scene, level.obstacles, level.enemies, level.background, level.duration, level.end, score);
         })
     } else {
         alert("You finished the GAME !")
@@ -134,7 +134,7 @@ function decreaseLife() {
     if (gameData.lives >= 1) {
         gameData.totalScore -= gameData.levelScore
         clearInterval(gameData.timeLoop)
-        game(levels[gameData.currentLevel].scene, levels[gameData.currentLevel].obstacles, levels[gameData.currentLevel].enemies, levels[gameData.currentLevel].bonus, levels[gameData.currentLevel].background, levels[gameData.currentLevel].duration, levels[gameData.currentLevel].end)
+        game(levels[gameData.currentLevel].scene, levels[gameData.currentLevel].obstacles, levels[gameData.currentLevel].enemies, levels[gameData.currentLevel].background, levels[gameData.currentLevel].duration, levels[gameData.currentLevel].end)
     } else {
         gameData.paused = true
         gameData.isGameOver = true
@@ -154,7 +154,6 @@ function camera() {
 
     if (playerSize.top >= vh) {
         decreaseLife()
-        // game(levels[gameData.currentLevel].scene, levels[gameData.currentLevel].obstacles, levels[gameData.currentLevel].enemies, levels[gameData.currentLevel].background, levels[gameData.currentLevel].duration, levels[gameData.currentLevel].end)
     }
 }
 
@@ -179,5 +178,5 @@ function restartGame() {
     gameData.player = null
     gameData.isGameOver = false
     hideModals()
-    game(levels[gameData.currentLevel].scene, levels[gameData.currentLevel].obstacles, levels[gameData.currentLevel].enemies, levels[gameData.currentLevel].bonus, levels[gameData.currentLevel].background, levels[gameData.currentLevel].duration, levels[gameData.currentLevel].end);
+    game(levels[gameData.currentLevel].scene, levels[gameData.currentLevel].obstacles, levels[gameData.currentLevel].enemies, levels[gameData.currentLevel].background, levels[gameData.currentLevel].duration, levels[gameData.currentLevel].end);
 }
