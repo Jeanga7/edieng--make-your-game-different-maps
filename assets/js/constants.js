@@ -1,6 +1,7 @@
 export {
     img,
     imgStorage,
+    audioStorage,
     gravity,
     world,
     enemyContact,
@@ -19,11 +20,18 @@ export {
 }
 
 const imgStorage = "./assets/img/"
+const audioStorage = "./assets/audio"
 const gravity = -1.5;
 const world = document.querySelector('#world');
 const enemyContact = 25
-const playerInitialPosition = { x: 50, y: 100 }
-const playerDims = { w: 66, h: 65 }
+const playerInitialPosition = {
+    x: 50,
+    y: 100
+}
+const playerDims = {
+    w: 66,
+    h: 65
+}
 const powerDuration = 5000
 
 const img = Object.fromEntries(Object.entries({
@@ -60,8 +68,8 @@ const img = Object.fromEntries(Object.entries({
 }).map(el => [el[0], imgStorage + el[1]]))
 
 const numberOfEnemies = Object.entries(img)
-                                .filter(el=>el[0].includes("enemy_"))
-                                .length
+    .filter(el => el[0].includes("enemy_"))
+    .length
 
 const backAudio = new Audio("/assets/audio/ancian-egyptian-theme.mp3")
 const runAudio = new Audio("/assets/audio/run-on-sand.mp3")

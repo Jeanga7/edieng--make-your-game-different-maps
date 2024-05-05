@@ -1,7 +1,7 @@
 import { backAudio, bonusAudio, coinAudio, dieAudio, enemyContact, img, killAudio, powerDuration, vh, vw } from "./constants.js";
 import { createTimeStats } from "./gameElements.js";
 import { levels } from "./levels.js";
-import { game } from "./script.mjs";
+import { game } from "./game.mjs";
 
 export {
     gameData,

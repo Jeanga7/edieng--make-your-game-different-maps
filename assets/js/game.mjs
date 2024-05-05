@@ -5,21 +5,11 @@ import {
     SceneElement
 } from "./models.js";
 import {
-    Timer, checkCollision,
-    gameData,
-    updateLives, addScore,
-    hideModals,
-    checkEnd, camera,
+    Timer, gameData, hideModals, camera,
     animate
 } from "./utils.js";
 import {
-    img,
-    enemyContact, powerDuration,
-    backAudio,
-    coinAudio,
-    bonusAudio,
-    dieAudio,
-    killAudio
+    img
 } from "./constants.js";
 import {
     createWorldElements
