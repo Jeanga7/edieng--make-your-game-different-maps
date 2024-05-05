@@ -65,7 +65,7 @@ function Timer() {
         if (!(gameData.paused || gameData.levelEndPause)) {
             countdownTime--;
         }
-        countdownElement.textContent = "Timer: " + countdownTime;
+        countdownElement.textContent = "🕐 " + countdownTime;
 
         createTimeStats(countdownTime)
 

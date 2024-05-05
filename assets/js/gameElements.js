@@ -6,14 +6,58 @@ export {
 const world = document.getElementById("world");
 
 function createWorldElements(bg, duration, gameData, img) {
-
     world.innerHTML = "";
-    world.style.width = "100%";
-    world.style.height = "100%";
-    world.style.backgroundSize = "contain";
+    world.style.width = "100vw";
+    world.style.height = "100vh";
+    world.style.backgroundSize = "cover";
     world.style.position = "relative";
     world.style.overflow = "hidden";
     world.scrollLeft = 0;
+
+    let gameInfosZone = document.createElement("div")
+    gameInfosZone.id = "gameInfosZone"
+    gameInfosZone.style.display = "flex"
+    gameInfosZone.style.position = "relative"
+    gameInfosZone.style.width = "100vw"
+    gameInfosZone.style.top = "12px"
+    gameInfosZone.style.flexDirection = "row"
+    gameInfosZone.style.justifyContent = "center"
+    gameInfosZone.style.zIndex = "10"
+
+    let gameInfos = document.createElement("div")
+    gameInfos.id = "gameInfos"
+    gameInfos.style.display = "inline-grid"
+    gameInfos.style.gridTemplateColumns = "repeat(3, 1fr)"
+    gameInfos.style.gap = "50px"
+    gameInfos.style.fontSize = "22px"
+    gameInfos.style.fontFamily = "Arial"
+    gameInfos.style.fontWeight = "bolder"
+    gameInfos.style.backgroundColor = "rgba(0,0,0,0.3)"
+    gameInfos.style.borderRadius = "50px"
+    gameInfos.style.padding = "4px 24px"
+
+    // Ajoute le score
+    const score = document.createElement("div");
+    score.id = "score";
+    score.textContent = `Score: ${gameData.totalScore}`;
+    score.style.color = "white";
+    gameInfos.appendChild(score);
+
+    // Ajoute la vie
+    const life = document.createElement("div");
+    life.id = "life";
+    life.textContent = " ❤️ ".repeat(gameData.lives);
+    gameInfos.appendChild(life);
+
+    // Ajoute le timer
+    const timer = document.createElement("div");
+    timer.id = "timer";
+    timer.textContent = `🕐 ${duration}`;
+    timer.style.color = "white";
+    gameInfos.appendChild(timer);
+
+    gameInfosZone.appendChild(gameInfos)
+    world.appendChild(gameInfosZone)
 
     // Ajoute le fond
     const scene = document.createElement("div");
@@ -27,42 +71,6 @@ function createWorldElements(bg, duration, gameData, img) {
     scene.style.zIndex = "0";
     scene.id = "scene";
     world.appendChild(scene);
-
-    // Ajoute le timer
-    const timer = document.createElement("div");
-    timer.id = "timer";
-    timer.style.display = "flex";
-    timer.textContent = `Timer: ${duration}`;
-    timer.style.justifyContent = "center";
-    timer.style.backgroundColor = "white";
-    timer.style.position = "fixed";
-    timer.style.right = "600px";
-    timer.style.fontSize = "30px";
-    world.appendChild(timer);
-
-    // Ajoute le score
-    const score = document.createElement("div");
-    score.id = "score";
-    score.style.display = "flex";
-    score.textContent = `Score: ${gameData.totalScore}`;
-    score.style.justifyContent = "center";
-    score.style.backgroundColor = "white";
-    score.style.position = "fixed";
-    score.style.left = "300px";
-    score.style.fontSize = "30px";
-    world.appendChild(score);
-
-    // Ajoute la vie
-    const life = document.createElement("div");
-    life.id = "life";
-    life.style.display = "flex";
-    life.textContent = `Lives: ${gameData.lives}`;
-    life.style.justifyContent = "center";
-    life.style.backgroundColor = "white";
-    life.style.position = "fixed";
-    life.style.right = "800px";
-    life.style.fontSize = "30px";
-    world.appendChild(life);
 }
 
 function createTimeStats(countdownTime) {
