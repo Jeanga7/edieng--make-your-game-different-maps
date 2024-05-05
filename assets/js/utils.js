@@ -11,9 +11,6 @@ import {
     vw
 } from "./constants.js";
 import {
-    createTimeStats
-} from "./gameElements.js";
-import {
     levels
 } from "./levels.js";
 import {
@@ -41,6 +38,7 @@ export {
 };
 
 var gameData = {
+    countdownTime: 240,
     duration: 240,
     currentLevel: 0,
     globalAnimation: null,
@@ -59,17 +57,15 @@ var gameData = {
 function Timer() {
     var countdownElement = document.getElementById('timer');
 
-    var countdownTime = gameData.duration;
+    gameData.countdownTime = gameData.duration;
 
     gameData.timeLoop = setInterval(function () {
         if (!(gameData.paused || gameData.levelEndPause)) {
-            countdownTime--;
+            gameData.countdownTime--;
         }
-        countdownElement.textContent = "🕐 " + countdownTime;
+        countdownElement.textContent = " 🕐 " + gameData.countdownTime;
 
-        createTimeStats(countdownTime)
-
-        if (countdownTime <= 0) {
+        if (gameData.countdownTime <= 0) {
             clearInterval(gameData.timeLoop);
             gameOver()
         }
@@ -407,6 +403,11 @@ function showStats() {
     document.querySelectorAll("#scoreStats_pause, #scoreStats_GO, #scoreStats_win").forEach(element => {
         element.textContent = `🎯 ${gameData.totalScore}`;
         element.style.color = "white";
+        element.style.fontSize = "30px"
+    });
+
+    document.querySelectorAll("#timeStats_pause, #timeStats_GO, #timeStats_win").forEach(element => {
+        element.textContent = ` 🕐 ${gameData.countdownTime}`;
         element.style.fontSize = "30px"
     });
 }

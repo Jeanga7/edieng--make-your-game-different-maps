@@ -1,6 +1,5 @@
 export {
-    createWorldElements,
-    createTimeStats
+    createWorldElements
 };
 
 const world = document.getElementById("world");
@@ -26,8 +25,8 @@ function createWorldElements(bg, duration, gameData, img) {
 
     let gameInfos = document.createElement("div")
     gameInfos.id = "gameInfos"
-    gameInfos.style.display = "inline-grid"
-    gameInfos.style.gridTemplateColumns = "repeat(3, 1fr)"
+    gameInfos.style.display = "flex"
+    gameInfos.style.flexDirection = "row"
     gameInfos.style.gap = "50px"
     gameInfos.style.fontSize = "22px"
     gameInfos.style.fontFamily = "Arial"
@@ -52,7 +51,7 @@ function createWorldElements(bg, duration, gameData, img) {
     // Ajoute le timer
     const timer = document.createElement("div");
     timer.id = "timer";
-    timer.textContent = `🕐 ${duration}`;
+    timer.textContent = ` 🕐 ${duration}`;
     timer.style.color = "white";
     gameInfos.appendChild(timer);
 
@@ -71,11 +70,4 @@ function createWorldElements(bg, duration, gameData, img) {
     scene.style.zIndex = "0";
     scene.id = "scene";
     world.appendChild(scene);
-}
-
-function createTimeStats(countdownTime) {
-    document.querySelectorAll("#timeStats_pause, #timeStats_GO, #timeStats_win").forEach(element => {
-        element.textContent = `⌚${countdownTime}`;
-        element.style.fontSize = "30px"
-    });
 }
