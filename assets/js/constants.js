@@ -64,7 +64,8 @@ const img = Object.fromEntries(Object.entries({
     groundNL: "groundNextLevel.jpeg",
     life: "coeur.gif",
     power: "power.gif",
-    coin: "coin.gif"
+    coin: "coin.gif",
+    panneau: "panneau-histoire.png"
 }).map(el => [el[0], imgStorage + el[1]]))
 
 const numberOfEnemies = Object.entries(img)

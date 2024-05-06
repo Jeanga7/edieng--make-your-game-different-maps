@@ -522,19 +522,17 @@ span#line {
 
 #historyModal {
     position: absolute;
-    height: 80%;
-    width: 58%;
-    top: 8%;
-    right: 1%;
+    height: 100%;
+    width: 100%;
     z-index: 2500;
-    /* background-color: brown; */
+    background-color: rgba(0, 0, 0, 0.9);
     display: none;
 }
 
 #historien {
     position: absolute;
-    width: 32%;
-    height: 55%;
+    width: 25%;
+    height: 60%;
     bottom: 0;
     right: 0;
     background-image: url(../img/historien.png);
@@ -545,10 +543,10 @@ span#line {
 
 #bulleHistory {
     position: absolute;
-    width: 75%;
-    height: 75%;
+    width: 40%;
+    height: 60%;
     top: 0;
-    left: 0;
+    left: 40%;
     background-image: url(../img/bulle.png);
     background-size: contain;
     background-repeat: no-repeat;
@@ -564,7 +562,7 @@ span#line {
 
 #textHistory {
     position: absolute;
-    font-size: 25px;
+    font-size: 22px;
     font-family: "Sedgwick Ave Display", cursive;
     text-align: center;
     display: flex;

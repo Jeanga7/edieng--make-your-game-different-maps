@@ -47,6 +47,42 @@ export let levels = [{
                 "type": "sphinx",
                 "cssPosition": "absolute"
             },
+            {
+                "pos": {
+                    "x": 150,
+                    "y": 10
+                },
+                "size": {
+                    "w": 125,
+                    "h": 125
+                },
+                "type": "panneau",
+                "cssPosition": "absolute"
+            },
+            {
+                "pos": {
+                    "x": 1100,
+                    "y": 10
+                },
+                "size": {
+                    "w": 125,
+                    "h": 125
+                },
+                "type": "panneau",
+                "cssPosition": "absolute"
+            },
+            {
+                "pos": {
+                    "x": 2350,
+                    "y": 415 
+                },
+                "size": {
+                    "w": 125,
+                    "h": 125
+                },
+                "type": "panneau",
+                "cssPosition": "absolute"
+            },
         ],
         "obstacles": [{
                 "pos": {
@@ -190,7 +226,8 @@ export let levels = [{
                     "h": 50
                 },
                 "type": "coin"
-            }
+            },
+            
         ],
         "enemies": [{
                 "pos": {
