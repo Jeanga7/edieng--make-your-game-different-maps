@@ -309,7 +309,8 @@ function animate(end) {
                     char.element.style.transform = `scaleX(-1)`;
                 } else {
                     char.velocity.x = 0;
-                }
+                }        document.querySelector("#getInModal").style.display = "flex";
+
 
                 if (char.velocity.x === 0) {
                     char.element.style.backgroundImage = `url('${img.player}')`;
@@ -329,6 +330,7 @@ function animate(end) {
                 }
             }
         })
+        document.querySelector("#getInModal").style.display = "none";
     } else if (gameData.paused && !gameData.isGameOver && !gameData.levelEndPause) {
         PauseMenu.style.display = "flex"
     };
@@ -405,9 +407,13 @@ function showStats() {
     });
 
     document.querySelectorAll("#livesStats_pause, #livesStats_GO, #livesStats_win").forEach(element => {
-        element.textContent = " ❤️ ".repeat(gameData.lives);
-        element.style.color = "white";
-        element.style.fontSize = "30px"
+        if (gameData.lives > 1) {
+            element.textContent = " ❤️ ".repeat(gameData.lives);
+            element.style.color = "white";
+            element.style.fontSize = "30px"
+        }else{
+            element.textContent = ""
+        }
     });
 
     document.querySelectorAll("#scoreStats_pause, #scoreStats_GO, #scoreStats_win").forEach(element => {
