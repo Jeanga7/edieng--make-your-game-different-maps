@@ -16,6 +16,7 @@ import {
 import {
     game
 } from "./game.mjs";
+import {displayNextSegment} from "./history.js"
 
 export {
     gameData,
@@ -164,7 +165,17 @@ function decreaseLife() {
 function camera() {
     gameData.cameraAnimation = window.requestAnimationFrame(camera)
     let playerSize = gameData.player.element.getBoundingClientRect()
-
+    console.log(world.scrollLeft);
+    if (world.scrollLeft === 5 ){
+        document.querySelector('#historyModal').style.display = 'flex'
+        // gameData.paused = true
+        displayNextSegment()
+        setTimeout(() => {
+            document.querySelector('#historyModal').style.display = 'none'
+            // gameData.paused = false
+        }, 10000);
+    }
+    
     if (playerSize.left >= (vw / 2)) {
         world.scrollLeft += 5
     }
@@ -182,7 +193,6 @@ function pauseGame() {
         gameData.paused = false
     }
 }
-
 
 // handle the restart option
 function restartGame() {

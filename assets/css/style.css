@@ -524,7 +524,7 @@ span#line {
     position: absolute;
     height: 80%;
     width: 58%;
-    top: 2%;
+    top: 8%;
     right: 1%;
     z-index: 2500;
     /* background-color: brown; */
@@ -556,13 +556,26 @@ span#line {
     /* background-color: black; */
 }
 
+/* 
+"Cookie", cursive;
+"Yellowtail", cursive;
+
+*/
+
 #textHistory {
     position: absolute;
-    top: 5%;
-    left: 5%;
-    height: 72%;
-    width: 85%;
-
+    font-size: 25px;
+    font-family: "Sedgwick Ave Display", cursive;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 15px;
+    top: 8%;
+    left: 4%;
+    height: 62%;
+    width: 80%;
     border-radius: 20px;
+    transform: scaleX(-1);
     /* background-color: blue; */
 }
