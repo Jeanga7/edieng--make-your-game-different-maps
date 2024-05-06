@@ -51,7 +51,8 @@ var gameData = {
     distance: 0,
     obstacles: [],
     characters: [],
-    isGameOver: false
+    isGameOver: false,
+    levelEndPause: false
 }
 
 // Start animation
@@ -136,7 +137,17 @@ function switchLevel() {
             game(level.scene, level.obstacles, level.enemies, level.background, level.duration, level.end, score);
         })
     } else {
-        alert("You finished the GAME !")
+        // document.querySelector('#winModal').style.display = "flex"
+        // gameData.levelEndPause = true
+        // alert("You finished the GAME !")
+        // showStats()
+        document.querySelector('#gameOverModal').style.display = "flex"
+        document.querySelector("#game-over-text").textContent = "You Finished the Game"
+        gameData.levelEndPause = true
+        document.querySelector("#btn_continue_win").addEventListener('click', () => {
+            gameData.levelEndPause = false
+            game(level.scene, level.obstacles, level.enemies, level.background, level.duration, level.end, score);
+        })
     }
 }
 
@@ -165,16 +176,16 @@ function decreaseLife() {
 function camera() {
     gameData.cameraAnimation = window.requestAnimationFrame(camera)
     let playerSize = gameData.player.element.getBoundingClientRect()
-    console.log(world.scrollLeft);
-    if (world.scrollLeft === 5 ){
-        document.querySelector('#historyModal').style.display = 'flex'
-        // gameData.paused = true
-        displayNextSegment()
-        setTimeout(() => {
-            document.querySelector('#historyModal').style.display = 'none'
-            // gameData.paused = false
-        }, 10000);
-    }
+    // console.log(world.scrollLeft);
+    // if (world.scrollLeft === 5 ){
+    //     document.querySelector('#historyModal').style.display = 'flex'
+    //     // gameData.paused = true
+    //     displayNextSegment()
+    //     setTimeout(() => {
+    //         document.querySelector('#historyModal').style.display = 'none'
+    //         // gameData.paused = false
+    //     }, 10000);
+    // }
     
     if (playerSize.left >= (vw / 2)) {
         world.scrollLeft += 5

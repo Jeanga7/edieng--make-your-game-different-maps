@@ -130,7 +130,6 @@ document.querySelectorAll("#btn_classement_GO, #btn_classement_win").forEach(but
     });
 });
 
-
 let currentIndex = 0;
 const audios = [
     audioStorage + "/paragraphe1_histoire.mp3",
