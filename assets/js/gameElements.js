@@ -6,35 +6,40 @@ const world = document.getElementById("world");
 
 function createWorldElements(bg, duration, gameData, img) {
     world.innerHTML = "";
-    world.style.width = "100vw";
-    world.style.height = "100vh";
-    world.style.backgroundSize = "cover";
-    world.style.position = "relative";
-    world.style.overflow = "hidden";
+    world.style.cssText = `
+    width: 100vw;
+     height: 100vh;
+     background-size: cover;
+     position: relative; 
+    overflow: hidden;
+    `;
     world.scrollLeft = 0;
 
     let gameInfosZone = document.createElement("div")
     gameInfosZone.id = "gameInfosZone"
-    gameInfosZone.style.display = "flex"
-    gameInfosZone.style.position = "fixed"
-    gameInfosZone.style.width = "100vw"
-    gameInfosZone.style.top = "12px"
-    gameInfosZone.style.flexDirection = "row"
-    gameInfosZone.style.justifyContent = "center"
-    gameInfosZone.style.zIndex = "10"
+    gameInfosZone.style.cssText = `
+        display: flex;
+        position: fixed;
+        width: 100vw;
+        top: 12px;
+        flex-direction: row;
+        justify-content: center;
+        z-index: 10;
+    `;
 
     let gameInfos = document.createElement("div")
     gameInfos.id = "gameInfos"
-    gameInfos.style.display = "flex"
-    gameInfos.style.flexDirection = "row"
-    gameInfos.style.gap = "50px"
-    gameInfos.style.fontSize = "22px"
-    gameInfos.style.fontFamily = "Arial"
-    gameInfos.style.fontWeight = "bolder"
-    gameInfos.style.backgroundColor = "rgba(0,0,0,0.3)"
-    gameInfos.style.borderRadius = "50px"
-    gameInfos.style.padding = "4px 24px"
-
+    gameInfos.style.cssText = `
+        display: flex;
+        flex-direction: row;
+        gap: 50px;
+        font-size: 22px;
+        font-family: Arial;
+        font-weight: bolder;
+        background-color: rgba(0,0,0,0.3);
+        border-radius: 50px;
+        padding: 4px 24px;
+    `;
     // Ajoute le score
     const score = document.createElement("div");
     score.id = "score";
@@ -60,14 +65,16 @@ function createWorldElements(bg, duration, gameData, img) {
 
     // Ajoute le fond
     const scene = document.createElement("div");
-    scene.style.background = bg;
-    scene.style.backgroundSize = "cover";
-    scene.style.position = "fixed";
-    scene.style.top = "0";
-    scene.style.left = "0";
-    scene.style.width = "100vw";
-    scene.style.height = "100vh";
-    scene.style.zIndex = "0";
+    scene.style.cssText = `
+        background: ${bg};
+        background-size: cover;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 0;
+    `;
     scene.id = "scene";
     world.appendChild(scene);
 }
