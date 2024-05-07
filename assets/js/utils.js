@@ -347,9 +347,9 @@ function animate(end) {
         }
 
         if (char.velocity.x === 0) {
-          char.element.style.backgroundImage = `url('${img.player}')`;
+          char.element.className = "idle";
         } else {
-          char.element.style.backgroundImage = `url('${img.runningPlayer}')`;
+            char.element.className = "run";
         }
 
         if (gameData.isJumping === true && gameData.player.onground === false) {
