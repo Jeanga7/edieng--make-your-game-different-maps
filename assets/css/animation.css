@@ -1,10 +1,19 @@
 .perso {
-   height: 120px;
+    height: 60px;
+    width: 60px;
+}
+
+.home-perso {
+    height: 120px;
     width: 120px;
 }
 
 .idle {
     animation: idle 600ms steps(10) infinite alternate;
+}
+
+.home-idle {
+    animation: home-idle 600ms steps(10) infinite alternate;
 }
 
 .jump {
@@ -19,9 +28,13 @@
     animation: attack 1.2s steps(12);
 }
 
-@keyframes idle {
+@keyframes home-idle {
     0% {background-position: 0 0;}
     100% {background-position: -1200px 0;}
+}
+@keyframes idle {
+    0% {background-position: 0 0;}
+    100% {background-position: -600px 0;}
 }
 @keyframes jump {
     0% {background-position: 0 -120px;}

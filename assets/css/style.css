@@ -16,6 +16,9 @@ body {
 .enemy {
     position: absolute;
     background-position: bottom center;
+}
+
+.enemy {
     background-size: cover;
 }
 

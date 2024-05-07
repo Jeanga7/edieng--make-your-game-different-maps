@@ -70,6 +70,7 @@ class Player extends Character {
     constructor(position) {
         super("player", playerInitialPosition, playerDims)
         this.element.style.backgroundImage = `url('${img[this.type]}')`
+        this.element.classList.add("idle")
         this.power = false
     }
 }

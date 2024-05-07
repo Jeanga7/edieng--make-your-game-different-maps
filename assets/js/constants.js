@@ -29,15 +29,15 @@ const playerInitialPosition = {
     y: 100
 }
 const playerDims = {
-    w: 66,
-    h: 65
+    w: 60,
+    h: 60
 }
 const powerDuration = 5000
 
 const img = Object.fromEntries(Object.entries({
     sky: "sky.jpg",
     ground: "desert-ground.png",
-    player: "static.png",
+    player: "player-1.png",
     playerJumping: "jumping.png",
     playerFalling: "falling.png",
     enemy: "static.png",
