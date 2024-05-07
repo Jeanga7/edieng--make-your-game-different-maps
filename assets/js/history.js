@@ -16,19 +16,75 @@ import { gameData } from "./utils.js";
 export { showHistory };
 
 let reachedCheckpoints = [];
+
 function showHistory(playerPos) {
   const checkpoints = [140, 1100, 2339, 3604, 4099];
   const paragraphIndex = checkpoints.indexOf(playerPos);
 
-  if (paragraphIndex !== -1 && !reachedCheckpoints.includes(playerPos)) {
+  if (paragraphIndex !== -1 && !reachedCheckpoints.includes(playerPos) && !gameData.showHistoryPause) {
     document.querySelector("#historyModal").style.display = "flex";
-    document.getElementById("textHistory").textContent = story[paragraphIndex];
+    let textElement = document.getElementById("textHistory");
+    textElement.textContent = "";
+    let text = story[paragraphIndex];
+    let currentCharIndex = 0;
+
+    reachedCheckpoints.push(playerPos);
+    gameData.showHistoryPause = true;
+
+    let interval = setInterval(() => {
+      textElement.textContent += text[currentCharIndex];
+      currentCharIndex++;
+
+      document.querySelector('#skip').addEventListener('click', () => {
+          clearInterval(interval); 
+          textElement.textContent = text; 
+          // setTimeout(() => {
+              closeHistory();
+          // }, 3000);
+      });
+
+      document.addEventListener("keydown", (event) => {
+          if (event.key === "Enter") {
+              clearInterval(interval); 
+              textElement.textContent = text;
+              // setTimeout(() => {
+                  closeHistory();
+              // }, 3000);
+          }
+      });
+
+      if (currentCharIndex === text.length) {
+          clearInterval(interval);
+          setTimeout(() => {
+              closeHistory()
+          }, 3000);
+      }
+  }, 30);
+}
+}
+
+
+
+function closeHistory() {
+  document.querySelector("#historyModal").style.display = "none";
+  gameData.showHistoryPause = false;
+  currentCharIndex = 0;
+}
+
+/* function showHistory(playerPos) {
+  const checkpoints = [140, 1100, 2339, 3604, 4099];
+  const paragraphIndex = checkpoints.indexOf(playerPos);
+  const historyModal = document.querySelector("#historyModal") 
+
+  if (paragraphIndex !== -1 && !reachedCheckpoints.includes(playerPos)) {
+    historyModal.style.display = "flex";
+    document.querySelector("#textHistory").textContent = story[paragraphIndex];
     reachedCheckpoints.push(playerPos);
     gameData.showHistoryPause = true;
 
     setTimeout(() => {
-      document.querySelector("#historyModal").style.display = "none";
+      historyModal.style.display = "none";
       gameData.showHistoryPause = false;
     }, 5000);
   }
-}
+} */

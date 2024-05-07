@@ -551,7 +551,8 @@ span#line {
     background-size: contain;
     background-repeat: no-repeat;
     transform: scaleX(-1);
-    /* background-color: black; */
+    /* background-color: black;
+     */
 }
 
 /* 
@@ -576,4 +577,29 @@ span#line {
     border-radius: 20px;
     transform: scaleX(-1);
     /* background-color: blue; */
+}
+
+#skip{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bolder;
+    letter-spacing: 2px;
+    height: 4%;
+    width: 7%;
+    right: 1%;
+    top: 2%;
+    border-radius: 10px;
+    z-index: 2000;
+    box-shadow: 3px 3px 2px rgba(255, 255, 255, 0.3);
+    background-color: red;
+    cursor: pointer;
+    animation: blink 3s infinite;
+    transition: 200ms;
+}
+
+#skip:hover{
+    transform: scale(1.05);
 }
