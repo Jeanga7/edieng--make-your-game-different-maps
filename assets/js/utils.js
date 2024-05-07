@@ -353,14 +353,14 @@ function animate(end) {
         }
 
         if (gameData.isJumping === true && gameData.player.onground === false) {
-          char.element.style.backgroundImage = `url('${img.playerJumping}')`;
+            char.element.className = "jump";
         }
-        if (
-          gameData.isJumping === false &&
-          gameData.player.onground === false
-        ) {
-          char.element.style.backgroundImage = `url('${img.playerFalling}')`;
-        }
+        // if (
+        //   gameData.isJumping === false &&
+        //   gameData.player.onground === false
+        // ) {
+        //   char.element.style.backgroundImage = `url('${img.playerFalling}')`;
+        // }
 
         if (char.x === end) {
           return true;
