@@ -48,7 +48,8 @@ var gameData = {
   obstacles: [],
   characters: [],
   isGameOver: false,
-  levelEndPause: false
+  levelEndPause: false,
+  isAttacking: false,
 }
 
 // Start animation
@@ -347,12 +348,20 @@ function animate(end) {
         }
 
         if (char.velocity.x === 0) {
-          char.element.className = "idle";
+            if (gameData.isAttacking) {
+                char.element.className = "attack"
+            } else {
+                char.element.className = "idle";
+            }
         } else {
-            char.element.className = "run";
+            if (gameData.isAttacking) {
+                char.element.className = "attack"
+            } else {
+                char.element.className = "run";
+            }
         }
 
-        if (gameData.isJumping === true && gameData.player.onground === false) {
+        if (gameData.player.onground === false) {
             char.element.className = "jump";
         }
         // if (
@@ -419,14 +428,26 @@ function animate(end) {
 
   gameData.characters.forEach((char, i) => {
     if (char.type === "enemy") {
-      if (checkCollision(gameData.player, char, enemyContact)) {
+      if (checkCollision(gameData.player, char, 2)) {
         if (!gameData.player.power) {
           console.log("Dead !");
           dieAudio.play();
           gameData.player.velocity.y -= 20;
         } else if (gameData.player.power) {
           console.log("Enemy killed !");
-          char.element.remove();
+          gameData.player.velocity.x = 0
+          char.velocity.x = 0
+          setTimeout(()=>{
+            char.element.remove();
+          },800)
+          if (!gameData.isAttacking) {
+              gameData.isAttacking = true
+              setTimeout(()=>{
+                gameData.player.element.className = "idle"
+                gameData.isAttacking = false
+              },500)
+          }
+          gameData.player.element.className = "attack"
           killAudio.play();
           addScore(10);
           gameData.characters.splice(i, 1);

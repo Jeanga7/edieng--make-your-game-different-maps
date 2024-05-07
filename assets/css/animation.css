@@ -25,7 +25,7 @@
 }
 
 .attack {
-    animation: attack 1.2s steps(12);
+    animation: attack 0.5s steps(12) infinite;
 }
 
 @keyframes home-idle {
@@ -48,5 +48,5 @@
 
 @keyframes attack {
     0% {background-position: 0 -180px;}
-    100% {background-position: -1220px -180px;}
+    100% {background-position: -720px -180px;}
 }  

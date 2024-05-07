@@ -50,6 +50,7 @@ class Character {
         this.element.style.bottom = `${this.position.y}px`;
         this.element.style.width = `${this.width}px`
         this.element.style.height = `${this.height}px`
+        this.element.style.overflow = "hidden"
     }
 
     update() {
