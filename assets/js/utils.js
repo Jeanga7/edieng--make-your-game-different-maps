@@ -35,20 +35,20 @@ export {
 };
 
 var gameData = {
-    countdownTime: 240,
-    duration: 240,
-    currentLevel: 0,
-    globalAnimation: null,
-    player: null,
-    totalScore: 0,
-    lives: 3,
-    coins: 0,
-    levelScore: 0,
-    distance: 0,
-    obstacles: [],
-    characters: [],
-    isGameOver: false,
-    levelEndPause: false
+  countdownTime: 240,
+  duration: 240,
+  currentLevel: 0,
+  globalAnimation: null,
+  player: null,
+  totalScore: 0,
+  lives: 3,
+  coins: 0,
+  levelScore: 0,
+  distance: 0,
+  obstacles: [],
+  characters: [],
+  isGameOver: false,
+  levelEndPause: false
 }
 
 // Start animation
@@ -57,7 +57,7 @@ function Timer() {
 
   gameData.countdownTime = gameData.duration;
 
-  gameData.timeLoop = setInterval(function() {
+  gameData.timeLoop = setInterval(function () {
     if (!(gameData.paused || gameData.levelEndPause)) {
       gameData.countdownTime--;
     }
@@ -106,9 +106,9 @@ function checkCollision(player, obstacle, contact = 0) {
 }
 
 let updateScore = () =>
-  (document.querySelector(
-    "#score"
-  ).textContent = `Score: ${gameData.totalScore}`);
+(document.querySelector(
+  "#score"
+).textContent = `Score: ${gameData.totalScore}`);
 let updateLives = () =>
   (document.querySelector("#life").textContent = " ❤️ ".repeat(gameData.lives));
 
@@ -120,7 +120,7 @@ function addScore(n) {
 
 function hideModals() {
   const modals = document.querySelectorAll(
-    "#pauseModal, #gameOverModal, #winModal"
+    "#pauseModal, #gameOverModal, #winModal ,#getInModal"
   );
   modals.forEach(modal => {
     modal.style.display = "none";
@@ -150,7 +150,10 @@ function switchLevel() {
         );
       });
   } else {
-    alert("You finished the GAME !");
+    // alert("You finished the GAME !");
+    document.querySelector('#gameOverModal').style.display = "flex"
+    document.querySelector("#game-over-text").textContent = "You Finished the Game"
+    gameData.levelEndPause = true
   }
 }
 
@@ -363,7 +366,7 @@ function animate(end) {
           return true;
         }
 
-          showHistory(char.position.x);
+        showHistory(char.position.x);
       }
     });
   } else if (
@@ -430,7 +433,7 @@ function animate(end) {
           // On doit supprimer l'élément de la liste des gameData.characters
 
           // Sleep for 5 seconds
-          setTimeout(function() {
+          setTimeout(function () {
             gameData.player.power = false;
           }, powerDuration); // 5000 milliseconds = 5 seconds
         }
