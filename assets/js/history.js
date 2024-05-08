@@ -16,54 +16,53 @@ import { gameData } from "./utils.js";
 export { showHistory };
 
 let reachedCheckpoints = [];
+let currentCharIndex = 0;
 
 function showHistory(playerPos) {
-  const checkpoints = [140, 1100, 2339, 3604, 4099];
-  const paragraphIndex = checkpoints.indexOf(playerPos);
+  const checkpoints = [140, 1100, 2345, 3604, 4099];
 
-  if (paragraphIndex !== -1 && !reachedCheckpoints.includes(playerPos) && !gameData.showHistoryPause) {
-    document.querySelector("#historyModal").style.display = "flex";
-    let textElement = document.getElementById("textHistory");
-    textElement.textContent = "";
-    let text = story[paragraphIndex];
-    let currentCharIndex = 0;
+  for (let i = 0; i < checkpoints.length; i++) {
+    if (playerPos >= checkpoints[i] - 2 && playerPos <= checkpoints[i] + 2 && !reachedCheckpoints.includes(checkpoints[i]) && !gameData.showHistoryPause) {
+      const paragraphIndex = i;
+      const text = story[paragraphIndex];
 
-    reachedCheckpoints.push(playerPos);
-    gameData.showHistoryPause = true;
+      document.querySelector("#historyModal").style.display = "flex";
+      let textElement = document.getElementById("textHistory");
+      textElement.textContent = "";
 
-    let interval = setInterval(() => {
-      textElement.textContent += text[currentCharIndex];
-      currentCharIndex++;
+      reachedCheckpoints.push(checkpoints[i]);
+      gameData.showHistoryPause = true;
 
-      document.querySelector('#skip').addEventListener('click', () => {
-          clearInterval(interval); 
-          textElement.textContent = text; 
-          // setTimeout(() => {
-              closeHistory();
-          // }, 3000);
-      });
+      let interval = setInterval(() => {
+        textElement.textContent += text[currentCharIndex];
+        currentCharIndex++;
 
-      document.addEventListener("keydown", (event) => {
-          if (event.key === "Enter") {
-              clearInterval(interval); 
-              textElement.textContent = text;
-              // setTimeout(() => {
-                  closeHistory();
-              // }, 3000);
-          }
-      });
+        document.querySelector('#skip').addEventListener('click', () => {
+            clearInterval(interval); 
+            textElement.textContent = text; 
+            closeHistory();
+        });
 
-      if (currentCharIndex === text.length) {
-          clearInterval(interval);
-          setTimeout(() => {
-              closeHistory()
-          }, 3000);
-      }
-  }, 30);
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Enter") {
+                clearInterval(interval); 
+                textElement.textContent = text;
+                closeHistory();
+            }
+        });
+
+        if (currentCharIndex === text.length) {
+            clearInterval(interval);
+            setTimeout(() => {
+                closeHistory()
+            }, 3000);
+        }
+      }, 30);
+
+      break;
+    }
+  }
 }
-}
-
-
 
 function closeHistory() {
   document.querySelector("#historyModal").style.display = "none";

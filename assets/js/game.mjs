@@ -61,7 +61,7 @@ export function game(sceneElements, obstacles, enemies, bg, duration, end) {
 
     // var val = 1
 
-    camera()
+    // camera()
     animate(end);
     Timer()
 }

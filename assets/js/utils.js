@@ -181,7 +181,6 @@ function decreaseLife() {
   } else {
     gameData.paused = true;
     gameData.isGameOver = true;
-    console.log(gameData.player);
     gameOver();
     cancelAnimationFrame(gameData.cameraAnimation);
   }
@@ -234,6 +233,26 @@ function animate(end) {
   backAudio.play();
   const PauseMenu = document.querySelector("#pauseModal");
   gameData.globalAnimation = requestAnimationFrame(animate);
+
+  updatePlayerScore();
+
+  gameData.obstacles.forEach(platform => platform.draw());
+
+  if (shouldContinueAnimating()) {
+    updateCharacters(PauseMenu, end);
+  } else if (shouldDisplayPauseMenu()) {
+    PauseMenu.style.display = "flex";
+  }
+
+  updateObstacles()
+  handlePlayerEnemyCollision()
+
+  checkEnd();
+}
+
+
+// //////////////////////////////////
+function updatePlayerScore() {
   let posX = gameData.player.position.x;
   if (
     posX !== 0 &&
@@ -243,149 +262,164 @@ function animate(end) {
     addScore(10);
     gameData.distance = gameData.player.position.x;
   }
+}
 
-  gameData.obstacles.forEach(platform => platform.draw());
-
-  let conditionsForAnimate =
+// ////////////////
+function shouldContinueAnimating() {
+  return (
     !gameData.paused &&
     !gameData.isGameOver &&
     !gameData.levelEndPause &&
-    !gameData.showHistoryPause;
-
-  if (conditionsForAnimate) {
-    PauseMenu.style.display = "none";
-    gameData.characters.forEach(char => {
-      char.update();
-      var found = false;
-
-      // Vérifier les collisions avec les obstacles
-      gameData.obstacles.forEach(obstacle => {
-        if (
-          obstacle.type !== "life" &&
-          obstacle.type !== "power" &&
-          obstacle.type !== "coin"
-        ) {
-          if (checkCollision(char, obstacle)) {
-            if (char.type === "enemy") {
-              char.velocity.x = char.direction;
-              if (found) {
-                char.turn();
-              }
-            }
-            // Empêcher le joueur de passer à travers l'obstacle par le haut, le bas, la gauche ou la droite
-            const playerLeft = char.position.x;
-            const playerRight = playerLeft + char.width;
-            const playerBottom = char.position.y;
-            const playerTop = playerBottom + char.height;
-            const obstacleBottom = obstacle.position.y;
-            const obstacleTop = obstacleBottom + obstacle.height;
-            const obstacleLeft = obstacle.position.x;
-            const obstacleRight = obstacleLeft + obstacle.width;
-
-            // Le joueur et l'obstacle sont sur le même alignement Vertical
-            const obstacleAndPlayerSameVAxis =
-              (obstacleLeft <= playerLeft && playerLeft <= obstacleRight) || // Le joueur dépasse l'obstacle sur la droite
-              (obstacleLeft <= playerRight && playerRight <= obstacleRight) || // Le joueur dépasse l'obstacle sur la gauche
-              (playerLeft <= obstacleLeft && obstacleRight <= playerRight); // L'obstacle est entre la gauche et la droite du joueur
-
-            const obstacleAndPlayerSameHAxis =
-              (obstacleBottom <= playerBottom && playerBottom <= obstacleTop) || // La tête du joueur dépasse l'obstacle
-              (obstacleBottom <= playerTop && playerTop <= obstacleTop) || // L'obstacle dépasse la tête du joueur
-              (playerBottom <= obstacleBottom && obstacleTop <= playerTop); // L'obstacle est entre la tête et les pieds du joueur
-
-            // Est en dessous de l'obstacle
-            const playerUnderObstacle =
-              obstacleAndPlayerSameVAxis &&
-              (playerBottom < obstacleBottom && obstacleBottom < playerTop);
-
-            // Est au dessus de l'obstacle
-            const playerOverObstacle =
-              obstacleAndPlayerSameVAxis &&
-              (playerBottom < obstacleTop && obstacleTop < playerTop);
-
-            // Est avant l'obstacle
-            const playerBeforeObstacle =
-              obstacleAndPlayerSameHAxis &&
-              (playerLeft < obstacleLeft && obstacleLeft < playerRight);
-
-            // Est après l'obstacle
-            const playerAfterObstacle =
-              obstacleAndPlayerSameHAxis &&
-              (playerLeft < obstacleRight && obstacleRight < playerRight);
-
-            if (playerUnderObstacle) {
-              char.position.y = obstacleBottom - char.height;
-              char.velocity.y = 0;
-            } else if (playerOverObstacle) {
-              char.position.y =
-                obstacleTop - (obstacle.type === "ground" ? 20 : 8);
-              char.velocity.y = 0;
-              char.onground = true;
-            } else if (playerBeforeObstacle) {
-              char.position.x = obstacleLeft - char.width;
-              char.velocity.x = 0;
-            } else if (playerAfterObstacle) {
-              char.position.x = obstacleRight;
-              char.velocity.x = 0;
-            }
-            found = true;
+    !gameData.showHistoryPause
+  );
+}
+// //////////////////////////////
+function handleCollision(char) {
+  var found = false;
+  gameData.obstacles.forEach(obstacle => {
+    if (
+      obstacle.type !== "life" &&
+      obstacle.type !== "power" &&
+      obstacle.type !== "coin"
+    ) {
+      if (checkCollision(char, obstacle)) {
+        if (char.type === "enemy") {
+          char.velocity.x = char.direction;
+          if (found) {
+            char.turn();
           }
         }
-      });
+        // Empêcher le joueur de passer à travers l'obstacle par le haut, le bas, la gauche ou la droite
+        const playerLeft = char.position.x;
+        const playerRight = playerLeft + char.width;
+        const playerBottom = char.position.y;
+        const playerTop = playerBottom + char.height;
+        const obstacleBottom = obstacle.position.y;
+        const obstacleTop = obstacleBottom + obstacle.height;
+        const obstacleLeft = obstacle.position.x;
+        const obstacleRight = obstacleLeft + obstacle.width;
 
-      if (char.type === "player") {
-        if (gameData.keys.right.pressed) {
-          char.velocity.x = 5;
-          char.element.style.transform = `scaleX(1)`;
-        } else if (
-          gameData.keys.left.pressed &&
-          char.element.getBoundingClientRect().left > 10
-        ) {
-          char.velocity.x = -5;
-          char.element.style.transform = `scaleX(-1)`;
-        } else {
+        // Le joueur et l'obstacle sont sur le même alignement Vertical
+        const obstacleAndPlayerSameVAxis =
+          (obstacleLeft <= playerLeft && playerLeft <= obstacleRight) || // Le joueur dépasse l'obstacle sur la droite
+          (obstacleLeft <= playerRight && playerRight <= obstacleRight) || // Le joueur dépasse l'obstacle sur la gauche
+          (playerLeft <= obstacleLeft && obstacleRight <= playerRight); // L'obstacle est entre la gauche et la droite du joueur
+
+        const obstacleAndPlayerSameHAxis =
+          (obstacleBottom <= playerBottom && playerBottom <= obstacleTop) || // La tête du joueur dépasse l'obstacle
+          (obstacleBottom <= playerTop && playerTop <= obstacleTop) || // L'obstacle dépasse la tête du joueur
+          (playerBottom <= obstacleBottom && obstacleTop <= playerTop); // L'obstacle est entre la tête et les pieds du joueur
+
+        // Est en dessous de l'obstacle
+        const playerUnderObstacle =
+          obstacleAndPlayerSameVAxis &&
+          (playerBottom < obstacleBottom && obstacleBottom < playerTop);
+
+        // Est au dessus de l'obstacle
+        const playerOverObstacle =
+          obstacleAndPlayerSameVAxis &&
+          (playerBottom < obstacleTop && obstacleTop < playerTop);
+
+        // Est avant l'obstacle
+        const playerBeforeObstacle =
+          obstacleAndPlayerSameHAxis &&
+          (playerLeft < obstacleLeft && obstacleLeft < playerRight);
+
+        // Est après l'obstacle
+        const playerAfterObstacle =
+          obstacleAndPlayerSameHAxis &&
+          (playerLeft < obstacleRight && obstacleRight < playerRight);
+
+        if (playerUnderObstacle) {
+          char.position.y = obstacleBottom - char.height;
+          char.velocity.y = 0;
+        } else if (playerOverObstacle) {
+          char.position.y =
+            obstacleTop - (obstacle.type === "ground" ? 20 : 8);
+          char.velocity.y = 0;
+          char.onground = true;
+        } else if (playerBeforeObstacle) {
+          char.position.x = obstacleLeft - char.width;
+          char.velocity.x = 0;
+        } else if (playerAfterObstacle) {
+          char.position.x = obstacleRight;
           char.velocity.x = 0;
         }
-
-        if (char.velocity.x === 0) {
-            if (gameData.isAttacking) {
-                char.element.className = "attack"
-            } else {
-                char.element.className = "idle";
-            }
-        } else {
-            if (gameData.isAttacking) {
-                char.element.className = "attack"
-            } else {
-                char.element.className = "run";
-            }
-        }
-
-        if (gameData.player.onground === false) {
-            char.element.className = "jump";
-        }
-        // if (
-        //   gameData.isJumping === false &&
-        //   gameData.player.onground === false
-        // ) {
-        //   char.element.style.backgroundImage = `url('${img.playerFalling}')`;
-        // }
-
-        if (char.x === end) {
-          return true;
-        }
-
-        showHistory(char.position.x);
+        found = true;
       }
-    });
-  } else if (
-    gameData.paused &&
-    !gameData.isGameOver &&
-    !gameData.levelEndPause
-  ) {
-    PauseMenu.style.display = "flex";
-  }
+    }
+  });
+}
 
+// ////////////////////////////
+function handlePlayerMovement(char) {
+  if (char.type === "player") {
+    if (gameData.keys.right.pressed) {
+      char.velocity.x = 5;
+      char.element.style.transform = `scaleX(1)`;
+    } else if (
+      gameData.keys.left.pressed &&
+      char.element.getBoundingClientRect().left > 10
+    ) {
+      char.velocity.x = -5;
+      char.element.style.transform = `scaleX(-1)`;
+    } else {
+      char.velocity.x = 0;
+    }
+  }
+}
+
+// ///////////////////////
+function handlePlayerAnimation(char) {
+  if (char.type === "player") {
+    if (char.velocity.x === 0) {
+        if (gameData.isAttacking) {
+            char.element.className = "attack"
+        } else {
+            char.element.className = "idle";
+        }
+    } else {
+        if (gameData.isAttacking) {
+            char.element.className = "attack"
+        } else {
+            char.element.className = "run";
+        }
+    }
+  }
+}
+// ///////////////////////////::*
+function handlePlayerPosition(char, end) {
+  if (char.type === "player") {
+    if (gameData.player.onground === false) {
+        char.element.className = "jump";
+    }
+    if (char.x === end) {
+      return true;
+    }
+    showHistory(char.position.x); 
+  }
+}
+// ////////////////////////
+function updateCharacters(PauseMenu, end) {
+  camera()
+  PauseMenu.style.display = "none";
+  gameData.characters.forEach(char => {
+    char.update();
+
+    // Vérifier les collisions avec les obstacles
+    handleCollision(char)
+    handlePlayerMovement(char)
+    handlePlayerAnimation(char)
+    handlePlayerPosition(char, end)   
+  });
+}
+// ///////////////////////////////
+function shouldDisplayPauseMenu() {
+  return gameData.paused && !gameData.isGameOver && !gameData.levelEndPause;
+}
+
+// ///////////////////////////////
+function updateObstacles() {
   let newObstacleType;
   let obstacleFound;
   let obstacleIndex;
@@ -398,6 +432,7 @@ function animate(end) {
   });
 
   if (newObstacleType !== gameData.lastObstacleType) {
+
     gameData.lastObstacleType = newObstacleType;
     if (gameData.lastObstacleType === "coin") {
       console.log("Got coin !");
@@ -425,7 +460,10 @@ function animate(end) {
       gameData.player.power = true;
     }
   }
+}
 
+// ////////////////////////////////////
+function handlePlayerEnemyCollision() {
   gameData.characters.forEach((char, i) => {
     if (char.type === "enemy") {
       if (checkCollision(gameData.player, char, 2)) {
@@ -461,8 +499,6 @@ function animate(end) {
       }
     }
   });
-
-  checkEnd();
 }
 
 function showStats() {
@@ -473,10 +509,14 @@ function showStats() {
       element.style.color = "white";
     });
 
-  document
+    document
     .querySelectorAll("#livesStats_pause, #livesStats_GO, #livesStats_win")
     .forEach(element => {
-      element.textContent = " ❤️ ".repeat(gameData.lives);
+      if (gameData.lives >= 0) {
+        element.textContent = " ❤️ ".repeat(gameData.lives);
+      } else {
+        element.textContent = "";
+      }
       element.style.color = "white";
       element.style.fontSize = "30px";
     });
