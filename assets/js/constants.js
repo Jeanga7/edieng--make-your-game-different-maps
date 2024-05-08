@@ -37,7 +37,7 @@ const powerDuration = 5000
 const img = Object.fromEntries(Object.entries({
     sky: "sky.jpg",
     ground: "desert-ground.png",
-    player: "player-1.png",
+    player: `player-${playersInfos[selectedPlayer].number}.png`,
     playerJumping: "jumping.png",
     playerFalling: "falling.png",
     enemy: "static.png",

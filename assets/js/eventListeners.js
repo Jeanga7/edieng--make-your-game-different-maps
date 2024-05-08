@@ -13,7 +13,8 @@ import {
     gameData,
     hideModals,
     pauseGame,
-    restartGame
+    restartGame,
+    setPlayerSkin
 } from "./utils.js"
 
 document.addEventListener("keydown", (event) => {
@@ -178,3 +179,12 @@ document.querySelector('#fermerInstruction').addEventListener('click', () => {
         modal.classList.remove('closing');
     }, 500);
 });
+
+setPlayerSkin()
+
+document.querySelectorAll(".changePlayer").forEach(el=>{
+    el.addEventListener("click", (e)=>{
+        selectedPlayer = selectedPlayer === 0 ? 1 : 0
+        setPlayerSkin()
+    })
+})

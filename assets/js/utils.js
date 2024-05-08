@@ -5,6 +5,7 @@ import {
   dieAudio,
   enemyContact,
   img,
+  imgStorage,
   killAudio,
   powerDuration,
   vh,
@@ -31,7 +32,8 @@ export {
   restartGame,
   pauseGame,
   animate,
-  showStats
+  showStats,
+  setPlayerSkin
 };
 
 var gameData = {
@@ -535,4 +537,10 @@ function showStats() {
       element.textContent = ` 🕐 ${gameData.countdownTime}`;
       element.style.fontSize = "30px";
     });
+}
+
+
+function setPlayerSkin() {
+    document.querySelector("#homePlayer").style.backgroundImage = `url('/assets/img/player-${playersInfos[selectedPlayer].number}-home.png')`
+    img.player = `${imgStorage}player-${playersInfos[selectedPlayer].number}.png`
 }
