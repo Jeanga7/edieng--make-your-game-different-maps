@@ -17,13 +17,13 @@ import {
 } from "./utils.js"
 
 document.addEventListener("keydown", (event) => {
-    event.preventDefault()
+    // event.preventDefault()
     let keys = ["P", "p", "Escape"]
     if (keys.includes(event.key)) pauseGame()
 })
 
 document.addEventListener("keydown", (event) => {
-    event.preventDefault()
+    // event.preventDefault()
     let keys = ["R", "r"]
     if (keys.includes(event.key)) restartGame()
 })
@@ -55,7 +55,7 @@ mainMenuBtn.forEach(btn => {
 gameData.isJumping = false;
 
 document.addEventListener('keydown', (event) => {
-    event.preventDefault()
+    // event.preventDefault()
 
     switch (event.key) {
         case "ArrowLeft":
