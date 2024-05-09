@@ -50,16 +50,9 @@ export function game(sceneElements, obstacles, enemies, bg, duration, end) {
     })
 
     gameData.keys = {
-        right: {
-            pressed: false
-        },
-        left: {
-            pressed: false
-        }
+        right: { pressed: false },
+        left: { pressed: false }
     };
-
-    // var val = 1
-
     // camera()
     animate(end);
     Timer()

@@ -80,8 +80,7 @@ function gameOver() {
   gameData.isGameOver = true;
 }
 
-let randomInterval = (min, max) =>
-  Math.floor(Math.random() * (max - min) + min);
+let randomInterval = (min, max) => Math.floor(Math.random() * (max - min) + min);
 
 function checkCollision(player, obstacle, contact = 0) {
   // Calculer les coordonnées des bords du joueur et de l'obstacle
@@ -108,12 +107,8 @@ function checkCollision(player, obstacle, contact = 0) {
   return false;
 }
 
-let updateScore = () =>
-(document.querySelector(
-  "#score"
-).textContent = `Score: ${gameData.totalScore}`);
-let updateLives = () =>
-  (document.querySelector("#life").textContent = " ❤️ ".repeat(gameData.lives));
+let updateScore = () => (document.querySelector("#score").textContent = `Score: ${gameData.totalScore}`);
+let updateLives = () => (document.querySelector("#life").textContent = " ❤️ ".repeat(gameData.lives));
 
 function addScore(n) {
   gameData.totalScore += n;
@@ -122,9 +117,7 @@ function addScore(n) {
 }
 
 function hideModals() {
-  const modals = document.querySelectorAll(
-    "#pauseModal, #gameOverModal, #winModal ,#getInModal"
-  );
+  const modals = document.querySelectorAll("#pauseModal, #gameOverModal, #winModal ,#getInModal");
   modals.forEach(modal => {
     modal.style.display = "none";
   });
@@ -138,20 +131,18 @@ function switchLevel() {
     showStats();
     document.querySelector("#winModal").style.display = "flex";
     gameData.levelEndPause = true;
-    document
-      .querySelector("#btn_continue_win")
-      .addEventListener("click", () => {
-        gameData.levelEndPause = false;
-        game(
-          level.scene,
-          level.obstacles,
-          level.enemies,
-          level.background,
-          level.duration,
-          level.end,
-          score
-        );
-      });
+    document.querySelector("#btn_continue_win").addEventListener("click", () => {
+      gameData.levelEndPause = false;
+      game(
+        level.scene,
+        level.obstacles,
+        level.enemies,
+        level.background,
+        level.duration,
+        level.end,
+        score
+      );
+    });
   } else {
     // alert("You finished the GAME !");
     document.querySelector('#gameOverModal').style.display = "flex"
