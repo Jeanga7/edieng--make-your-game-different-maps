@@ -8,7 +8,6 @@ import {
     Timer,
     gameData,
     hideModals,
-    camera,
     animate
 } from "./utils.js";
 import {

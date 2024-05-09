@@ -17,46 +17,13 @@ import {
     setPlayerSkin
 } from "./utils.js"
 
-document.addEventListener("keydown", (event) => {
-    // event.preventDefault()
-    let keys = ["P", "p", "Escape"]
-    if (keys.includes(event.key)) pauseGame()
-})
-
-document.addEventListener("keydown", (event) => {
-    // event.preventDefault()
-    let keys = ["R", "r"]
-    if (keys.includes(event.key)) restartGame()
-})
-
-const continu = document.querySelector("#continu")
-continu.addEventListener('click', () => {
-    pauseGame();
-})
-
-const restartBtn = document.querySelectorAll("#restart, #btn_restart_GO, #btn_restart_win");
-restartBtn.forEach(btn => {
-    btn.addEventListener('click', () => {
-        const modals = document.querySelectorAll("#pauseModal, #gameOverModal, #winModal")
-        modals.forEach(modal => {
-            modal.style.display = "none"
-        })
-        restartGame();
-    });
-});
-
-// handle main menu
-const mainMenuBtn = document.querySelectorAll("#main-menu, #btn_mainmenu_GO")
-mainMenuBtn.forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.querySelector('#mainMenuModal').style.display = "flex"
-    })
-})
-
-gameData.isJumping = false;
-
 document.addEventListener('keydown', (event) => {
-    // event.preventDefault()
+    const key = event.key.toUpperCase();
+    if (key === "P" || key === "ESCAPE") {
+        pauseGame();
+    } else if (key === "R") {
+        restartGame();
+    }
 
     switch (event.key) {
         case "ArrowLeft":
@@ -79,6 +46,32 @@ document.addEventListener('keydown', (event) => {
             break;
     }
 });
+
+document.querySelector("#continu").addEventListener('click', pauseGame);
+
+function handleRestart() {
+    document.querySelectorAll("#pauseModal, #gameOverModal, #winModal").forEach(modal => {
+        modal.style.display = "none";
+    });
+    restartGame();
+}
+
+// pour les boutons de restart
+document.querySelectorAll("#restart, #btn_restart_GO, #btn_restart_win").forEach(btn => {
+    btn.addEventListener('click', handleRestart);
+});
+
+// handle main menu
+function showMainMenuModal() {
+    document.querySelector('#mainMenuModal').style.display = "flex";
+}
+
+document.querySelectorAll("#main-menu, #btn_mainmenu_GO").forEach(btn => {
+    btn.addEventListener('click', showMainMenuModal);
+});
+
+gameData.isJumping = false;
+
 
 document.addEventListener('keyup', (event) => {
     if (event.key === "ArrowLeft") {
@@ -127,7 +120,6 @@ document.querySelector("#play").addEventListener('click', () => {
 document.querySelectorAll("#btn_classement_GO, #btn_classement_win").forEach(button => {
     button.addEventListener('click', () => {
         document.querySelector("#getInModal").style.display = "flex";
-        // removeScripts();
     });
 });
 

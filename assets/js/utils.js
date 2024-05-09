@@ -189,7 +189,6 @@ function decreaseLife() {
 }
 
 function camera() {
-  gameData.cameraAnimation = window.requestAnimationFrame(camera);
   let playerSize = gameData.player.element.getBoundingClientRect();
 
   if (playerSize.left >= vw / 2) {
