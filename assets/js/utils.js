@@ -61,7 +61,7 @@ function Timer() {
   gameData.countdownTime = gameData.duration;
 
   gameData.timeLoop = setInterval(function () {
-    if (!(gameData.paused || gameData.levelEndPause)) {
+    if (!(gameData.paused || gameData.levelEndPause) && gameData.countdownTime >= 0) {
       gameData.countdownTime--;
     }
     countdownElement.textContent = " 🕐 " + gameData.countdownTime;
@@ -375,17 +375,17 @@ function handlePlayerMovement(char) {
 function handlePlayerAnimation(char) {
   if (char.type === "player") {
     if (char.velocity.x === 0) {
-        if (gameData.isAttacking) {
-            char.element.className = "attack"
-        } else {
-            char.element.className = "idle";
-        }
+      if (gameData.isAttacking) {
+        char.element.className = "attack"
+      } else {
+        char.element.className = "idle";
+      }
     } else {
-        if (gameData.isAttacking) {
-            char.element.className = "attack"
-        } else {
-            char.element.className = "run";
-        }
+      if (gameData.isAttacking) {
+        char.element.className = "attack"
+      } else {
+        char.element.className = "run";
+      }
     }
   }
 }
@@ -393,12 +393,12 @@ function handlePlayerAnimation(char) {
 function handlePlayerPosition(char, end) {
   if (char.type === "player") {
     if (gameData.player.onground === false) {
-        char.element.className = "jump";
+      char.element.className = "jump";
     }
     if (char.x === end) {
       return true;
     }
-    showHistory(char.position.x); 
+    showHistory(char.position.x);
   }
 }
 // ////////////////////////
@@ -412,7 +412,7 @@ function updateCharacters(PauseMenu, end) {
     handleCollision(char)
     handlePlayerMovement(char)
     handlePlayerAnimation(char)
-    handlePlayerPosition(char, end)   
+    handlePlayerPosition(char, end)
   });
 }
 // ///////////////////////////////
@@ -477,15 +477,15 @@ function handlePlayerEnemyCollision() {
           console.log("Enemy killed !");
           gameData.player.velocity.x = 0
           char.velocity.x = 0
-          setTimeout(()=>{
+          setTimeout(() => {
             char.element.remove();
-          },800)
+          }, 800)
           if (!gameData.isAttacking) {
-              gameData.isAttacking = true
-              setTimeout(()=>{
-                gameData.player.element.className = "idle"
-                gameData.isAttacking = false
-              },500)
+            gameData.isAttacking = true
+            setTimeout(() => {
+              gameData.player.element.className = "idle"
+              gameData.isAttacking = false
+            }, 500)
           }
           gameData.player.element.className = "attack"
           killAudio.play();
@@ -511,7 +511,7 @@ function showStats() {
       element.style.color = "white";
     });
 
-    document
+  document
     .querySelectorAll("#livesStats_pause, #livesStats_GO, #livesStats_win")
     .forEach(element => {
       if (gameData.lives >= 0) {
@@ -541,6 +541,6 @@ function showStats() {
 
 
 function setPlayerSkin() {
-    document.querySelector("#homePlayer").style.backgroundImage = `url('/assets/img/player-${playersInfos[selectedPlayer].number}-home.png')`
-    img.player = `${imgStorage}player-${playersInfos[selectedPlayer].number}.png`
+  document.querySelector("#homePlayer").style.backgroundImage = `url('/assets/img/player-${playersInfos[selectedPlayer].number}-home.png')`
+  img.player = `${imgStorage}player-${playersInfos[selectedPlayer].number}.png`
 }
