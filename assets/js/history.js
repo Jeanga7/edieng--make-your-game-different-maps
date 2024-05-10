@@ -27,6 +27,7 @@ function showHistory(playerPos) {
       const text = story[paragraphIndex];
 
       document.querySelector("#historyModal").style.display = "flex";
+      document.querySelector("#historyModal").classList.remove("hidden");
       let textElement = document.getElementById("textHistory");
       textElement.textContent = "";
 
@@ -65,7 +66,7 @@ function showHistory(playerPos) {
 }
 
 function closeHistory() {
-  document.querySelector("#historyModal").style.display = "none";
+  document.querySelector("#historyModal").classList.add("hidden")
   gameData.showHistoryPause = false;
   currentCharIndex = 0;
 }
@@ -82,7 +83,7 @@ function closeHistory() {
     gameData.showHistoryPause = true;
 
     setTimeout(() => {
-      historyModal.style.display = "none";
+      historyModal.classList.add("hidden")
       gameData.showHistoryPause = false;
     }, 5000);
   }

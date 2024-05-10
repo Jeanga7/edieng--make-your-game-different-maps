@@ -76,6 +76,7 @@ function Timer() {
 function gameOver() {
   showStats();
   document.querySelector("#gameOverModal").style.display = "flex";
+  document.querySelector("#gameOverModal").classList.remove("hidden");
   clearInterval(gameData.timeLoop);
   gameData.isGameOver = true;
 }
@@ -119,7 +120,7 @@ function addScore(n) {
 function hideModals() {
   const modals = document.querySelectorAll("#pauseModal, #gameOverModal, #winModal ,#getInModal");
   modals.forEach(modal => {
-    modal.style.display = "none";
+    modal.classList.add("hidden")
   });
 }
 
@@ -130,6 +131,7 @@ function switchLevel() {
     // Notifications de fin de niveau
     showStats();
     document.querySelector("#winModal").style.display = "flex";
+    document.querySelector("#winModal").classList.remove("hidden");
     gameData.levelEndPause = true;
     document.querySelector("#btn_continue_win").addEventListener("click", () => {
       gameData.levelEndPause = false;
@@ -146,6 +148,7 @@ function switchLevel() {
   } else {
     // alert("You finished the GAME !");
     document.querySelector('#gameOverModal').style.display = "flex"
+    document.querySelector('#gameOverModal').classList.remove("hidden")
     document.querySelector("#game-over-text").textContent = "You Finished the Game"
     gameData.levelEndPause = true
   }
@@ -234,6 +237,7 @@ function animate(end) {
     updateCharacters(PauseMenu, end);
   } else if (shouldDisplayPauseMenu()) {
     PauseMenu.style.display = "flex";
+    PauseMenu.classList.remove("hidden");
   }
 
   updateObstacles()
@@ -394,7 +398,7 @@ function handlePlayerPosition(char, end) {
 // ////////////////////////
 function updateCharacters(PauseMenu, end) {
   camera()
-  PauseMenu.style.display = "none";
+  PauseMenu.classList.add("hidden")
   gameData.characters.forEach(char => {
     char.update();
 

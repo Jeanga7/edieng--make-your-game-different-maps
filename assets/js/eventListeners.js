@@ -51,7 +51,7 @@ document.querySelector("#continu").addEventListener('click', pauseGame);
 
 function handleRestart() {
     document.querySelectorAll("#pauseModal, #gameOverModal, #winModal").forEach(modal => {
-        modal.style.display = "none";
+        modal.classList.add("hidden");
     });
     restartGame();
 }
@@ -64,6 +64,7 @@ document.querySelectorAll("#restart, #btn_restart_GO, #btn_restart_win").forEach
 // handle main menu
 function showMainMenuModal() {
     document.querySelector('#mainMenuModal').style.display = "flex";
+    document.querySelector('#mainMenuModal').classList.remove("hidden");
 }
 
 document.querySelectorAll("#main-menu, #btn_mainmenu_GO").forEach(btn => {
@@ -99,7 +100,7 @@ document.querySelector("#play").addEventListener('click', () => {
     audio.currentTime = 0;
     currentIndex = 0;
 
-    document.querySelector('#mainMenuModal').style.display = "none"
+    document.querySelector('#mainMenuModal').classList.add("hidden")
     gameData.paused = false;
     gameData.levelEndPause = false;
     gameData.timeLoop = null;
@@ -120,6 +121,7 @@ document.querySelector("#play").addEventListener('click', () => {
 document.querySelectorAll("#btn_classement_GO, #btn_classement_win").forEach(button => {
     button.addEventListener('click', () => {
         document.querySelector("#getInModal").style.display = "flex";
+        document.querySelector("#getInModal").classList.remove("hidden");
     });
 });
 
@@ -161,13 +163,14 @@ document.querySelector('#history').addEventListener('click', () => {
 
 document.querySelector('#instructions').addEventListener('click', () => {
     document.querySelector('#instuctionsModal').style.display = 'flex'
+    document.querySelector('#instuctionsModal').classList.remove("hidden")
 })
 
 document.querySelector('#fermerInstruction').addEventListener('click', () => {
     const modal = document.querySelector('#instuctionsModal');
     modal.classList.add('closing');
     setTimeout(() => {
-        modal.style.display = 'none';
+        modal.classList.add("hidden")
         modal.classList.remove('closing');
     }, 500);
 });
