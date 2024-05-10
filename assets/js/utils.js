@@ -11,9 +11,15 @@ import {
   vh,
   vw
 } from "./constants.js";
-import { levels } from "./levels.js";
-import { game } from "./game.mjs";
-import { showHistory } from "./history.js";
+import {
+  levels
+} from "./levels.js";
+import {
+  game
+} from "./game.mjs";
+import {
+  showHistory
+} from "./history.js";
 
 export {
   gameData,
@@ -33,7 +39,8 @@ export {
   pauseGame,
   animate,
   showStats,
-  setPlayerSkin
+  setPlayerSkin,
+  elementInViewport
 };
 
 var gameData = {
@@ -227,23 +234,24 @@ function restartGame() {
 function animate(end) {
   backAudio.play();
   const PauseMenu = document.querySelector("#pauseModal");
-  gameData.globalAnimation = requestAnimationFrame(animate);
-
+  
   updatePlayerScore();
-
+  
   gameData.obstacles.forEach(platform => platform.draw());
-
+  
   if (shouldContinueAnimating()) {
     updateCharacters(PauseMenu, end);
   } else if (shouldDisplayPauseMenu()) {
     PauseMenu.style.display = "flex";
     PauseMenu.classList.remove("hidden");
   }
-
+  
   updateObstacles()
   handlePlayerEnemyCollision()
-
+  
   checkEnd();
+
+  gameData.globalAnimation = requestAnimationFrame(animate);
 }
 
 
@@ -537,4 +545,15 @@ function showStats() {
 function setPlayerSkin() {
   document.querySelector("#homePlayer").style.backgroundImage = `url('/assets/img/player-${playersInfos[selectedPlayer].number}-home.png')`
   img.player = `${imgStorage}player-${playersInfos[selectedPlayer].number}.png`
+}
+
+function elementInViewport(el) {
+  var rect = el.getBoundingClientRect();
+
+    return (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) + rect.height && /* or $(window).height() */
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth) + rect.width /* or $(window).width() */
+    );
 }

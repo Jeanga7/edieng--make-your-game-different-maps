@@ -7,6 +7,7 @@ import {
     numberOfEnemies
 } from "./constants.js";
 import {
+    elementInViewport,
     randomInterval
 } from "./utils.js";
 export {
@@ -55,7 +56,7 @@ class Character {
 
     update() {
         this.draw();
-        if (this.mobile) {
+        if (this.type === "player" || (this.type === "enemy" && elementInViewport(this.element) && this.mobile)) {
             this.position.x += (this.velocity.x * this.speedUp);
         }
         this.position.y += this.velocity.y;
