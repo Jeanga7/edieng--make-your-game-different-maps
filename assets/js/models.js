@@ -7,7 +7,6 @@ import {
     numberOfEnemies
 } from "./constants.js";
 import {
-    elementInViewport,
     randomInterval
 } from "./utils.js";
 export {
@@ -56,7 +55,6 @@ class Character {
 
     update() {
         this.draw();
-        console.log(this.type+" is moving");
         if (this.mobile) {
             this.position.x += (this.velocity.x * this.speedUp);
             this.position.y += this.velocity.y;
