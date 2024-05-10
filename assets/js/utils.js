@@ -237,13 +237,13 @@ function animate(end) {
   
   updatePlayerScore();
   
-  gameData.obstacles.forEach(platform => platform.draw());
+  gameData.obstacles.forEach(platform => {if(!platform.drawed) platform.draw()});
   
   if (shouldContinueAnimating()) {
     updateCharacters(PauseMenu, end);
   } else if (shouldDisplayPauseMenu()) {
-    PauseMenu.style.display = "flex";
     PauseMenu.classList.remove("hidden");
+    PauseMenu.style.display = "flex";
   }
   
   updateObstacles()
@@ -255,7 +255,7 @@ function animate(end) {
 }
 
 
-// //////////////////////////////////
+/////////////////////////////////////
 function updatePlayerScore() {
   let posX = gameData.player.position.x;
   if (
@@ -408,7 +408,7 @@ function updateCharacters(PauseMenu, end) {
   camera()
   PauseMenu.classList.add("hidden")
   gameData.characters.forEach(char => {
-    char.update();
+    if (elementInViewport(char.element)) char.update();
 
     // Vérifier les collisions avec les obstacles
     handleCollision(char)
