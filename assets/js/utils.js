@@ -251,7 +251,9 @@ function animate(end) {
   
   checkEnd();
 
-  gameData.globalAnimation = requestAnimationFrame(animate);
+  setTimeout(()=>{
+    gameData.globalAnimation = requestAnimationFrame(animate);
+  },0)
 }
 
 
@@ -405,17 +407,19 @@ function handlePlayerPosition(char, end) {
 }
 // ////////////////////////
 function updateCharacters(PauseMenu, end) {
-  camera()
   PauseMenu.classList.add("hidden")
   gameData.characters.forEach(char => {
     if (char.type === "player" || (elementInViewport(char.element) && char.type === "enemy")) char.update();
-
+    
     // Vérifier les collisions avec les obstacles
     handleCollision(char)
     handlePlayerMovement(char)
     handlePlayerAnimation(char)
     handlePlayerPosition(char, end)
   });
+  setTimeout(()=>{
+    camera()
+  },0)
 }
 // ///////////////////////////////
 function shouldDisplayPauseMenu() {
