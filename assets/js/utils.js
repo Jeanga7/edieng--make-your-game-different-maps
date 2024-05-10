@@ -524,7 +524,7 @@ function showStats() {
   document
     .querySelectorAll("#timeStats_pause, #timeStats_GO, #timeStats_win")
     .forEach(element => {
-      element.textContent = ` 🕐 ${gameData.countdownTime}`;
+      element.textContent = ` 🕐 ${gameData.countdownTime >= 0 ? gameData.countdownTime : 0}`;
       element.style.fontSize = "30px";
     });
 }
