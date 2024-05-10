@@ -7,15 +7,56 @@ body {
 }
 
 #world {
-    background-color: white;
-    background-size: cover;
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
     z-index: 2;
 }
+
+/* OPTIMISATION DES ELEMENTS DE GAMEELEMENTS */
+#gameInfosZone {
+    display: flex;
+    position: fixed;
+    width: 100vw;
+    top: 12px;
+    flex-direction: row;
+    justify-content: center;
+    z-index: 10;
+}
+
+#gameInfos {
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+    font-size: 22px;
+    font-family: Arial;
+    font-weight: bolder;
+    background-color: rgba(0,0,0,0.3);
+    border-radius: 50px;
+    padding: 4px 24px;
+}
+
+#scene {
+    background-size: cover;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+}
+
+/*  */
+
 
 #player,
 .enemy {
     position: absolute;
     background-position: bottom center;
+}
+
+.enemy {
     background-size: cover;
 }
 
@@ -84,8 +125,9 @@ body {
 }
 
 #modalStats p {
-    padding: 0 7em;
+    padding: 0 5em;
     text-align: center;
+    font-weight: 400;
 }
 
 #game-over-container,
@@ -431,7 +473,7 @@ span#line {
     transform: scale(1.03);
 }
 
-#play_history{
+#play_history {
     height: 25%;
     width: 4%;
     background-image: url(../img/pause.png);
@@ -443,13 +485,166 @@ span#line {
 
 @keyframes pulse {
     0% {
-      transform: scale(1) translate(0, 0);
+        transform: scale(1) translate(0, 0);
     }
+
     50% {
-      transform: scale(1.2) translate(-5%, -5%);
+        transform: scale(1.2) translate(-5%, -5%);
     }
+
     100% {
-      transform: scale(1) translate(0, 0);
+        transform: scale(1) translate(0, 0);
     }
-  }
-  
+}
+
+/* INSTRUCTION */
+
+#instuctionsModal {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 2%;
+    height: 80%;
+    width: 40%;
+    left: 15%;
+    z-index: 1000;
+    border: solid rgba(184, 80, 11, 0.836);
+    border-radius: 30px;
+    border-width: 10px;
+    border-style: ridge;
+    background-color: rgb(149, 177, 185);
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.8);
+    overflow-y: scroll;
+    text-align: justify;
+    display: none;
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+#instuctionsModal.closing {
+    animation: fadeOut 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+#fermerInstruction {
+    position: fixed;
+    border-radius: 10px;
+    right: 42%;
+    top: 10%;
+    color: white;
+    background-color: rgb(214, 8, 8);
+    cursor: pointer;
+}
+
+#fermerInstruction:hover {
+    transform: scale(1.1);
+}
+
+/* MODAL HISTORY */
+
+#historyModal {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 2500;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: none;
+}
+
+#historien {
+    position: absolute;
+    width: 25%;
+    height: 60%;
+    bottom: 0;
+    right: 0;
+    background-image: url(../img/historien.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    /* background-color: aqua; */
+}
+
+#bulleHistory {
+    position: absolute;
+    width: 40%;
+    height: 60%;
+    top: 0;
+    left: 40%;
+    background-image: url(../img/bulle.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    transform: scaleX(-1);
+    /* background-color: black;
+     */
+}
+
+/* 
+"Cookie", cursive;
+"Yellowtail", cursive;
+
+*/
+
+#textHistory {
+    position: absolute;
+    font-size: 22px;
+    font-family: "Sedgwick Ave Display", cursive;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 15px;
+    top: 8%;
+    left: 4%;
+    height: 62%;
+    width: 80%;
+    border-radius: 20px;
+    transform: scaleX(-1);
+    /* background-color: blue; */
+}
+
+#skip{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bolder;
+    letter-spacing: 2px;
+    height: 4%;
+    width: 7%;
+    right: 1%;
+    top: 2%;
+    border-radius: 10px;
+    z-index: 2000;
+    box-shadow: 3px 3px 2px rgba(255, 255, 255, 0.3);
+    background-color: red;
+    cursor: pointer;
+    animation: blink 3s infinite;
+    transition: 200ms;
+}
+
+#skip:hover{
+    transform: scale(1.05);
+}
+
+.hidden {
+    display: none !important;
+}

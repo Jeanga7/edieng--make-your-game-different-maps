@@ -4,22 +4,37 @@ import {
     world,
     playerInitialPosition,
     playerDims,
-    numberOfEnnemies
-} from "./constants.js"
-import { randomInterval } from "./utils.js"
-export { Character, Player, Enemy, Obstacle, Bonus, SceneElement }
+    numberOfEnemies
+} from "./constants.js";
+import {
+    randomInterval
+} from "./utils.js";
+export {
+    Character,
+    Player,
+    Enemy,
+    Obstacle,
+    Bonus,
+    SceneElement
+}
 
 class Character {
     constructor(type, pos, dims, mobile = true, speedUp = 1) {
-        this.position = { x: pos.x, y: pos.y };
+        this.position = {
+            x: pos.x,
+            y: pos.y
+        };
         this.type = type
-        this.velocity = { x: 0, y: 0 };
+        this.velocity = {
+            x: 0,
+            y: 0
+        };
         this.onground = true
         this.mobile = mobile
         this.speedUp = speedUp
         this.width = dims.w;
         this.height = dims.h;
-        this.element = document.createElement('div');
+        this.element = document.createElement('span');
         this.element.style.zIndex = "999"
         if (type === "player") {
             this.element.id = type;
@@ -27,14 +42,15 @@ class Character {
         } else {
             this.element.className = type
         }
+        this.element.style.width = `${this.width}px`
+        this.element.style.height = `${this.height}px`
         world.appendChild(this.element);
     }
 
     draw() {
         this.element.style.left = `${this.position.x}px`;
         this.element.style.bottom = `${this.position.y}px`;
-        this.element.style.width = `${this.width}px`
-        this.element.style.height = `${this.height}px`
+        this.element.style.overflow = "hidden"
     }
 
     update() {
@@ -45,8 +61,9 @@ class Character {
         this.position.y += this.velocity.y;
         if (this.position.y + this.velocity.y <= world.clientHeight) {
             this.velocity.y += gravity;
+        } else {
+            this.velocity.y = 0;
         }
-        else { this.velocity.y = 0; }
     }
 }
 
@@ -54,14 +71,18 @@ class Player extends Character {
     constructor(position) {
         super("player", playerInitialPosition, playerDims)
         this.element.style.backgroundImage = `url('${img[this.type]}')`
+        this.element.classList.add("idle")
         this.power = false
     }
 }
 
 class Enemy extends Character {
     constructor(pos, mobile, speedUp) {
-        super("enemy", pos, { w: 50, h: 60 }, mobile, speedUp)
-        let imgName = img[this.type + "_" + randomInterval(1, numberOfEnnemies)]
+        super("enemy", pos, {
+            w: 50,
+            h: 60
+        }, mobile, speedUp)
+        let imgName = img[this.type + "_" + randomInterval(1, numberOfEnemies)]
         this.element.style.backgroundImage = `url('${imgName}')`
         this.direction = 1
     }
@@ -73,12 +94,17 @@ class Enemy extends Character {
 }
 
 class Obstacle {
-    constructor({ x, y }, type, dims) {
-        this.position = { x, y };
+    constructor({
+        x,
+        y
+    }, type, dims) {
+        this.position = {
+            x,
+            y
+        };
         this.width = dims.w;
         this.height = dims.h;
         this.type = type
-        this.taken = false
         this.element = document.createElement('div');
         this.element.style.backgroundImage = `url(${img[type]})`
         this.element.classList.add('obstacle');
@@ -120,8 +146,14 @@ class Bonus extends Obstacle {
 }
 
 class SceneElement {
-    constructor({ x, y }, dims, ele, p) {
-        this.position = { x, y };
+    constructor({
+        x,
+        y
+    }, dims, ele, p) {
+        this.position = {
+            x,
+            y
+        };
         this.element = document.createElement('div');
         this.element.style.backgroundImage = `url(${img[ele]})`
         this.element.className = ele;

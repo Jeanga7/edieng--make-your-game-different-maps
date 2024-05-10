@@ -1,27 +1,43 @@
 export {
     img,
     imgStorage,
+    audioStorage,
     gravity,
     world,
     enemyContact,
     playerInitialPosition,
     playerDims,
-    numberOfEnnemies,
-    powerDuration
+    numberOfEnemies,
+    powerDuration,
+    backAudio,
+    runAudio,
+    coinAudio,
+    bonusAudio,
+    killAudio,
+    dieAudio,
+    vw,
+    vh
 }
 
 const imgStorage = "./assets/img/"
+const audioStorage = "./assets/audio"
 const gravity = -1.5;
 const world = document.querySelector('#world');
 const enemyContact = 25
-const playerInitialPosition = { x: 50, y: 80 }
-const playerDims = { w: 66, h: 65 }
+const playerInitialPosition = {
+    x: 50,
+    y: 100
+}
+const playerDims = {
+    w: 60,
+    h: 60
+}
 const powerDuration = 5000
 
 const img = Object.fromEntries(Object.entries({
     sky: "sky.jpg",
     ground: "desert-ground.png",
-    player: "static.png",
+    player: `player-${playersInfos[selectedPlayer].number}.png`,
     playerJumping: "jumping.png",
     playerFalling: "falling.png",
     enemy: "static.png",
@@ -48,9 +64,20 @@ const img = Object.fromEntries(Object.entries({
     groundNL: "groundNextLevel.jpeg",
     life: "coeur.gif",
     power: "power.gif",
-    coin: "coin.gif"
+    coin: "coin.gif",
+    panneau: "panneau-histoire.png"
 }).map(el => [el[0], imgStorage + el[1]]))
 
-const numberOfEnnemies = Object.entries(img)
-                                .filter(el=>el[0].includes("enemy_"))
-                                .length
+const numberOfEnemies = Object.entries(img)
+    .filter(el => el[0].includes("enemy_"))
+    .length
+
+const backAudio = new Audio("/assets/audio/ancian-egyptian-theme.mp3")
+const runAudio = new Audio("/assets/audio/run-on-sand.mp3")
+const coinAudio = new Audio("/assets/audio/rang.mp3")
+const bonusAudio = new Audio("/assets/audio/bonus.mp3")
+const dieAudio = new Audio("/assets/audio/dying.mp3")
+const killAudio = new Audio("/assets/audio/kill.mp3")
+
+const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)

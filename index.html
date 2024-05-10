@@ -3,16 +3,29 @@
 
 <head>
     <title>Making our Game</title>
+    <link rel="shortcut icon" href="./assets/img/horloge.png" type="image/x-icon">
     <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="./assets/css/animation.css">
     <script>
         var username;
+        const playersInfos = [
+            {number: 1, name: "Diomay"},
+            {number: 2, name: "Sitoe"}
+        ]
+        var selectedPlayer = 0;
     </script>
+    <script src="./assets/js/game.mjs" type="module"></script>
+    <script src="./assets/js/levels.js" type="module"></script>
 </head>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Cookie&family=Holtwood+One+SC&family=Pacifico&family=Sedgwick+Ave+Display&family=Yellowtail&display=swap');
 </style>
 
 <body>
+
+    <!-- div principal du game -->
+    <div id="world"></div>
+
     <!-- get in modal -->
     <div id="getInModal">
         <input type="text" id="input_name" name="username" placeholder="Enter your username please!">
@@ -33,10 +46,47 @@
             </div>
         </div>
         <div id="player_main_menu">
-            <div id="arrow_left"></div>
-            <div id="player_img"></div>
-            <div id="arrow_right"></div>
+            <div id="arrow_left" class="changePlayer"></div>
+            <div id="homePlayer" class="home-perso home-idle"></div>
+            <div id="arrow_right" class="changePlayer"></div>
         </div>
+
+    </div>
+    <!-- INSTRUCTION -->
+    <div id="instuctionsModal">
+        <h2> <u>INSTRUCTIONS</u></h2>
+        <p>
+            Bienvenue dans <b>🛡️ Anachronos 🛡️</b> ! Vous incarnez un jeune étudiant qui a été transporté dans un
+            monde ancien et
+            mystérieux à la suite d'une erreur de manipulation lors de ses recherches. Votre mission est de survivre,
+            d'échapper aux gardiens de chaque monde et de collecter des artefacts pour progresser à travers les époques
+            et
+            retrouver votre chemin vers le présent.
+        </p>
+        <p>
+
+        <h4>CONTRÔLES :</h4>
+        Utilisez les touches fléchées gauche ou droitee pour vous déplacer.
+        Appuyez sur la touche Espace ou haut pour sauter et esquiver vos ennemis.
+        Collectez des bonus pour améliorer votre score et déverrouiller de nouveaux mondes.
+        </p>
+        <p>
+        <h4>OBJECTIFS :</h4>
+        Traversez chaque monde en évitant les obstacles et en échappant aux gardiens des temps.
+        Collectez autant d'artefacts que possible pour progresser à travers les époques.
+        Atteignez la fin de chaque niveau pour accéder au monde suivant.
+        </p>
+
+        <p>
+        <h4>GARDEZ A L'ESPRIT</h4>
+
+        Chaque monde possède ses propres défis et dangers uniques.
+        Certains bonus peuvent vous aider à survivre, tandis que d'autres peuvent être des pièges.
+        Utilisez vos compétences d'observation et de réflexes pour éviter les dangers et surmonter les obstacles.
+
+        </p>
+        <h5>😇Bonne chance 😇!</h5>
+        <button id="fermerInstruction">X</button>
 
     </div>
 
@@ -48,12 +98,18 @@
             <div id="main-menu">MAIN-MENU</div>
         </div>
         <div id="modalStats">
-            <h2>Histoire</h2>
+            <h2>PAUSE</h2>
             <p>
-                Aliqua qui eiusmod exercitation eiusmod ex. Sit excepteur adipisicing velit esse esse anim enim ullamco
-                et dolore officia. Qui fugiat sint irure eu tempor irure ea laborum labore voluptate. Excepteur tempor
-                esse nisi aliquip elit culpa. Qui do exercitation magna voluptate consequat. Ut quis culpa cillum
-                commodo. Fugiat veniam commodo laborum consequat.
+                Le temps s'est arrêté, mais votre aventure continue ! Profitez de cette pause pour reprendre votre
+                souffle et planifier votre prochaine étape.
+            </p>
+            <p>
+
+                Utilisez les touches fléchées ← et → pour vous déplacer horizontalement.
+                Appuyez sur la touche ↑ ou espace pour sauter et éviter les obstacles.
+
+                Prêt à repartir à l'aventure ? Appuyez sur la touche "Reprendre" et lancez-vous dans le monde
+                d'Anachronos !
             </p>
         </div>
     </div>
@@ -76,6 +132,7 @@
         </div>
     </div>
 
+
     <!-- modal du menu level cleared -->
     <div id="winModal">
         <div id="win-container">
@@ -94,13 +151,20 @@
             <div id="buttonStats">
                 <div class="btn" id="btn_continue_win">CONTINUE</div>
                 <div class="btn" id="btn_restart_win">RESTART</div>
-                <div class="podium" id="btn_classement_win"></div>
+                <!-- <div class="podium" id="btn_classement_win"></div> -->
             </div>
         </div>
     </div>
 
-    <!-- div principal du game -->
-    <div id="world"></div>
+    <!-- modal history -->
+    <div id="historyModal">
+        <div id="skip">SKIP →</div>
+        <div id="historien"></div>
+        <div id="bulleHistory">
+            <div id="textHistory"></div>
+        </div>
+    </div>
+
 
 
     <script type="module">
@@ -108,10 +172,10 @@
             username = document.querySelector('#input_name').value;
         });
     </script>
-    <script src="./assets/js/main.js" type="module"></script>
-    <script src="./assets/js/script.mjs" type="module"></script>
-    <script src="./assets/js/levels.js" type="module"></script>
+    
     <script src="./assets/js/utils.js" type="module"></script>
+    <script src="./assets/js/eventListeners.js" type="module"></script>
+    <script src="./assets/js/history.js" type="module"></script>
 </body>
 
 </html>
