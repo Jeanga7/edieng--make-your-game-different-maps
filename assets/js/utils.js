@@ -408,7 +408,7 @@ function updateCharacters(PauseMenu, end) {
   camera()
   PauseMenu.classList.add("hidden")
   gameData.characters.forEach(char => {
-    if (elementInViewport(char.element)) char.update();
+    if (char.type === "player" || (elementInViewport(char.element) && char.type === "enemy")) char.update();
 
     // Vérifier les collisions avec les obstacles
     handleCollision(char)
