@@ -7,6 +7,7 @@ import {
     numberOfEnemies
 } from "./constants.js";
 import {
+    gameData,
     randomInterval
 } from "./utils.js";
 export {
@@ -24,6 +25,8 @@ class Character {
             x: pos.x,
             y: pos.y
         };
+        this.initialPos = Object.assign({}, this.position)
+        this.distance = 0
         this.type = type
         this.velocity = {
             x: 0,
@@ -43,26 +46,40 @@ class Character {
             this.element.className = type
         }
         world.appendChild(this.element);
+        this.created = false
+        this.draw()
     }
 
     draw() {
-        this.element.style.left = `${this.position.x}px`;
-        this.element.style.bottom = `${this.position.y}px`;
-        this.element.style.width = `${this.width}px`
-        this.element.style.height = `${this.height}px`
-        this.element.style.overflow = "hidden"
+        if (!this.created) {
+            this.element.style.width = `${this.width}px`
+            this.element.style.height = `${this.height}px`
+            this.element.style.overflow = "hidden"
+            this.created = true
+        } else {
+            this.element.style.left = `${this.position.x}px`;
+            this.element.style.bottom = `${this.position.y}px`;
+        }
     }
 
     update() {
-        this.draw();
         if (this.mobile) {
-            this.position.x += (this.velocity.x * this.speedUp);
+            let movingPlayer = this.type === "player" && (gameData.keys.left.pressed || gameData.keys.right.pressed)
+            if (this.type === "enemy" || movingPlayer) {
+                this.position.x += (this.velocity.x * this.speedUp);
+                this.distance += (this.velocity.x * this.speedUp);
+                console.log(`Distance of ${this.type} = ${this.distance+this.initialPos.x}`);
+                
+            }
+
             this.position.y += this.velocity.y;
             if (this.position.y + this.velocity.y <= world.clientHeight) {
                 this.velocity.y += gravity;
             } else {
                 this.velocity.y = 0;
             }
+
+            this.draw();
         }
     }
 }
@@ -120,6 +137,7 @@ class Obstacle {
             this.element.style.backgroundRepeat = "no-repeat"
         }
         world.appendChild(this.element);
+        this.draw()
     }
 
     draw() {
@@ -127,15 +145,6 @@ class Obstacle {
         this.element.style.bottom = `${this.position.y}px`;
         this.element.style.width = `${this.width}px`
         this.element.style.height = `${this.height}px`
-    }
-
-    update() {
-        this.draw();
-        // this.position.y += this.velocity.y;
-        // this.position.x += this.velocity.x;
-        // if (this.position.y + this.height + this.velocity.y <= world.clientHeight)
-        //     this.velocity.y += gravity;
-        // else this.velocity.y = 0;
     }
 }
 
