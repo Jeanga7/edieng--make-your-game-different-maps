@@ -100,15 +100,8 @@ document.querySelector("#play").addEventListener('click', () => {
     audio.currentTime = 0;
     currentIndex = 0;
 
-    document.querySelector('#mainMenuModal').classList.add("hidden")
-    gameData.paused = false;
-    gameData.levelEndPause = false;
-    gameData.timeLoop = null;
-    gameData.totalScore = 0
-    gameData.lives = 3
-    gameData.coins = 0
-    gameData.levelScore = 0
-    gameData.distance = 0
+    document.querySelector('#mainMenuModal').classList.add("hidden");
+    [gameData.paused, gameData.levelEndPause, gameData.timeLoop, gameData.totalScore, gameData.lives, gameData.coins, gameData.levelScore, gameData.distance] = [false, false, null, 0, 3, 0, 0, 0];
     hideModals()
     if (levels.length === 0) {
         alert("Add levels to the game.")
@@ -177,8 +170,8 @@ document.querySelector('#fermerInstruction').addEventListener('click', () => {
 
 setPlayerSkin()
 
-document.querySelectorAll(".changePlayer").forEach(el=>{
-    el.addEventListener("click", (e)=>{
+document.querySelectorAll(".changePlayer").forEach(el => {
+    el.addEventListener("click", (e) => {
         selectedPlayer = selectedPlayer === 0 ? 1 : 0
         setPlayerSkin()
     })

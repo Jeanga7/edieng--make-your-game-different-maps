@@ -259,14 +259,14 @@ function animate(end) {
 
 /////////////////////////////////////
 function updatePlayerScore() {
-  let posX = gameData.player.position.x;
+  let posX = gameData.player.distance;
   if (
     posX !== 0 &&
     posX > gameData.distance &&
     posX - gameData.distance >= 1000
   ) {
     addScore(10);
-    gameData.distance = gameData.player.position.x;
+    gameData.distance = gameData.player.distance;
   }
 }
 
@@ -345,10 +345,12 @@ function handleCollision(char) {
           char.velocity.y = 0;
           char.onground = true;
         } else if (playerBeforeObstacle) {
-          char.position.x = obstacleLeft - char.width;
+          char.position.x = obstacleLeft - char.width; // to remove
+          char.distance = obstacleLeft - char.width;
           char.velocity.x = 0;
         } else if (playerAfterObstacle) {
-          char.position.x = obstacleRight;
+          char.position.x = obstacleRight; // to remove
+          char.distance = obstacleRight;
           char.velocity.x = 0;
         }
         found = true;
@@ -402,7 +404,7 @@ function handlePlayerPosition(char, end) {
     if (char.x === end) {
       return true;
     }
-    showHistory(char.position.x);
+    showHistory(char.distance);
   }
 }
 // ////////////////////////
