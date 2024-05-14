@@ -86,6 +86,7 @@ function gameOver() {
   showStats();
   killGame()
   gameOverModal.style.display = "flex";
+  document.querySelector("#game-over-text").textContent = "GameOver"
   gameOverModal.classList.remove("hidden");
   gameData.isGameOver = true;
 }
@@ -214,6 +215,7 @@ function pauseGame() {
 
 // handle the restart option
 function restartGame() {
+  // window.location.reload()
   [gameData.currentLevel, gameData.lives, gameData.totalScore, gameData.levelScore, gameData.paused, gameData.levelEndPause, gameData.player, gameData.isGameOver] = [0, 3, 0, 0, false, false, null, false]
   hideModals();
   game(

@@ -17,3 +17,7 @@
 [x] Lorsque le jeu est terminé, le player continue de courir
 
 [x] L'input ne marche pas lorsqu'on doit entrer son nom d'utilisateur à la fin du jeu
+
+[x] lorsque l'on fini la game est que l'on restart la game il affiche "You Finished the Game"
+
+[ ] lorsque l'on quitte durant la game et que depuis le menu on appui sur play le temps décremente +1s
