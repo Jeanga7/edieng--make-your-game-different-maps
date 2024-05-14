@@ -8,7 +8,8 @@ import {
     Timer,
     gameData,
     hideModals,
-    animate
+    animate,
+    killGame
 } from "./utils.js";
 import {
     img
@@ -18,6 +19,7 @@ import {
 } from "./gameElements.js";
 
 export function game(sceneElements, obstacles, enemies, bg, duration, end) {
+    killGame()
     hideModals()
     gameData.isGameOver = false
     createWorldElements(bg, duration, gameData, img);

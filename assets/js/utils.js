@@ -239,7 +239,11 @@ function restartGame() {
 function animate(end) {
   backAudio.play();
   const PauseMenu = document.querySelector("#pauseModal");
-
+  
+  setTimeout(() => {
+    gameData.globalAnimation = requestAnimationFrame(animate);
+  }, 0)
+  
   updatePlayerScore();
 
   gameData.obstacles.forEach(platform => {
@@ -258,9 +262,6 @@ function animate(end) {
 
   checkEnd();
 
-  setTimeout(() => {
-    gameData.globalAnimation = requestAnimationFrame(animate);
-  }, 0)
 }
 
 
