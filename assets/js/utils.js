@@ -40,14 +40,15 @@ export {
   animate,
   showStats,
   setPlayerSkin,
-  elementInViewport
+  elementInViewport,
+  killGame
 };
 
 var gameData = {
   countdownTime: 240,
   duration: 240,
   currentLevel: 0,
-  globalAnimation: null,
+  globalAnimation: 0,
   player: null,
   totalScore: 0,
   lives: 3,
@@ -74,7 +75,7 @@ function Timer() {
     countdownElement.textContent = " 🕐 " + gameData.countdownTime;
 
     if (gameData.countdownTime <= 0) {
-      clearInterval(gameData.timeLoop);
+      killGame()
       gameOver();
     }
   }, 1000);
@@ -82,9 +83,9 @@ function Timer() {
 
 function gameOver() {
   showStats();
+  killGame()
   document.querySelector("#gameOverModal").style.display = "flex";
   document.querySelector("#gameOverModal").classList.remove("hidden");
-  clearInterval(gameData.timeLoop);
   gameData.isGameOver = true;
 }
 
@@ -168,11 +169,16 @@ function checkEnd() {
   }
 }
 
+function killGame() {
+  cancelAnimationFrame(gameData.globalAnimation)
+  clearInterval(gameData.timeLoop);
+}
+
 function decreaseLife() {
   gameData.lives--;
+  killGame()
   if (gameData.lives >= 1) {
     gameData.totalScore -= gameData.levelScore;
-    clearInterval(gameData.timeLoop);
     game(
       levels[gameData.currentLevel].scene,
       levels[gameData.currentLevel].obstacles,
@@ -185,7 +191,6 @@ function decreaseLife() {
     gameData.paused = true;
     gameData.isGameOver = true;
     gameOver();
-    cancelAnimationFrame(gameData.cameraAnimation);
   }
 }
 
@@ -234,26 +239,28 @@ function restartGame() {
 function animate(end) {
   backAudio.play();
   const PauseMenu = document.querySelector("#pauseModal");
-  
+
   updatePlayerScore();
-  
-  gameData.obstacles.forEach(platform => {if(!platform.drawed) platform.draw()});
-  
+
+  gameData.obstacles.forEach(platform => {
+    if (!platform.drawed) platform.draw()
+  });
+
   if (shouldContinueAnimating()) {
     updateCharacters(PauseMenu, end);
   } else if (shouldDisplayPauseMenu()) {
     PauseMenu.classList.remove("hidden");
     PauseMenu.style.display = "flex";
   }
-  
+
   updateObstacles()
   handlePlayerEnemyCollision()
-  
+
   checkEnd();
 
-  setTimeout(()=>{
+  setTimeout(() => {
     gameData.globalAnimation = requestAnimationFrame(animate);
-  },0)
+  }, 0)
 }
 
 
@@ -412,16 +419,16 @@ function updateCharacters(PauseMenu, end) {
   PauseMenu.classList.add("hidden")
   gameData.characters.forEach(char => {
     if (char.type === "player" || (elementInViewport(char.element) && char.type === "enemy")) char.update();
-    
+
     // Vérifier les collisions avec les obstacles
     handleCollision(char)
     handlePlayerMovement(char)
     handlePlayerAnimation(char)
     handlePlayerPosition(char, end)
   });
-  setTimeout(()=>{
+  setTimeout(() => {
     camera()
-  },0)
+  }, 0)
 }
 // ///////////////////////////////
 function shouldDisplayPauseMenu() {
@@ -556,10 +563,10 @@ function setPlayerSkin() {
 function elementInViewport(el) {
   var rect = el.getBoundingClientRect();
 
-    return (
-        rect.top >= 0 &&
-        rect.left >= 0 &&
-        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) + rect.height && /* or $(window).height() */
-        rect.right <= (window.innerWidth || document.documentElement.clientWidth) + rect.width /* or $(window).width() */
-    );
+  return (
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) + rect.height && /* or $(window).height() */
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth) + rect.width /* or $(window).width() */
+  );
 }

@@ -20,7 +20,6 @@ import {
 export function game(sceneElements, obstacles, enemies, bg, duration, end) {
     hideModals()
     gameData.isGameOver = false
-    cancelAnimationFrame(gameData.globalAnimation)
     createWorldElements(bg, duration, gameData, img);
 
     gameData.duration = duration
