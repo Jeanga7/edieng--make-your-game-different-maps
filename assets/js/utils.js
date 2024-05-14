@@ -3,13 +3,14 @@ import {
   bonusAudio,
   coinAudio,
   dieAudio,
-  enemyContact,
+  gameOverModal,
   img,
   imgStorage,
   killAudio,
   powerDuration,
   vh,
-  vw
+  vw,
+  winModal
 } from "./constants.js";
 import {
   levels
@@ -84,8 +85,8 @@ function Timer() {
 function gameOver() {
   showStats();
   killGame()
-  document.querySelector("#gameOverModal").style.display = "flex";
-  document.querySelector("#gameOverModal").classList.remove("hidden");
+  gameOverModal.style.display = "flex";
+  gameOverModal.classList.remove("hidden");
   gameData.isGameOver = true;
 }
 
@@ -138,8 +139,9 @@ function switchLevel() {
     const level = levels[gameData.currentLevel];
     // Notifications de fin de niveau
     showStats();
-    document.querySelector("#winModal").style.display = "flex";
-    document.querySelector("#winModal").classList.remove("hidden");
+
+    winModal.style.display = "flex";
+    winModal.classList.remove("hidden");
     gameData.levelEndPause = true;
     document.querySelector("#btn_continue_win").addEventListener("click", () => {
       gameData.levelEndPause = false;
@@ -155,16 +157,15 @@ function switchLevel() {
     });
   } else {
     // alert("You finished the GAME !");
-    document.querySelector('#gameOverModal').style.display = "flex"
-    document.querySelector('#gameOverModal').classList.remove("hidden")
+    gameOverModal.style.display = "flex"
+    gameOverModal.classList.remove("hidden")
     document.querySelector("#game-over-text").textContent = "You Finished the Game"
     gameData.levelEndPause = true
   }
 }
 
 function checkEnd() {
-  const playerPos = parseInt(document.querySelector("#player").style.left);
-  if (playerPos >= levels[gameData.currentLevel].end) {
+  if (gameData.player.position.x >= levels[gameData.currentLevel].end) {
     switchLevel();
   }
 }
@@ -195,7 +196,7 @@ function decreaseLife() {
 }
 
 function camera() {
-  let playerSize = gameData.player.element.getBoundingClientRect();
+  let playerSize = gameData.playerDims;
 
   if (playerSize.left >= vw / 2) {
     world.scrollLeft += 5;
@@ -208,23 +209,12 @@ function camera() {
 
 // handle pause option
 function pauseGame() {
-  if (!gameData.paused) {
-    gameData.paused = true;
-  } else {
-    gameData.paused = false;
-  }
+  gameData.paused = !gameData.paused
 }
 
 // handle the restart option
 function restartGame() {
-  gameData.currentLevel = 0;
-  gameData.lives = 3;
-  gameData.totalScore = 0;
-  gameData.levelScore = 0;
-  gameData.paused = false;
-  gameData.levelEndPause = false;
-  gameData.player = null;
-  gameData.isGameOver = false;
+  [gameData.currentLevel, gameData.lives, gameData.totalScore, gameData.levelScore, gameData.paused, gameData.levelEndPause, gameData.player, gameData.isGameOver] = [0, 3, 0, 0, false, false, null, false]
   hideModals();
   game(
     levels[gameData.currentLevel].scene,
@@ -239,29 +229,34 @@ function restartGame() {
 function animate(end) {
   backAudio.play();
   const PauseMenu = document.querySelector("#pauseModal");
-  
+
   setTimeout(() => {
     gameData.globalAnimation = requestAnimationFrame(animate);
   }, 0)
-  
+
+  gameData.playerDims = gameData.player.element.getBoundingClientRect()
+
   updatePlayerScore();
 
-  gameData.obstacles.forEach(platform => {
-    if (!platform.drawed) platform.draw()
-  });
-
   if (shouldContinueAnimating()) {
-    updateCharacters(PauseMenu, end);
+    PauseMenu.classList.add("hidden")
+
+    // Mise à jour des personnages et détection de la colision
+    charactersLoop(end)
+
+    // Mise à jour des obstacles
+    updateObstacles()
+
+    // Vérification de l'atteinte de la fin du niveau
+    checkEnd();
+
+    setTimeout(() => {
+      camera()
+    }, 0)
   } else if (shouldDisplayPauseMenu()) {
     PauseMenu.classList.remove("hidden");
     PauseMenu.style.display = "flex";
   }
-
-  updateObstacles()
-  handlePlayerEnemyCollision()
-
-  checkEnd();
-
 }
 
 
@@ -289,8 +284,15 @@ function shouldContinueAnimating() {
 }
 // //////////////////////////////
 function handleCollision(char) {
+  let newObstacleType;
+  let obstacleFound;
+  let obstacleIndex;
   var found = false;
-  gameData.obstacles.forEach(obstacle => {
+
+
+  gameData.obstacles.forEach((obstacle, i) => {
+    if (!obstacle.drawed) obstacle.draw()
+
     if (
       obstacle.type !== "life" &&
       obstacle.type !== "power" &&
@@ -363,8 +365,43 @@ function handleCollision(char) {
         }
         found = true;
       }
+    } else {
+      if (checkCollision(gameData.player, obstacle, obstacle.width / 2) && !obstacle.taken) {
+        newObstacleType = obstacle.type;
+        obstacleFound = obstacle;
+        obstacleIndex = i;
+      }
     }
-  });
+  });  
+  
+  if (newObstacleType !== gameData.lastObstacleType) {
+    gameData.lastObstacleType = newObstacleType;
+    if (gameData.lastObstacleType === "coin") {
+      console.log("Got coin !");
+      obstacleFound.element.remove();
+      obstacleFound.taken = true;
+      coinAudio.play();
+      gameData.obstacles.splice(obstacleIndex, 1);
+      addScore(20);
+      gameData.coins++;
+    } else if (gameData.lastObstacleType === "life") {
+      console.log("Got life !");
+      obstacleFound.element.remove();
+      bonusAudio.play();
+      gameData.obstacles.splice(obstacleIndex, 1);
+      gameData.lives++;
+      updateLives();
+    } else if (
+      gameData.lastObstacleType === "power" &&
+      !gameData.player.power
+    ) {
+      console.log("Got power !");
+      obstacleFound.element.remove();
+      bonusAudio.play();
+      gameData.obstacles.splice(obstacleIndex, 1);
+      gameData.player.power = true;
+    }
+  }
 }
 
 // ////////////////////////////
@@ -416,20 +453,14 @@ function handlePlayerPosition(char, end) {
   }
 }
 // ////////////////////////
-function updateCharacters(PauseMenu, end) {
-  PauseMenu.classList.add("hidden")
-  gameData.characters.forEach(char => {
-    if (char.type === "player" || (elementInViewport(char.element) && char.type === "enemy")) char.update();
+function updateCharacters(end, char, i) {
+  if (char.type === "player" || (elementInViewport(char.element) && char.type === "enemy")) char.update();
 
-    // Vérifier les collisions avec les obstacles
-    handleCollision(char)
-    handlePlayerMovement(char)
-    handlePlayerAnimation(char)
-    handlePlayerPosition(char, end)
-  });
-  setTimeout(() => {
-    camera()
-  }, 0)
+  // Vérifier les collisions avec les obstacles
+  handleCollision(char)
+  handlePlayerMovement(char)
+  handlePlayerAnimation(char)
+  handlePlayerPosition(char, end)
 }
 // ///////////////////////////////
 function shouldDisplayPauseMenu() {
@@ -438,85 +469,51 @@ function shouldDisplayPauseMenu() {
 
 // ///////////////////////////////
 function updateObstacles() {
-  let newObstacleType;
-  let obstacleFound;
-  let obstacleIndex;
-  gameData.obstacles.forEach((obs, i) => {
-    if (checkCollision(gameData.player, obs, obs.width / 2) && !obs.taken) {
-      newObstacleType = obs.type;
-      obstacleFound = obs;
-      obstacleIndex = i;
-    }
+  
+}
+
+function charactersLoop(end) {
+  gameData.characters.forEach((char, i) => {
+    updateCharacters(end, char, i);
+    handlePlayerEnemyCollision(char, i)
   });
-
-  if (newObstacleType !== gameData.lastObstacleType) {
-
-    gameData.lastObstacleType = newObstacleType;
-    if (gameData.lastObstacleType === "coin") {
-      console.log("Got coin !");
-      obstacleFound.element.remove();
-      obstacleFound.taken = true;
-      coinAudio.play();
-      gameData.obstacles.splice(obstacleIndex, 1);
-      addScore(20);
-      gameData.coins++;
-    } else if (gameData.lastObstacleType === "life") {
-      console.log("Got life !");
-      obstacleFound.element.remove();
-      bonusAudio.play();
-      gameData.obstacles.splice(obstacleIndex, 1);
-      gameData.lives++;
-      updateLives();
-    } else if (
-      gameData.lastObstacleType === "power" &&
-      !gameData.player.power
-    ) {
-      console.log("Got power !");
-      obstacleFound.element.remove();
-      bonusAudio.play();
-      gameData.obstacles.splice(obstacleIndex, 1);
-      gameData.player.power = true;
-    }
-  }
 }
 
 // ////////////////////////////////////
-function handlePlayerEnemyCollision() {
-  gameData.characters.forEach((char, i) => {
-    if (char.type === "enemy") {
-      if (checkCollision(gameData.player, char, 2)) {
-        if (!gameData.player.power) {
-          console.log("Dead !");
-          dieAudio.play();
-          gameData.player.velocity.y -= 20;
-        } else if (gameData.player.power) {
-          console.log("Enemy killed !");
-          gameData.player.velocity.x = 0
-          char.velocity.x = 0
+function handlePlayerEnemyCollision(char, i) {
+  if (char.type === "enemy") {
+    if (checkCollision(gameData.player, char, 2)) {
+      if (!gameData.player.power) {
+        console.log("Dead !");
+        dieAudio.play();
+        gameData.player.velocity.y -= 20;
+      } else if (gameData.player.power) {
+        console.log("Enemy killed !");
+        gameData.player.velocity.x = 0
+        char.velocity.x = 0
+        setTimeout(() => {
+          char.element.remove();
+        }, 800)
+        if (!gameData.isAttacking) {
+          gameData.isAttacking = true
           setTimeout(() => {
-            char.element.remove();
-          }, 800)
-          if (!gameData.isAttacking) {
-            gameData.isAttacking = true
-            setTimeout(() => {
-              gameData.player.element.className = "idle"
-              gameData.isAttacking = false
-            }, 500)
-          }
-          gameData.player.element.className = "attack"
-          killAudio.play();
-          addScore(10);
-          gameData.characters.splice(i, 1);
-          // On doit supprimer l'élément de la liste des gameData.characters
-
-          // Sleep for 5 seconds
-          setTimeout(function () {
-            gameData.player.power = false;
-          }, powerDuration); // 5000 milliseconds = 5 seconds
+            gameData.player.element.className = "idle"
+            gameData.isAttacking = false
+          }, 500)
         }
+        gameData.player.element.className = "attack"
+        killAudio.play();
+        addScore(10);
+        gameData.characters.splice(i, 1);
+        // On doit supprimer l'élément de la liste des gameData.characters
+
+        // Sleep for 5 seconds
+        setTimeout(function () {
+          gameData.player.power = false;
+        }, powerDuration); // 5000 milliseconds = 5 seconds
       }
     }
-  });
+  }
 }
 
 function showStats() {
