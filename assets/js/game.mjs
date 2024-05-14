@@ -17,12 +17,16 @@ import {
 import {
     createWorldElements
 } from "./gameElements.js";
+import {
+    addPauseContinue
+} from "./eventListeners.js";
 
 export function game(sceneElements, obstacles, enemies, bg, duration, end) {
     killGame()
     hideModals()
     gameData.isGameOver = false
     createWorldElements(bg, duration, gameData, img);
+    addPauseContinue()
 
     gameData.duration = duration
     gameData.levelScore = 0

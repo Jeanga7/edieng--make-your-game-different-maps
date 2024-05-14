@@ -501,7 +501,7 @@ span#line {
 
 /* INSTRUCTION */
 
-#instuctionsModal {
+#instructionsModal {
     position: absolute;
     display: flex;
     align-items: center;
@@ -523,7 +523,7 @@ span#line {
     animation: fadeIn 0.8s ease-in-out;
 }
 
-#instuctionsModal.closing {
+#instructionsModal.closing {
     animation: fadeOut 0.5s ease-in-out;
 }
 
@@ -620,6 +620,20 @@ span#line {
     border-radius: 20px;
     transform: scaleX(-1);
     /* background-color: blue; */
+}
+
+#pauseBtn{
+    position: absolute;
+    top: 1%;
+    right: 1%;
+    width: 50.6px;
+    height: 49.3px;
+    background-image: url(../img/pause.png);
+    background-size: cover;
+    cursor: pointer;
+    z-index: 9999;
+    /* background-color: brown; */
+    
 }
 
 #skip{

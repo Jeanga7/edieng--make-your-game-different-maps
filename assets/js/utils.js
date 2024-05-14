@@ -127,7 +127,7 @@ function addScore(n) {
 }
 
 function hideModals() {
-  const modals = document.querySelectorAll("#pauseModal, #gameOverModal, #winModal ,#getInModal");
+  const modals = document.querySelectorAll("#pauseModal, #gameOverModal, #winModal ,#getInModal, #instructionsModal");
   modals.forEach(modal => {
     modal.classList.add("hidden")
   });

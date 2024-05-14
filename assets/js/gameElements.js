@@ -5,41 +5,17 @@ export {
 const world = document.getElementById("world");
 
 function createWorldElements(bg, duration, gameData, img) {
-    world.innerHTML = "";
+    // world.innerHTML = "";
     world.scrollLeft = 0;
-
-    let gameInfosZone = document.createElement("div")
-    gameInfosZone.id = "gameInfosZone"
-
-    let gameInfos = document.createElement("div")
-    gameInfos.id = "gameInfos"
-
-    // Ajoute le score
-    const score = document.createElement("div");
-    score.id = "score";
-    score.textContent = `Score: ${gameData.totalScore}`;
-    score.style.color = "white";
-    gameInfos.appendChild(score);
-
-    // Ajoute la vie
-    const life = document.createElement("div");
-    life.id = "life";
-    life.textContent = " ❤️ ".repeat(gameData.lives);
-    gameInfos.appendChild(life);
-
-    // Ajoute le timer
-    const timer = document.createElement("div");
-    timer.id = "timer";
-    timer.textContent = ` 🕐 ${duration}`;
-    timer.style.color = "white";
-    gameInfos.appendChild(timer);
-
-    gameInfosZone.appendChild(gameInfos)
-    world.appendChild(gameInfosZone)
-
-    // Ajoute le fond
-    const scene = document.createElement("div");
-    scene.style.background = bg;
-    scene.id = "scene";
-    world.appendChild(scene);
+    world.innerHTML =`
+    <div id="scene" style="background:${bg};"></div>
+    <div id="gameInfosZone">
+        <div id="gameInfos">
+            <div id="score" style="color: white;" >Score: ${gameData.totalScore}</div>
+            <div id="life" >${" ❤️ ".repeat(gameData.lives)}</div>
+            <div id="timer" style="color:white">🕐 ${duration}</div>
+        </div>
+        <div id="pauseBtn"></div>
+    </div>
+    `
 }

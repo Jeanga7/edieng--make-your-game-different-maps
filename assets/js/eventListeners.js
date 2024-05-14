@@ -17,6 +17,10 @@ import {
     setPlayerSkin
 } from "./utils.js"
 
+export {
+    addPauseContinue
+}
+
 document.addEventListener('keydown', (event) => {
     const key = event.key.toUpperCase();
     if (key === "P" || key === "ESCAPE") {
@@ -47,7 +51,10 @@ document.addEventListener('keydown', (event) => {
     }
 });
 
-document.querySelector("#continu").addEventListener('click', pauseGame);
+function addPauseContinue() {
+    document.querySelector("#continu").addEventListener('click', pauseGame);
+    document.querySelector("#pauseBtn").addEventListener("click", pauseGame)
+}
 
 function handleRestart() {
     document.querySelectorAll("#pauseModal, #gameOverModal, #winModal").forEach(modal => {
@@ -155,12 +162,12 @@ document.querySelector('#history').addEventListener('click', () => {
 });
 
 document.querySelector('#instructions').addEventListener('click', () => {
-    document.querySelector('#instuctionsModal').style.display = 'flex'
-    document.querySelector('#instuctionsModal').classList.remove("hidden")
+    document.querySelector('#instructionsModal').style.display = 'flex'
+    document.querySelector('#instructionsModal').classList.remove("hidden")
 })
 
 document.querySelector('#fermerInstruction').addEventListener('click', () => {
-    const modal = document.querySelector('#instuctionsModal');
+    const modal = document.querySelector('#instructionsModal');
     modal.classList.add('closing');
     setTimeout(() => {
         modal.classList.add("hidden")
