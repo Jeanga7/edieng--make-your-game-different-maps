@@ -91,18 +91,18 @@ export let levels = [{
                 },
                 "type": "ground",
                 "size": {
-                    "w": 600,
+                    "w": 550,
                     "h": 30
                 }
             },
             {
                 "pos": {
-                    "x": 1000,
+                    "x": 1050,
                     "y": 0
                 },
                 "type": "ground",
                 "size": {
-                    "w": 3330,
+                    "w": 3280,
                     "h": 30
                 }
             },
@@ -119,7 +119,7 @@ export let levels = [{
             },
             {
                 "pos": {
-                    "x": 650,
+                    "x": 680,
                     "y": 20
                 },
                 "type": "platform2",
@@ -265,7 +265,7 @@ export let levels = [{
             },
         ],
         "background": "skyblue",
-        "duration": 150,
+        "duration": 120,
         "end": 4200
     },
     {
@@ -336,7 +336,7 @@ export let levels = [{
                 },
                 "type": "ground",
                 "size": {
-                    "w": 5000,
+                    "w": 2000,
                     "h": 30
                 }
             },
@@ -453,7 +453,7 @@ export let levels = [{
             {
                 "pos": {
                     "x": 2850,
-                    "y": 190
+                    "y": 260
                 },
                 "size": {
                     "w": 70,
@@ -540,7 +540,417 @@ export let levels = [{
             }
         ],
         "background": "url('/assets/img/nightsky.jpg')",
-        "duration": 150,
+        "duration": 100,
+        "end": 5000
+    },
+    {
+        "scene": [{
+                "pos": {
+                    "x": 1000,
+                    "y": 280
+                },
+                "size": {
+                    "w": 300,
+                    "h": 300
+                },
+                "type": "sun",
+                "cssPosition": "fixed"
+            },
+            {
+                "pos": {
+                    "x": 4000,
+                    "y": 2
+                },
+                "size": {
+                    "w": 232*1.5,
+                    "h": 309*1.5
+                },
+                "type": "chateauNeige",
+                "cssPosition": "absolute"
+            },
+            {
+                "pos": {
+                    "x": 5000,
+                    "y": 1
+                },
+                "size": {
+                    "w": 200,
+                    "h": 200
+                },
+                "type": "roiGrec",
+                "cssPosition": "absolute"
+            },
+            {
+                "pos": {
+                    "x": 1500,
+                    "y": 5
+                },
+                "size": {
+                    "w": 752*1.4,
+                    "h": 332*1.4
+                },
+                "type": "montagneNeige",
+                "cssPosition": "absolute"
+            },
+            {
+                "pos": {
+                    "x": 100,
+                    "y": 450
+                },
+                "size": {
+                    "w": 317,
+                    "h": 41
+                },
+                "type": "nuage2",
+                "cssPosition": "fixed"
+            },
+            {
+                "pos": {
+                    "x": 650,
+                    "y": 550
+                },
+                "size": {
+                    "w": 317,
+                    "h": 41
+                },
+                "type": "nuage",
+                "cssPosition": "fixed"
+            },
+            {
+                "pos": {
+                    "x": 10,
+                    "y": 5
+                },
+                "size": {
+                    "w": 521/1.5,
+                    "h": 479/1.5
+                },
+                "type": "maisonNeige",
+                "cssPosition": "absolute"
+            },
+        ],
+        "obstacles": [{
+                "pos": {
+                    "x": 1,
+                    "y": 0
+                },
+                "type": "groundNeige",
+                "size": {
+                    "w": 750,
+                    "h": 30
+                }
+            },
+            {
+                "pos": {
+                    "x": 1280,
+                    "y": 0
+                },
+                "type": "groundNeige",
+                "size": {
+                    "w": 1500,
+                    "h": 30
+                }
+            },
+            {
+                "pos": {
+                    "x": 3500,
+                    "y": 0
+                },
+                "type": "groundNeige",
+                "size": {
+                    "w": 2000,
+                    "h": 30
+                }
+            },
+            {
+                "pos": {
+                    "x": 500,
+                    "y": 360
+                },
+                "type": "platformNeige",
+                "size": {
+                    "w": 483/2,
+                    "h": 226/2
+                }
+            },
+            {
+                "pos": {
+                    "x": 850,
+                    "y": 170
+                },
+                "type": "platformNeige",
+                "size": {
+                    "w": 483/2,
+                    "h": 226/2
+                }
+            },
+            {
+                "pos": {
+                    "x": 1600,
+                    "y": 160
+                },
+                "type": "platformNeige",
+                "size": {
+                    "w": 483/2,
+                    "h": 226/2
+                }
+            },
+            {
+                "pos": {
+                    "x": 2050,
+                    "y": 110
+                },
+                "type": "platformNeige",
+                "size": {
+                    "w": 483/2,
+                    "h": 226/2
+                }
+            },
+            {
+                "pos": {
+                    "x": 2700,
+                    "y": 140
+                },
+                "type": "platformNeige",
+                "size": {
+                    "w": 483/2,
+                    "h": 226/2
+                }
+            },
+            {
+                "pos": {
+                    "x": 3100,
+                    "y": 140
+                },
+                "type": "platformNeige",
+                "size": {
+                    "w": 483/2,
+                    "h": 226/2
+                }
+            },
+            {
+                "pos": {
+                    "x": 3500,
+                    "y": 280
+                },
+                "type": "platformNeige",
+                "size": {
+                    "w": 483/2,
+                    "h": 226/2
+                }
+            },
+            {
+                "pos": {
+                    "x": 580,
+                    "y": 10
+                },
+                "type": "bouleNeige",
+                "size": {
+                    "w": 340/2,
+                    "h": 193/2
+                }
+            },
+            {
+                "pos": {
+                    "x": 1350,
+                    "y": 10
+                },
+                "type": "bouleNeige",
+                "size": {
+                    "w": 340/2,
+                    "h": 193/2
+                }
+            },
+            {
+                "pos": {
+                    "x": 2400,
+                    "y": 10
+                },
+                "type": "bouleNeige",
+                "size": {
+                    "w": 340/2,
+                    "h": 193/2
+                }
+            },
+            {
+                "pos": {
+                    "x": 3950,
+                    "y": 10
+                },
+                "type": "bouleNeige",
+                "size": {
+                    "w": 340/2,
+                    "h": 193/2
+                }
+            },
+            {
+                "pos": {
+                    "x": 4500,
+                    "y": 10
+                },
+                "type": "bouleNeige",
+                "size": {
+                    "w": 340/2,
+                    "h": 193/2
+                }
+            },
+            {
+                "pos": {
+                    "x": 500,
+                    "y": 480
+                },
+                "size": {
+                    "w": 50,
+                    "h": 60
+                },
+                "type": "coin"
+            },
+            {
+                "pos": {
+                    "x": 590,
+                    "y": 510
+                },
+                "size": {
+                    "w": 50,
+                    "h": 60
+                },
+                "type": "coin"
+            },
+            {
+                "pos": {
+                    "x": 2350,
+                    "y": 350
+                },
+                "size": {
+                    "w": 50,
+                    "h": 60
+                },
+                "type": "coin"
+            },
+            {
+                "pos": {
+                    "x": 2280,
+                    "y": 30
+                },
+                "size": {
+                    "w": 50,
+                    "h": 60
+                },
+                "type": "coin"
+            },
+            {
+                "pos": {
+                    "x": 3000,
+                    "y": 300
+                },
+                "size": {
+                    "w": 70,
+                    "h": 60
+                },
+                "type": "life"
+            },
+            {
+                "pos": {
+                    "x": 1600,
+                    "y": 20
+                },
+                "size": {
+                    "w": 50,
+                    "h": 60
+                },
+                "type": "coin"
+            },
+            {
+                "pos": {
+                    "x": 1850,
+                    "y": 30
+                },
+                "size": {
+                    "w": 50,
+                    "h": 60
+                },
+                "type": "coin"
+            },
+            {
+                "pos": {
+                    "x": 2080,
+                    "y": 60
+                },
+                "size": {
+                    "w": 50,
+                    "h": 60
+                },
+                "type": "coin"
+            },
+            {
+                "pos": {
+                    "x": 3600,
+                    "y": 400
+                },
+                "size": {
+                    "w": 50,
+                    "h": 60
+                },
+                "type": "coin"
+            },
+            {
+                "pos": {
+                    "x": 4350,
+                    "y": 60
+                },
+                "size": {
+                    "w": 50,
+                    "h": 60
+                },
+                "type": "coin"
+            },
+            {
+                "pos": {
+                    "x": 1500,
+                    "y": 350
+                },
+                "size": {
+                    "w": 50,
+                    "h": 50
+                },
+                "type": "power"
+            },
+        ],
+        "enemies": [{
+                "pos": {
+                    "x": 1800,
+                    "y": 500
+                },
+                "mobile": true,
+                "speedUp": 4
+            },
+            {
+                "pos": {
+                    "x": 1500,
+                    "y": 500
+                },
+                "mobile": true,
+                "speedUp": 3
+            },
+            {
+                "pos": {
+                    "x": 2000,
+                    "y": 500
+                },
+                "mobile": true,
+                "speedUp": 5
+            },
+            {
+                "pos": {
+                    "x": 4000,
+                    "y": 500
+                },
+                "mobile": true,
+                "speedUp": 3
+            }
+        ],
+        "background": "rgb(210, 230, 150)",
+        "duration": 50,
         "end": 5000
     }
 ]

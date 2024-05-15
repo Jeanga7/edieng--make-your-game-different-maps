@@ -442,6 +442,7 @@ function handlePlayerAnimation(char) {
     }
   }
 }
+
 // ///////////////////////////::*
 function handlePlayerPosition(char, end) {
   if (char.type === "player") {
@@ -454,6 +455,7 @@ function handlePlayerPosition(char, end) {
     showHistory(char.distance);
   }
 }
+
 // ////////////////////////
 function updateCharacters(end, char, i) {
   if (char.type === "player" || (elementInViewport(char.element) && char.type === "enemy")) char.update();
@@ -464,6 +466,7 @@ function updateCharacters(end, char, i) {
   handlePlayerAnimation(char)
   handlePlayerPosition(char, end)
 }
+
 // ///////////////////////////////
 function shouldDisplayPauseMenu() {
   return gameData.paused && !gameData.isGameOver && !gameData.levelEndPause;
@@ -488,7 +491,7 @@ function handlePlayerEnemyCollision(char, i) {
       if (!gameData.player.power) {
         console.log("Dead !");
         dieAudio.play();
-        gameData.player.velocity.y -= 20;
+        gameData.player.velocity.y -= 50;
       } else if (gameData.player.power) {
         console.log("Enemy killed !");
         gameData.player.velocity.x = 0

@@ -72,7 +72,15 @@ const img = Object.fromEntries(Object.entries({
     greceBuilding: "grece-building.png",
     romeArena: "romeArena.png",
     roiGrec: "roi-grec.png",
-    panneau: "panneau-histoire.png"
+    panneau: "panneau-histoire.png",
+    nuage: "nuage.png",
+    nuage2: "nuage2.png",
+    platformNeige: "platformNeige.png",
+    bouleNeige: "bouleNeige.png",
+    chateauNeige: "chateauNeige.png",
+    montagneNeige: "montagneNeige.png",
+    maisonNeige: "maisonNeige.png",
+    groundNeige: "ground-neige.jpeg",
 }).map(el => [el[0], imgStorage + el[1]]))
 
 const numberOfEnemies = Object.entries(img)
