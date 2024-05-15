@@ -227,7 +227,17 @@ export let levels = [{
                 },
                 "type": "coin"
             },
-            
+            {
+                "pos": {
+                    "x": 3250,
+                    "y": 10
+                },
+                "size": {
+                    "w": 485/3,
+                    "h": 415/3
+                },
+                "type": "chameau"
+            },
         ],
         "enemies": [{
                 "pos": {
@@ -254,31 +264,8 @@ export let levels = [{
                 "speedUp": 3
             },
         ],
-        // "bonus": [
-        //     {
-        //         "pos": {
-        //             "x": 340,
-        //             "y": 180
-        //         },
-        //         "type": "power"
-        //     },
-        //     {
-        //         "pos": {
-        //             "x": 740,
-        //             "y": 95
-        //         },
-        //         "type": "life"
-        //     },
-        //     {
-        //         "pos": {
-        //             "x": 1800,
-        //             "y": 30
-        //         },
-        //         "type": "coin"
-        //     }
-        // ],
         "background": "skyblue",
-        "duration": 240,
+        "duration": 150,
         "end": 4200
     },
     {
@@ -296,26 +283,38 @@ export let levels = [{
             },
             {
                 "pos": {
-                    "x": 2800,
-                    "y": -20
+                    "x": 3600,
+                    "y": -1
                 },
                 "size": {
-                    "w": 682,
-                    "h": 302
+                    "w": 407,
+                    "h": 381
                 },
-                "type": "scene1",
+                "type": "romeArena",
                 "cssPosition": "absolute"
             },
             {
                 "pos": {
-                    "x": 1800,
-                    "y": 20
+                    "x": 5000,
+                    "y": 1
                 },
                 "size": {
-                    "w": 470.2,
-                    "h": 196.2
+                    "w": 200,
+                    "h": 200
                 },
-                "type": "scene2",
+                "type": "roiGrec",
+                "cssPosition": "absolute"
+            },
+            {
+                "pos": {
+                    "x": 1000,
+                    "y": 18
+                },
+                "size": {
+                    "w": 415,
+                    "h": 435
+                },
+                "type": "greceBuilding",
                 "cssPosition": "absolute"
             }
         ],
@@ -326,13 +325,13 @@ export let levels = [{
                 },
                 "type": "ground",
                 "size": {
-                    "w": 2850,
+                    "w": 2300,
                     "h": 30
                 }
             },
             {
                 "pos": {
-                    "x": 3000,
+                    "x": 3250,
                     "y": 0
                 },
                 "type": "ground",
@@ -354,8 +353,41 @@ export let levels = [{
             },
             {
                 "pos": {
-                    "x": 2400,
-                    "y": 250
+                    "x": 2450,
+                    "y": 260
+                },
+                "type": "platform2",
+                "size": {
+                    "w": 231,
+                    "h": 72
+                }
+            },
+            {
+                "pos": {
+                    "x": 1350,
+                    "y": 110
+                },
+                "type": "platform2",
+                "size": {
+                    "w": 231,
+                    "h": 72
+                }
+            },
+            {
+                "pos": {
+                    "x": 950,
+                    "y": 160
+                },
+                "type": "platform2",
+                "size": {
+                    "w": 231,
+                    "h": 72
+                }
+            },
+            {
+                "pos": {
+                    "x": 2830,
+                    "y": 140
                 },
                 "type": "platform2",
                 "size": {
@@ -366,6 +398,17 @@ export let levels = [{
             {
                 "pos": {
                     "x": 1750,
+                    "y": 10
+                },
+                "type": "colonne",
+                "size": {
+                    "w": 176,
+                    "h": 143
+                }
+            },
+            {
+                "pos": {
+                    "x": 650,
                     "y": 10
                 },
                 "type": "colonne",
@@ -387,8 +430,8 @@ export let levels = [{
             },
             {
                 "pos": {
-                    "x": 2480,
-                    "y": 320
+                    "x": 2350,
+                    "y": 330
                 },
                 "size": {
                     "w": 50,
@@ -398,19 +441,90 @@ export let levels = [{
             },
             {
                 "pos": {
-                    "x": 2900,
-                    "y": 100
+                    "x": 2280,
+                    "y": 30
+                },
+                "size": {
+                    "w": 50,
+                    "h": 60
+                },
+                "type": "coin"
+            },
+            {
+                "pos": {
+                    "x": 2850,
+                    "y": 190
                 },
                 "size": {
                     "w": 70,
                     "h": 60
                 },
                 "type": "life"
-            }
+            },
+            {
+                "pos": {
+                    "x": 900,
+                    "y": 20
+                },
+                "size": {
+                    "w": 50,
+                    "h": 60
+                },
+                "type": "coin"
+            },
+            {
+                "pos": {
+                    "x": 1250,
+                    "y": 30
+                },
+                "size": {
+                    "w": 50,
+                    "h": 60
+                },
+                "type": "coin"
+            },
+            {
+                "pos": {
+                    "x": 1680,
+                    "y": 60
+                },
+                "size": {
+                    "w": 50,
+                    "h": 60
+                },
+                "type": "coin"
+            },
+            {
+                "pos": {
+                    "x": 120,
+                    "y": 150
+                },
+                "size": {
+                    "w": 50,
+                    "h": 50
+                },
+                "type": "power"
+            },
         ],
         "enemies": [{
                 "pos": {
                     "x": 1200,
+                    "y": 500
+                },
+                "mobile": true,
+                "speedUp": 4
+            },
+            {
+                "pos": {
+                    "x": 900,
+                    "y": 500
+                },
+                "mobile": true,
+                "speedUp": 2
+            },
+            {
+                "pos": {
+                    "x": 1500,
                     "y": 500
                 },
                 "mobile": true,
@@ -425,25 +539,8 @@ export let levels = [{
                 "speedUp": 3
             }
         ],
-        // "bonus": [
-        //     {
-        //         "pos": {
-        //             "x": 340,
-        //             "y": 180
-        //         },
-        //         "type": "coin"
-        //     },
-        //     {
-        //         "pos": {
-        //             "x": 1800,
-        //             "y": 30
-        //         },
-        //         "type": "coin",
-
-        //     }
-        // ],
         "background": "url('/assets/img/nightsky.jpg')",
-        "duration": 240,
+        "duration": 150,
         "end": 5000
     }
 ]

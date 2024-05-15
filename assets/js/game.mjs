@@ -58,7 +58,6 @@ export function game(sceneElements, obstacles, enemies, bg, duration, end) {
         right: { pressed: false },
         left: { pressed: false }
     };
-    // camera()
     animate(end);
     Timer(1000)
 }
