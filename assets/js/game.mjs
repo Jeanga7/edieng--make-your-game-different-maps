@@ -60,5 +60,5 @@ export function game(sceneElements, obstacles, enemies, bg, duration, end) {
     };
     // camera()
     animate(end);
-    Timer()
+    Timer(1000)
 }

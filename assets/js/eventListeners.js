@@ -72,6 +72,7 @@ document.querySelectorAll("#restart, #btn_restart_GO, #btn_restart_win").forEach
 function showMainMenuModal() {
     document.querySelector('#mainMenuModal').style.display = "flex";
     document.querySelector('#mainMenuModal').classList.remove("hidden");
+    document.querySelector("#getInModal").classList.add("hidden");
 }
 
 document.querySelectorAll("#main-menu, #btn_mainmenu_GO").forEach(btn => {

@@ -64,7 +64,7 @@ var gameData = {
 }
 
 // Start animation
-function Timer() {
+function Timer(t) {
   var countdownElement = document.getElementById("timer");
 
   gameData.countdownTime = gameData.duration;
@@ -79,7 +79,7 @@ function Timer() {
       killGame()
       gameOver();
     }
-  }, 1000);
+  }, t);
 }
 
 function gameOver() {
