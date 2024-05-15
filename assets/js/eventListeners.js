@@ -75,12 +75,18 @@ function showMainMenuModal() {
     document.querySelector("#getInModal").classList.add("hidden");
 }
 
+let isPageRefreshed = false;
 document.querySelectorAll("#main-menu, #btn_mainmenu_GO").forEach(btn => {
-    btn.addEventListener('click', showMainMenuModal);
+    btn.addEventListener('click', () => {
+        if (!isPageRefreshed) {
+            window.location.reload();
+            isPageRefreshed = true;
+        }
+        showMainMenuModal();
+    });
 });
 
 gameData.isJumping = false;
-
 
 document.addEventListener('keyup', (event) => {
     if (event.key === "ArrowLeft") {

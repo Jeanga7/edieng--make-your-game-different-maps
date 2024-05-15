@@ -283,8 +283,8 @@ export let levels = [{
             },
             {
                 "pos": {
-                    "x": 3600,
-                    "y": -1
+                    "x": 3400,
+                    "y": 2
                 },
                 "size": {
                     "w": 407,
@@ -419,7 +419,7 @@ export let levels = [{
             },
             {
                 "pos": {
-                    "x": 3750,
+                    "x": 3950,
                     "y": 10
                 },
                 "type": "colonne",
