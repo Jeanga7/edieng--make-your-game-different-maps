@@ -7,7 +7,9 @@ import {
     game
 } from "./game.mjs"
 import {
-    levels
+    // levels
+    levelsData,
+    loadLevelsData
 } from "./levels.js"
 import {
     gameData,
@@ -108,7 +110,7 @@ document.addEventListener('keyup', (event) => {
     }
 });
 
-document.querySelector("#play").addEventListener('click', () => {
+document.querySelector("#play").addEventListener('click', async() => {
     audio.pause();
     music.pause();
     audio.currentTime = 0;
@@ -117,11 +119,14 @@ document.querySelector("#play").addEventListener('click', () => {
     document.querySelector('#mainMenuModal').classList.add("hidden");
     [gameData.paused, gameData.levelEndPause, gameData.timeLoop, gameData.totalScore, gameData.lives, gameData.coins, gameData.levelScore, gameData.distance] = [false, false, null, 0, 3, 0, 0, 0];
     hideModals()
-    if (levels.length === 0) {
+
+    await loadLevelsData();
+
+    if (levelsData && levelsData && levelsData.length > 0) {
+        game(levelsData[0].scene, levelsData[0].obstacles, levelsData[0].enemies, levelsData[0].background, levelsData[0].duration, levelsData[0].end);
+    } else {
         alert("Add levels to the game.")
         window.location.reload()
-    } else {
-        game(levels[0].scene, levels[0].obstacles, levels[0].enemies, levels[0].background, levels[0].duration, levels[0].end);
     }
 })
 

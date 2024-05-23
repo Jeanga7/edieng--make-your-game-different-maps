@@ -18,9 +18,10 @@ export {
     vw,
     vh,
     gameOverModal,
-    winModal
+    winModal,
 }
 
+export let levels = [];
 const imgStorage = "./assets/img/"
 const audioStorage = "./assets/audio"
 const gravity = -1.5;

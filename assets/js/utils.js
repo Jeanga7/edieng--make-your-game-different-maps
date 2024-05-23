@@ -13,8 +13,10 @@ import {
   winModal
 } from "./constants.js";
 import {
-  levels
-} from "./levels.js";
+  // levels
+  levelsData,
+  // loadLevelsData
+} from "./levels.js"
 import {
   game
 } from "./game.mjs";
@@ -136,8 +138,8 @@ function hideModals() {
 
 function switchLevel() {
   gameData.currentLevel++;
-  if (gameData.currentLevel < levels.length) {
-    const level = levels[gameData.currentLevel];
+  if (gameData.currentLevel < levelsData.length) {
+    const level = levelsData[gameData.currentLevel];
     // Notifications de fin de niveau
     showStats();
 
@@ -166,7 +168,7 @@ function switchLevel() {
 }
 
 function checkEnd() {
-  if (gameData.player.position.x >= levels[gameData.currentLevel].end) {
+  if (gameData.player.position.x >= levelsData[gameData.currentLevel].end) {
     switchLevel();
   }
 }
@@ -182,12 +184,12 @@ function decreaseLife() {
   if (gameData.lives >= 1) {
     gameData.totalScore -= gameData.levelScore;
     game(
-      levels[gameData.currentLevel].scene,
-      levels[gameData.currentLevel].obstacles,
-      levels[gameData.currentLevel].enemies,
-      levels[gameData.currentLevel].background,
-      levels[gameData.currentLevel].duration,
-      levels[gameData.currentLevel].end
+      levelsData[gameData.currentLevel].scene,
+      levelsData[gameData.currentLevel].obstacles,
+      levelsData[gameData.currentLevel].enemies,
+      levelsData[gameData.currentLevel].background,
+      levelsData[gameData.currentLevel].duration,
+      levelsData[gameData.currentLevel].end
     );
   } else {
     gameData.paused = true;
@@ -219,12 +221,12 @@ function restartGame() {
   [gameData.currentLevel, gameData.lives, gameData.totalScore, gameData.levelScore, gameData.paused, gameData.levelEndPause, gameData.player, gameData.isGameOver] = [0, 3, 0, 0, false, false, null, false]
   hideModals();
   game(
-    levels[gameData.currentLevel].scene,
-    levels[gameData.currentLevel].obstacles,
-    levels[gameData.currentLevel].enemies,
-    levels[gameData.currentLevel].background,
-    levels[gameData.currentLevel].duration,
-    levels[gameData.currentLevel].end
+    levelsData[gameData.currentLevel].scene,
+    levelsData[gameData.currentLevel].obstacles,
+    levelsData[gameData.currentLevel].enemies,
+    levelsData[gameData.currentLevel].background,
+    levelsData[gameData.currentLevel].duration,
+    levelsData[gameData.currentLevel].end
   );
 }
 
