@@ -25,6 +25,8 @@ export function game(sceneElements, obstacles, enemies, bg, duration, end) {
     killGame()
     hideModals()
     gameData.isGameOver = false
+    gameData.viewport = {top: 0, left: 0}
+    gameData.distance = 0
     createWorldElements(bg, duration, gameData, img);
     addPauseContinue()
 
@@ -44,7 +46,7 @@ export function game(sceneElements, obstacles, enemies, bg, duration, end) {
     gameData.characters.push(gameData.player);
 
     enemies.forEach(en => {
-        gameData.characters.push(new Enemy(en.pos, en.mobile, en.speedUp))
+        gameData.characters.push(new Enemy(en.pos, en.mobile, en.speedUp, en.skin, en.dims))
     })
 
 
@@ -58,6 +60,9 @@ export function game(sceneElements, obstacles, enemies, bg, duration, end) {
         right: { pressed: false },
         left: { pressed: false }
     };
-    animate(end);
+    // camera()
+    cancelAnimationFrame(gameData.globalAnimation)
+    gameData.globalAnimation = requestAnimationFrame(animate);
+    // animate(end);
     Timer(1000)
 }

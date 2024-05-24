@@ -1,11 +1,11 @@
-import { readdirSync } from "fs";
+// import { readdirSync } from "fs";
 
 export let levelsData = [];
 
 export async function loadLevelsData() {
     try {
-        // const levelFiles = ['level1.json', 'level2.json', 'level3.json'];
-        const levelFiles = readdirSync('/asset/json/')
+        const levelFiles = ['level1.json', 'level2.json', 'level3.json'];
+        // const levelFiles = readdirSync('/asset/json/')
 
         for (const file of levelFiles) {
             const response = await fetch(`/assets/json/${file}`);

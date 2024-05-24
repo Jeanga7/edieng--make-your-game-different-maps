@@ -3,20 +3,41 @@
 
 <head>
     <title>Making our Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="./assets/img/horloge.png" type="image/x-icon">
     <link rel="stylesheet" href="./assets/css/style.css">
     <link rel="stylesheet" href="./assets/css/animation.css">
     <script>
         var username;
-        const playersInfos = [
-            {number: 1, name: "Diomay"},
-            {number: 2, name: "Sitoe"}
+        const playersInfos = [{
+                number: 1,
+                name: "Diomay"
+            },
+            {
+                number: 2,
+                name: "Sitoe"
+            }
         ]
         var selectedPlayer = 0;
+
+        function hidePreloader(delay) {
+            let pl = document.querySelector("#preloader-screen")
+            setTimeout(()=>{
+                pl.style.opacity = "0"
+            }, delay)
+
+            setTimeout(()=>{
+                pl.classList.add("hidden")
+                pl.style.opacity = "1"
+            }, delay+800)
+        }
     </script>
 </head>
 
 <body>
+    <div id="preloader-screen">
+        <span id="spinner"></span>
+    </div>
 
     <!-- div principal du game -->
     <div id="world"></div>
@@ -41,9 +62,12 @@
             </div>
         </div>
         <div id="player_main_menu">
-            <div id="arrow_left" class="changePlayer"></div>
-            <div id="homePlayer" class="home-perso home-idle"></div>
-            <div id="arrow_right" class="changePlayer"></div>
+            <span id="player_name"></span>
+            <div id="select_player">
+                <div id="arrow_left" class="changePlayer"></div>
+                <div id="homePlayer" class="home-perso home-idle"></div>
+                <div id="arrow_right" class="changePlayer"></div>
+            </div>
         </div>
 
     </div>
@@ -60,24 +84,24 @@
         </p>
         <p>
 
-        <h4>CONTRÔLES :</h4>
-        Utilisez les touches fléchées gauche ou droitee pour vous déplacer.
-        Appuyez sur la touche Espace ou haut pour sauter et esquiver vos ennemis.
-        Collectez des bonus pour améliorer votre score et déverrouiller de nouveaux mondes.
+            <h4>CONTRÔLES :</h4>
+            Utilisez les touches fléchées gauche ou droitee pour vous déplacer.
+            Appuyez sur la touche Espace ou haut pour sauter et esquiver vos ennemis.
+            Collectez des bonus pour améliorer votre score et déverrouiller de nouveaux mondes.
         </p>
         <p>
-        <h4>OBJECTIFS :</h4>
-        Traversez chaque monde en évitant les obstacles et en échappant aux gardiens des temps.
-        Collectez autant d'artefacts que possible pour progresser à travers les époques.
-        Atteignez la fin de chaque niveau pour accéder au monde suivant.
+            <h4>OBJECTIFS :</h4>
+            Traversez chaque monde en évitant les obstacles et en échappant aux gardiens des temps.
+            Collectez autant d'artefacts que possible pour progresser à travers les époques.
+            Atteignez la fin de chaque niveau pour accéder au monde suivant.
         </p>
 
         <p>
-        <h4>GARDEZ A L'ESPRIT</h4>
+            <h4>GARDEZ A L'ESPRIT</h4>
 
-        Chaque monde possède ses propres défis et dangers uniques.
-        Certains bonus peuvent vous aider à survivre, tandis que d'autres peuvent être des pièges.
-        Utilisez vos compétences d'observation et de réflexes pour éviter les dangers et surmonter les obstacles.
+            Chaque monde possède ses propres défis et dangers uniques.
+            Certains bonus peuvent vous aider à survivre, tandis que d'autres peuvent être des pièges.
+            Utilisez vos compétences d'observation et de réflexes pour éviter les dangers et surmonter les obstacles.
 
         </p>
         <h5>😇Bonne chance 😇!</h5>
@@ -159,6 +183,16 @@
         </div>
     </div>
 
+    <div id="controls">
+        <div class="controls-row">
+            <span class="controls-btn" id="controls-up"></span>
+        </div>
+        <div class="controls-row">
+            <span class="controls-btn" id="controls-left"></span>
+            <span class="controls-btn" id="controls-right"></span>
+        </div>
+    </div>
+
 
 
     <script type="module">
@@ -166,11 +200,16 @@
             username = document.querySelector('#input_name').value;
         });
     </script>
-    <script src="./assets/js/game.mjs" type="module"></script>
+    <script src="./assets/js/game.js" type="module"></script>
     <script src="./assets/js/levels.js" type="module"></script>
     <script src="./assets/js/utils.js" type="module"></script>
     <script src="./assets/js/eventListeners.js" type="module"></script>
     <script src="./assets/js/history.js" type="module"></script>
+    <script>
+        window.onload = () => {
+            hidePreloader(2000)
+        }
+    </script>
 </body>
 
 </html>
