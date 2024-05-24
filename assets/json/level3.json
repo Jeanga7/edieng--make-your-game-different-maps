@@ -377,7 +377,8 @@
                 "y": 500
             },
             "mobile": true,
-            "speedUp": 4
+            "speedUp": 4,
+            "skin": "enemy6"
         },
         {
             "pos": {
@@ -385,7 +386,8 @@
                 "y": 500
             },
             "mobile": true,
-            "speedUp": 3
+            "speedUp": 3,
+            "skin": "enemy4"
         },
         {
             "pos": {
@@ -393,7 +395,8 @@
                 "y": 500
             },
             "mobile": true,
-            "speedUp": 5
+            "speedUp": 5,
+            "skin": "enemy9"
         },
         {
             "pos": {
@@ -401,7 +404,8 @@
                 "y": 500
             },
             "mobile": true,
-            "speedUp": 3
+            "speedUp": 3,
+            "skin": "enemy7"
         }
     ],
     "background": "rgb(210, 230, 150)",
