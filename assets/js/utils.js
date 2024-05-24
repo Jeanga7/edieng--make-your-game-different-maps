@@ -142,8 +142,8 @@ function hideModals() {
 function switchLevel() {
   gameData.currentLevel++;
   showStats();
-  if (gameData.currentLevel < levels.length) {
-    const level = levels[gameData.currentLevel];
+  if (gameData.currentLevel < levelsData.length) {
+    const level = levelsData[gameData.currentLevel];
     // Notifications de fin de niveau
 
     winModal.style.display = "flex";
