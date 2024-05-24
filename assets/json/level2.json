@@ -246,7 +246,11 @@
             },
             "mobile": true,
             "speedUp": 4,
-            "skin": "enemy6"
+            "skin": "enemy6",
+            "dims": {
+                "w": 96,
+                "h": 32
+              }
         },
         {
             "pos": {
@@ -264,7 +268,11 @@
             },
             "mobile": true,
             "speedUp": 3,
-            "skin": "enemy6"
+            "skin": "enemy6",
+            "dims": {
+                "w": 96,
+                "h": 32
+              }
         },
         {
             "pos": {

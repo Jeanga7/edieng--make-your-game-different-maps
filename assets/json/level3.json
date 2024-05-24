@@ -378,7 +378,11 @@
             },
             "mobile": true,
             "speedUp": 4,
-            "skin": "enemy6"
+            "skin": "enemy6",
+            "dims": {
+                "w": 96,
+                "h": 32
+              }
         },
         {
             "pos": {
@@ -387,7 +391,11 @@
             },
             "mobile": true,
             "speedUp": 3,
-            "skin": "enemy4"
+            "skin": "enemy4",
+            "dims": {
+                "w": 70,
+                "h": 54
+              }
         },
         {
             "pos": {
@@ -405,7 +413,11 @@
             },
             "mobile": true,
             "speedUp": 3,
-            "skin": "enemy7"
+            "skin": "enemy7",
+            "dims": {
+                "w": 55,
+                "h": 37
+              }
         }
     ],
     "background": "rgb(210, 230, 150)",
